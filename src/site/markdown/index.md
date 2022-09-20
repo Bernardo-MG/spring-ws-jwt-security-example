@@ -14,4 +14,4 @@ Once running the web service will be available at [http://localhost:8080/](http:
 
 ### Requests with Postman
 
-Import `src/test/resources/auth.postman_collection.json` to get queries for all the operations including authentication.
+Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for all the operations including authentication.
