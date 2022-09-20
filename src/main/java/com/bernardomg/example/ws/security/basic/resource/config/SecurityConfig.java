@@ -33,15 +33,26 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.bernardomg.example.ws.security.basic.resource.auth.entrypoint.JwtAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.basic.resource.auth.filter.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    private JwtTokenFilter              jwtRequestFilter;
+
+    @Autowired
+    private UserDetailsService          userDetailsService;
 
     public SecurityConfig() {
         super();
@@ -54,10 +65,23 @@ public class SecurityConfig {
         final Customizer<LogoutConfigurer<HttpSecurity>>                                                    logoutCustomizer;
 
         // Authorization
-        authorizeRequestsCustomizer = c -> c.antMatchers("/actuator/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated();
+        authorizeRequestsCustomizer = c -> {
+            try {
+                c.antMatchers("/actuator/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            } catch (final Exception e) {
+                // TODO Handle exception
+                throw new RuntimeException(e);
+            }
+        };
         // Login form
         formLoginCustomizer = c -> c.disable();
         // Logout
@@ -65,10 +89,12 @@ public class SecurityConfig {
 
         http.authorizeRequests(authorizeRequestsCustomizer)
             .formLogin(formLoginCustomizer)
-            .logout(logoutCustomizer)
-            .httpBasic();
+            .logout(logoutCustomizer);
 
         http.userDetailsService(userDetailsService);
+
+        // Add a filter to validate the tokens with every request
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

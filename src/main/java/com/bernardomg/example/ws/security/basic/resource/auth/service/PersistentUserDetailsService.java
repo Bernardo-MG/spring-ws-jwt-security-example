@@ -92,9 +92,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         LOGGER.debug("Username {} found in DB", username);
-        details = toUserDetails(user.get());
-
-        return details;
+        return toUserDetails(user.get());
     }
 
     /**
