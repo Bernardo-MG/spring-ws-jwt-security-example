@@ -22,10 +22,34 @@
  * SOFTWARE.
  */
 
-/**
- * Application root package.
- * <p>
- * This is where the main class is contained. All the subpackages will be scanned by the Spring Boot application.
- */
+package com.bernardomg.example.ws.security.basic.resource.mvc.response.model;
 
-package com.bernardomg.example.ws.security.basic.resource;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/**
+ * Response status.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public enum ResponseStatus {
+
+    /**
+     * The request failed.
+     */
+    FAILURE,
+    /**
+     * The request was a success.
+     */
+    SUCCESS,
+    /**
+     * The request generated warnings.
+     */
+    WARNING;
+
+    @JsonValue
+    public final String getValue() {
+        return toString().toLowerCase();
+    }
+
+}

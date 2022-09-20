@@ -22,38 +22,29 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.basic.resource.config;
+package com.bernardomg.example.ws.security.basic.resource.model.user.repository;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.Collection;
 
-import com.bernardomg.example.ws.security.basic.resource.auth.service.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.basic.resource.model.user.repository.PersistentUserRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.bernardomg.example.ws.security.basic.resource.model.user.model.persistence.PersistentRole;
 
 /**
- * Authentication configuration.
+ * Repository for user roles.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-public class AuthenticationConfig {
+public interface PersistentRoleRepository extends JpaRepository<PersistentRole, Long> {
 
-    public AuthenticationConfig() {
-        super();
-    }
-
-    @Bean("passwordEncoder")
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository) {
-        return new PersistentUserDetailsService(userRepository);
-    }
+    /**
+     * Returns all the roles with one of the names received.
+     *
+     * @param names
+     *            names of the roles
+     * @return roles names in the input
+     */
+    public Collection<PersistentRole> findByNameIn(final Iterable<String> names);
 
 }

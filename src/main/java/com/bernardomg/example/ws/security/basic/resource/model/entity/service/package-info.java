@@ -23,9 +23,10 @@
  */
 
 /**
- * Application root package.
+ * Services.
  * <p>
- * This is where the main class is contained. All the subpackages will be scanned by the Spring Boot application.
+ * While in the MVC architecture all the logic seems to be contained inside the controllers, using an additional layer
+ * of services helps to isolate all the important logic in the application.
  */
 
-package com.bernardomg.example.ws.security.basic.resource;
+package com.bernardomg.example.ws.security.basic.resource.model.entity.service;

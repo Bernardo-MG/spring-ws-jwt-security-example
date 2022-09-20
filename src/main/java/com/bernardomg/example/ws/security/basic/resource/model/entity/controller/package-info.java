@@ -23,9 +23,7 @@
  */
 
 /**
- * Application root package.
- * <p>
- * This is where the main class is contained. All the subpackages will be scanned by the Spring Boot application.
+ * Controller classes.
  */
 
-package com.bernardomg.example.ws.security.basic.resource;
+package com.bernardomg.example.ws.security.basic.resource.model.entity.controller;

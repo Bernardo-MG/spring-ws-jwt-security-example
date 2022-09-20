@@ -22,38 +22,51 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.basic.resource.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.bernardomg.example.ws.security.basic.resource.auth.service.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.basic.resource.model.user.repository.PersistentUserRepository;
+package com.bernardomg.example.ws.security.basic.resource.model.user.model;
 
 /**
- * Authentication configuration.
+ * User role. Groups a set of permissions.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-public class AuthenticationConfig {
+public interface Role {
 
-    public AuthenticationConfig() {
-        super();
-    }
+    /**
+     * Returns the user id.
+     *
+     * @return the user id
+     */
+    public Long getId();
 
-    @Bean("passwordEncoder")
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    /**
+     * Returns the role name.
+     *
+     * @return the role name
+     */
+    public String getName();
 
-    @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository) {
-        return new PersistentUserDetailsService(userRepository);
-    }
+    /**
+     * Returns the user privileges.
+     *
+     * @return the user privileges
+     */
+    public Iterable<? extends Privilege> getPrivileges();
+
+    /**
+     * Sets the user id.
+     *
+     * @param identifier
+     *            the new id
+     */
+    public void setId(final Long identifier);
+
+    /**
+     * Sets the role name.
+     *
+     * @param role
+     *            new name
+     */
+    public void setName(final String role);
 
 }

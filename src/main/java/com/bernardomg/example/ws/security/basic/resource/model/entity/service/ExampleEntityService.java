@@ -22,10 +22,24 @@
  * SOFTWARE.
  */
 
-/**
- * Application root package.
- * <p>
- * This is where the main class is contained. All the subpackages will be scanned by the Spring Boot application.
- */
+package com.bernardomg.example.ws.security.basic.resource.model.entity.service;
 
-package com.bernardomg.example.ws.security.basic.resource;
+import com.bernardomg.example.ws.security.basic.resource.model.entity.model.ExampleEntity;
+
+/**
+ * Service for the example entity domain.
+ * <p>
+ * This is a domain service just to allow the endpoints querying the entities they are asked for.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ */
+public interface ExampleEntityService {
+
+    /**
+     * Returns all the entities from the DB.
+     *
+     * @return the persisted entities
+     */
+    public Iterable<? extends ExampleEntity> getAllEntities();
+
+}

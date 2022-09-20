@@ -22,38 +22,43 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.basic.resource.config;
+package com.bernardomg.example.ws.security.basic.resource.model.user.repository;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.Optional;
 
-import com.bernardomg.example.ws.security.basic.resource.auth.service.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.basic.resource.model.user.repository.PersistentUserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.bernardomg.example.ws.security.basic.resource.model.user.model.persistence.PersistentUser;
 
 /**
- * Authentication configuration.
+ * Repository for users.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-public class AuthenticationConfig {
+public interface PersistentUserRepository extends JpaRepository<PersistentUser, Long> {
 
-    public AuthenticationConfig() {
-        super();
-    }
+    /**
+     * Returns the user details for the received email.
+     *
+     * @param email
+     *            email to search for
+     * @return the user details for the received email
+     */
+    public Optional<PersistentUser> findOneByEmail(final String email);
 
-    @Bean("passwordEncoder")
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    /**
+     * Returns the user details for the received username.
+     *
+     * @param username
+     *            username to search for
+     * @return the user details for the received username
+     */
+    public Optional<PersistentUser> findOneByUsername(final String username);
 
-    @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository) {
-        return new PersistentUserDetailsService(userRepository);
-    }
+    @Override
+    @CacheEvict(cacheNames = { "user", "users", "roles" }, allEntries = true)
+    public <S extends PersistentUser> S save(S entity);
 
 }
