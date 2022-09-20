@@ -50,7 +50,7 @@ public class SecurityConfig {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Autowired
-    private JwtTokenFilter              jwtRequestFilter;
+    private JwtTokenFilter              jwtTokenFilter;
 
     @Autowired
     private UserDetailsService          userDetailsService;
@@ -97,7 +97,7 @@ public class SecurityConfig {
         http.userDetailsService(userDetailsService);
 
         // Add a filter to validate the tokens with every request
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
