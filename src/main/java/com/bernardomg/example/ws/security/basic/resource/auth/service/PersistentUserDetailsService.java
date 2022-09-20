@@ -81,7 +81,6 @@ public final class PersistentUserDetailsService implements UserDetailsService {
     @Override
     public final UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final Optional<PersistentUser> user;
-        final UserDetails              details;
 
         LOGGER.debug("Asked for username {}", username);
 
