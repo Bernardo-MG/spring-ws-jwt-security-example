@@ -2,6 +2,7 @@
 package com.bernardomg.example.ws.security.jwt.auth.util;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +26,13 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID   = -2550185165626007488L;
 
-    private final SecretKey   key                = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    private final SecretKey   key;
 
-    @Value("${jwt.secret}")
-    private String            secret;
+    public JwtTokenUtil(@Value("${jwt.secret}") final String secret) {
+        super();
+
+        key = Keys.hmacShaKeyFor(secret.getBytes(Charset.forName("UTF-8")));
+    }
 
     // generate token for user
     public String generateToken(final String username) {
