@@ -31,9 +31,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.ws.security.jwt.auth.processor.JwtTokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.processor.TokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.service.PersistentUserDetailsService;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
 import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 
 /**

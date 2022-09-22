@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.auth.filter;
+package com.bernardomg.example.ws.security.jwt.auth.jwt.filter;
 
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.processor.TokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;

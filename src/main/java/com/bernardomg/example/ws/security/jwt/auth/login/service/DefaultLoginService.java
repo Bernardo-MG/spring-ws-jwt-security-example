@@ -3,9 +3,9 @@ package com.bernardomg.example.ws.security.jwt.auth.login.service;
 
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.DtoLoginStatus;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
-import com.bernardomg.example.ws.security.jwt.auth.processor.TokenProcessor;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

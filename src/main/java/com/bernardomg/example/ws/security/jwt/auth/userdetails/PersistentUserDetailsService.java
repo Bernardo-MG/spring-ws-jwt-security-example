@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.service;
+package com.bernardomg.example.ws.security.jwt.auth.userdetails;
 
 import java.util.Collection;
 import java.util.Objects;

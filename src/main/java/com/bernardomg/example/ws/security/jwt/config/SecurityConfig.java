@@ -39,8 +39,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.entrypoint.JwtAuthenticationEntryPoint;
-import com.bernardomg.example.ws.security.jwt.auth.filter.JwtTokenFilter;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.JwtAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity

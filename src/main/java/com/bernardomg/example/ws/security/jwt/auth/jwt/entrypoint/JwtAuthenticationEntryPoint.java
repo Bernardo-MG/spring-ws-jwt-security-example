@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.auth.entrypoint;
+package com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint;
 
 import java.io.IOException;
 import java.io.Serializable;

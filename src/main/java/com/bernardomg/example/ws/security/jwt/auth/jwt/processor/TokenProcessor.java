@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.auth.processor;
+package com.bernardomg.example.ws.security.jwt.auth.jwt.processor;
 
 /**
  * Token processor.
