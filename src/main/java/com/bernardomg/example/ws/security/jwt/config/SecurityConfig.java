@@ -47,10 +47,10 @@ import com.bernardomg.example.ws.security.jwt.auth.filter.JwtTokenFilter;
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private JwtTokenFilter              jwtTokenFilter;
+    private JwtTokenFilter              tokenFilter;
 
     @Autowired
     private UserDetailsService          userDetailsService;
@@ -76,7 +76,7 @@ public class SecurityConfig {
                     .authenticated()
                     .and()
                     .exceptionHandling()
-                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .authenticationEntryPoint(authenticationEntryPoint)
                     .and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -97,7 +97,7 @@ public class SecurityConfig {
         http.userDetailsService(userDetailsService);
 
         // Add a filter to validate the tokens with every request
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -24,12 +24,15 @@
 
 package com.bernardomg.example.ws.security.jwt.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.bernardomg.example.ws.security.jwt.auth.processor.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.processor.TokenProcessor;
 import com.bernardomg.example.ws.security.jwt.auth.service.PersistentUserDetailsService;
 import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 
@@ -49,6 +52,12 @@ public class AuthenticationConfig {
     @Bean("passwordEncoder")
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean("tokenProcessor")
+    public TokenProcessor getTokenProcessor(@Value("${jwt.secret}") final String secret,
+            @Value("${jwt.validity}") final Integer validity) {
+        return new JwtTokenProcessor(secret, validity);
     }
 
     @Bean("userDetailsService")

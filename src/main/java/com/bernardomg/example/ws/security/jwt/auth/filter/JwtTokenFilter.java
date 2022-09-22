@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.util.JwtTokenUtil;
+import com.bernardomg.example.ws.security.jwt.auth.processor.TokenProcessor;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final JwtTokenUtil       jwtTokenUtil;
+    private final TokenProcessor     tokenProcessor;
 
     private final UserDetailsService userDetailsService;
 
@@ -52,7 +52,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 jwtToken = requestTokenHeader.substring(7);
                 log.debug("Parsing token {}", jwtToken);
                 try {
-                    username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                    username = tokenProcessor.getSubject(jwtToken);
                 } catch (final IllegalArgumentException e) {
                     username = null;
                     System.out.println("Unable to get JWT Token");
@@ -74,7 +74,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
                 // if token is valid configure Spring Security to manually set
                 // authentication
-                if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+                if (tokenProcessor.validate(jwtToken, userDetails.getUsername())) {
 
                     usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
                         userDetails.getAuthorities());
