@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2017-2020 the original author or authors.
+ * Copyright (c) 2021 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,32 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.domain.entity.persistence.repository;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bernardomg.example.ws.security.jwt.auth.service.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
+import com.bernardomg.example.ws.security.jwt.domain.entity.model.PersistentExampleEntity;
 
 /**
- * Authentication configuration.
+ * Spring-JPA repository for {@link PersistentExampleEntity}.
+ * <p>
+ * This is a simple repository just to allow the endpoints querying the entities they are asked for.
  *
- * @author Bernardo Martínez Garrido
- *
+ * @author Bernardo Mart&iacute;nez Garrido
  */
-@Configuration
-public class AuthenticationConfig {
+public interface ExampleEntityRepository extends JpaRepository<PersistentExampleEntity, Integer> {
 
-    public AuthenticationConfig() {
-        super();
-    }
-
-    @Bean("passwordEncoder")
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository) {
-        return new PersistentUserDetailsService(userRepository);
-    }
+    /**
+     * Returns all entities with a partial match to the name.
+     *
+     * @param name
+     *            name for searching
+     * @param page
+     *            pagination to apply
+     * @return all entities at least partially matching the name
+     */
+    public Page<PersistentExampleEntity> findByNameContaining(final String name, final Pageable page);
 
 }

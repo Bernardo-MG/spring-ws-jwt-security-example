@@ -39,10 +39,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.bernardomg.example.ws.security.jwt.model.user.model.Privilege;
-import com.bernardomg.example.ws.security.jwt.model.user.model.Role;
-import com.bernardomg.example.ws.security.jwt.model.user.model.persistence.PersistentUser;
-import com.bernardomg.example.ws.security.jwt.model.user.repository.PersistentUserRepository;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.Privilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.Role;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentUser;
+import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 
 /**
  * User details service which takes the data from the persistence layer.

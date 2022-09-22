@@ -22,38 +22,56 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.domain.user.model.persistence;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.io.Serializable;
 
-import com.bernardomg.example.ws.security.jwt.auth.service.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.bernardomg.example.ws.security.jwt.domain.user.model.Privilege;
+
+import lombok.Data;
 
 /**
- * Authentication configuration.
+ * Persistent implementation of {@code Privilege}.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-public class AuthenticationConfig {
+@Entity(name = "Privilege")
+@Table(name = "PRIVILEGES")
+@Data
+public class PersistentPrivilege implements Privilege, Serializable {
 
-    public AuthenticationConfig() {
+    /**
+     * Serialization id.
+     */
+    private static final long serialVersionUID = 8513041662486312372L;
+
+    /**
+     * Entity id.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
+    private Long              id;
+
+    /**
+     * Authority name.
+     */
+    @Column(name = "name", nullable = false, unique = true, length = 60)
+    private String            name;
+
+    /**
+     * Default constructor.
+     */
+    public PersistentPrivilege() {
         super();
-    }
-
-    @Bean("passwordEncoder")
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository) {
-        return new PersistentUserDetailsService(userRepository);
     }
 
 }
