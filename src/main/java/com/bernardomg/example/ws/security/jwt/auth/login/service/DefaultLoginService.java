@@ -21,9 +21,9 @@ public final class DefaultLoginService implements LoginService {
     public final LoginStatus login(final String username, final String password) {
         final DtoLoginStatus status;
         final String         token;
-        
+
         log.trace("Generating token for {}", username);
-        
+
         // TODO: Get user and check password
 
         token = tokenProcessor.generateToken(username);

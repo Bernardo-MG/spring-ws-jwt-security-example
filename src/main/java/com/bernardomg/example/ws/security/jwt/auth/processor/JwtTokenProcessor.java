@@ -36,17 +36,31 @@ public final class JwtTokenProcessor implements TokenProcessor {
 
     @Override
     public final String generateToken(final String subject) {
+        final Date expiration;
+        final Date issuedAt;
+
+        issuedAt = new Date();
+        expiration = new Date(System.currentTimeMillis() + (validity * 1000));
+
+        log.debug("Setting expiration date {}", expiration);
+
         return Jwts.builder()
             .setSubject(subject)
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + (validity * 1000)))
+            .setIssuedAt(issuedAt)
+            .setExpiration(expiration)
             .signWith(key, SignatureAlgorithm.HS512)
             .compact();
     }
 
     @Override
     public final String getSubject(final String token) {
-        return getClaim(token, Claims::getSubject);
+        final String subject;
+        
+        subject = getClaim(token, Claims::getSubject);
+        
+        log.debug("Found subject {}", subject);
+        
+        return subject;
     }
 
     @Override
@@ -57,12 +71,13 @@ public final class JwtTokenProcessor implements TokenProcessor {
         subj = getSubject(token);
 
         if (!subj.equals(subject)) {
-            log.debug("Received subject {} does not match subject {} from token", subject, subj, token);
+            log.debug("Received subject {} does not match subject {} from token", subject, subj);
             valid = false;
         } else if (isExpired(token)) {
-            log.debug("Expired token", token);
+            log.debug("Expired token");
             valid = false;
         } else {
+            log.debug("Valid token");
             valid = true;
         }
 
@@ -110,10 +125,18 @@ public final class JwtTokenProcessor implements TokenProcessor {
      * @return {@code true} if the token is expired, {@code false} otherwise
      */
     private final Boolean isExpired(final String token) {
-        final Date expiration;
+        final Date    expiration;
+        final Date    current;
+        final Boolean expired;
 
         expiration = getClaim(token, Claims::getExpiration);
-        return expiration.before(new Date());
+
+        current = new Date();
+        expired = expiration.before(current);
+
+        log.debug("Token expires on {}, and the current date is {}. Expired? {}", expiration, current, expired);
+
+        return expired;
     }
 
 }
