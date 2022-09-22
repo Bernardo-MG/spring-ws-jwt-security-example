@@ -24,15 +24,14 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.user.controller;
 
-import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardomg.example.ws.security.jwt.domain.user.model.User;
 import com.bernardomg.example.ws.security.jwt.domain.user.service.UserService;
+
+import lombok.AllArgsConstructor;
 
 /**
  * Rest controller for the users.
@@ -41,25 +40,13 @@ import com.bernardomg.example.ws.security.jwt.domain.user.service.UserService;
  */
 @RestController
 @RequestMapping("/rest/user")
+@AllArgsConstructor
 public class UserController {
 
     /**
      * Example entity service.
      */
     private final UserService service;
-
-    /**
-     * Constructs a controller with the specified dependencies.
-     *
-     * @param userService
-     *            user service
-     */
-    @Autowired
-    public UserController(final UserService userService) {
-        super();
-
-        service = Objects.requireNonNull(userService, "Received a null pointer as service");
-    }
 
     @GetMapping
     public Iterable<? extends User> read() {
