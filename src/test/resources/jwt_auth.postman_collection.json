@@ -163,6 +163,10 @@
 								"exec": [
 									"pm.test(\"Authorized request\",()=>{\r",
 									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"pm.test('Returns token', function() {\r",
+									"  pm.expect(pm.response.json()).to.have.property(\"content\");\r",
+									"  pm.expect(pm.response.json().content).to.have.property(\"token\");\r",
 									"});"
 								],
 								"type": "text/javascript"

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2021 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,42 +24,39 @@
 
 package com.bernardomg.example.ws.security.jwt.mvc.response.model;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import com.bernardomg.example.ws.security.jwt.mvc.error.model.Failure;
 
+import lombok.Data;
+import lombok.NonNull;
+
 /**
- * Response to the frontend.
+ * Immutable implementation of the error response.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  * @param <T>
  *            response content type
  */
-public interface Response<T> {
-
-    public static <T> Response<T> empty() {
-        return new ImmutableResponse<>();
-    }
-
-    public static ErrorResponse error(final Collection<? extends Failure> errors) {
-        return new ImmutableErrorResponse<>(errors);
-    }
-
-    public static ErrorResponse error(final Failure error) {
-        return new ImmutableErrorResponse<>(Arrays.asList(error));
-    }
-
-    public static <T> Response<T> of(final T content) {
-        return new ImmutableResponse<>(content);
-    }
+@Data
+public class ImmutableErrorResponse<T> implements ErrorResponse {
 
     /**
-     * Returns the response content.
-     *
-     * @return the response content
+     * Response errors.
      */
-    public T getContent();
+    private final Collection<? extends Failure> errors;
+
+    /**
+     * Constructs a response with the specified errors.
+     *
+     * @param errs
+     *            errors
+     */
+    public ImmutableErrorResponse(@NonNull final Collection<? extends Failure> errs) {
+        super();
+
+        errors = errs;
+    }
 
 }

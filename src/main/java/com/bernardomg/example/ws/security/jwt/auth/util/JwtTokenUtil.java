@@ -25,7 +25,7 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID   = -2550185165626007488L;
 
-    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    private final SecretKey   key                = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     @Value("${jwt.secret}")
     private String            secret;

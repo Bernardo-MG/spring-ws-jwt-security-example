@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2021 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,66 +22,25 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.mvc.response.model;
-
-import lombok.Data;
-import lombok.NonNull;
+package com.bernardomg.example.ws.security.jwt.mvc.error.model;
 
 /**
- * Default implementation of the response.
+ * Failure object. Containing a message to tell which error ocurred.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
- * @param <T>
- *            response content type
  */
-@Data
-public class DefaultResponse<T> implements Response<T> {
+public interface Failure {
 
-    /**
-     * Response content.
-     */
-    @NonNull
-    private T              content;
-
-    /**
-     * Response status.
-     */
-    @NonNull
-    private ResponseStatus status = ResponseStatus.SUCCESS;
-
-    /**
-     * Default constructor.
-     */
-    public DefaultResponse() {
-        super();
+    public static Failure of(final String code) {
+        return new ImmutableFailure(code);
     }
 
     /**
-     * Constructs a response with the specified content.
+     * Returns the error message.
      *
-     * @param cont
-     *            content
+     * @return the error message.
      */
-    public DefaultResponse(@NonNull final T cont) {
-        super();
-
-        content = cont;
-    }
-
-    /**
-     * Constructs a response with the specified content and status.
-     *
-     * @param cont
-     *            content
-     * @param stat
-     *            status
-     */
-    public DefaultResponse(@NonNull final T cont, @NonNull final ResponseStatus stat) {
-        super();
-
-        content = cont;
-        status = stat;
-    }
+    public String getMessage();
 
 }
