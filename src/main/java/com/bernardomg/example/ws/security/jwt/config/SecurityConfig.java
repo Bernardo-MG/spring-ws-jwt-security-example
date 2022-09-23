@@ -36,10 +36,10 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.JwtAuthenticationEntryPoint;
 import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
 
 @Configuration
@@ -47,13 +47,13 @@ import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private JwtTokenFilter              tokenFilter;
+    private JwtTokenFilter           tokenFilter;
 
     @Autowired
-    private UserDetailsService          userDetailsService;
+    private UserDetailsService       userDetailsService;
 
     public SecurityConfig() {
         super();

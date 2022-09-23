@@ -29,7 +29,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
+import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
 import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 
@@ -44,6 +46,11 @@ public class AuthenticationConfig {
 
     public AuthenticationConfig() {
         super();
+    }
+
+    @Bean("authenticationEntryPoint")
+    public AuthenticationEntryPoint getAuthenticationEntryPoint() {
+        return new ErrorResponseAuthenticationEntryPoint();
     }
 
     @Bean("passwordEncoder")
