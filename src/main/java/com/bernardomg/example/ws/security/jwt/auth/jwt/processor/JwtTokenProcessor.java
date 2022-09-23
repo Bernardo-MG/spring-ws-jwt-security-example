@@ -55,11 +55,11 @@ public final class JwtTokenProcessor implements TokenProcessor {
     @Override
     public final String getSubject(final String token) {
         final String subject;
-        
+
         subject = getClaim(token, Claims::getSubject);
-        
+
         log.debug("Found subject {}", subject);
-        
+
         return subject;
     }
 

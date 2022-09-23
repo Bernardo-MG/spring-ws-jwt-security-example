@@ -2,6 +2,7 @@
 package com.bernardomg.example.ws.security.jwt.auth.jwt.filter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -36,7 +37,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             final FilterChain chain) throws ServletException, IOException {
         final String                              requestTokenHeader;
         final String                              jwtToken;
-        String                                    username;
+        Optional<String>                          username;
         final UserDetails                         userDetails;
         final UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
 
@@ -52,13 +53,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 jwtToken = requestTokenHeader.substring(7);
                 log.debug("Parsing token {}", jwtToken);
                 try {
-                    username = tokenProcessor.getSubject(jwtToken);
+                    username = Optional.ofNullable(tokenProcessor.getSubject(jwtToken));
                 } catch (final IllegalArgumentException e) {
-                    username = null;
-                    System.out.println("Unable to get JWT Token");
+                    username = Optional.empty();
+                    log.warn("Unable to get JWT Token");
                 } catch (final ExpiredJwtException e) {
-                    username = null;
-                    System.out.println("JWT Token has expired");
+                    username = Optional.empty();
+                    log.warn("JWT Token has expired");
                 }
             } else {
                 username = null;
@@ -67,15 +68,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
 
             // Once we get the token validate it.
-            if ((username != null) && (SecurityContextHolder.getContext()
+            if ((username.isPresent()) && (SecurityContextHolder.getContext()
                 .getAuthentication() == null)) {
 
-                userDetails = userDetailsService.loadUserByUsername(username);
+                userDetails = userDetailsService.loadUserByUsername(username.get());
 
                 // if token is valid configure Spring Security to manually set
                 // authentication
                 if (tokenProcessor.validate(jwtToken, userDetails.getUsername())) {
-
                     usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
                         userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken
