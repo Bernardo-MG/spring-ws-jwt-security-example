@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Authentication entry point which returns an {@link ErrorResponse} on failure.
  *
- * @author Bernardo
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j

@@ -24,13 +24,13 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.log;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Listens for audit events and logs them.
@@ -39,12 +39,8 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
+@Slf4j
 public class AuditEventLogger {
-
-    /**
-     * Logger for the event listener.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuditEventLogger.class);
 
     @EventListener
     public void auditEventHappened(final AuditApplicationEvent auditApplicationEvent) {
@@ -55,20 +51,20 @@ public class AuditEventLogger {
 
         auditEvent = auditApplicationEvent.getAuditEvent();
 
-        LOGGER.debug("Audit event {} for {}", auditEvent.getType(), auditEvent.getPrincipal());
+        log.debug("Audit event {} for {}", auditEvent.getType(), auditEvent.getPrincipal());
 
         message = auditEvent.getData()
             .get("message");
         if (message != null) {
-            LOGGER.debug("{}", message);
+            log.debug("{}", message);
         }
 
         details = auditEvent.getData()
             .get("details");
         if (details instanceof WebAuthenticationDetails) {
             webDetails = (WebAuthenticationDetails) details;
-            LOGGER.debug("Remote IP address: {}", webDetails.getRemoteAddress());
-            LOGGER.debug("Session Id: {}", webDetails.getSessionId());
+            log.debug("Remote IP address: {}", webDetails.getRemoteAddress());
+            log.debug("Session Id: {}", webDetails.getSessionId());
         }
     }
 
