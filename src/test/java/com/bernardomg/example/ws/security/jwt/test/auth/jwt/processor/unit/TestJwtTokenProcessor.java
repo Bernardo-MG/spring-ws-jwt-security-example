@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.test.auth.jwt.processor;
+package com.bernardomg.example.ws.security.jwt.test.auth.jwt.processor.unit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
