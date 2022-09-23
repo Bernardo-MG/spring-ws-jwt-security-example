@@ -24,14 +24,14 @@
 
 package com.bernardomg.example.ws.security.jwt.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 
 /**
  * Authentication configuration.
@@ -40,20 +40,21 @@ import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentU
  *
  */
 @Configuration
-public class AuthenticationConfig {
+public class JwtConfig {
 
-    public AuthenticationConfig() {
+    public JwtConfig() {
         super();
     }
 
-    @Bean("passwordEncoder")
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Bean("jwtTokenFilter")
+    public JwtTokenFilter getJwtTokenFilter(final UserDetailsService userDetService, final TokenProcessor processor) {
+        return new JwtTokenFilter(userDetService, processor);
     }
 
-    @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository) {
-        return new PersistentUserDetailsService(userRepository);
+    @Bean("tokenProcessor")
+    public TokenProcessor getTokenProcessor(@Value("${jwt.secret}") final String secret,
+            @Value("${jwt.validity}") final Integer validity) {
+        return new JwtTokenProcessor(secret, validity);
     }
 
 }
