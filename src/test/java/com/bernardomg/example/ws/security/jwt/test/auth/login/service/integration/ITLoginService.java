@@ -58,6 +58,17 @@ public class ITLoginService {
     }
 
     @Test
+    @DisplayName("Generates no token for an invalid password")
+    public void testLogin_invalidPassword_notGeneratesToken() {
+        final LoginStatus status;
+
+        status = service.login("admin", "abc");
+
+        Assertions.assertTrue(status.getToken()
+            .isEmpty());
+    }
+
+    @Test
     @DisplayName("Generates no token for a not existing user")
     public void testLogin_notExisting_notGeneratesToken() {
         final LoginStatus status;
