@@ -24,10 +24,26 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.login.model;
 
+/**
+ * Status after a login attempt.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 public interface LoginStatus {
 
+    /**
+     * Returns if the logging attempt was successful.
+     *
+     * @return {@code true} if the login was successful, {@code false} otherwise
+     */
     public Boolean getLogged();
 
+    /**
+     * Returns the security token.
+     *
+     * @return the security token
+     */
     public String getToken();
 
 }

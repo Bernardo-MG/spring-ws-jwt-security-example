@@ -37,15 +37,30 @@ import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Default implementation of the login service.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
 public final class DefaultLoginService implements LoginService {
 
+    /**
+     * Password encoder, for validating passwords.
+     */
     private final PasswordEncoder    passwordEncoder;
 
+    /**
+     * Token processor, to handle authentication tokens.
+     */
     private final TokenProcessor     tokenProcessor;
 
+    /**
+     * User details service, to find and validate users.
+     */
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -58,7 +73,6 @@ public final class DefaultLoginService implements LoginService {
 
         log.trace("Generating token for {}", username);
 
-        // TODO: Get user and check password
         try {
             userDetails = userDetailsService.loadUserByUsername(username);
             validUsername = userDetails.getUsername()
