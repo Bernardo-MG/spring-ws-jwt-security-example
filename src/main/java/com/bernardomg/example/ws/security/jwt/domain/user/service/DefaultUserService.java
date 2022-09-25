@@ -35,6 +35,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public final class DefaultUserService implements UserService {
 
+    /**
+     * User repository.
+     */
     private final PersistentUserRepository repository;
 
     @Override

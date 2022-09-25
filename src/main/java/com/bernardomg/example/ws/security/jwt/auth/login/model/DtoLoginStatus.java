@@ -26,6 +26,12 @@ package com.bernardomg.example.ws.security.jwt.auth.login.model;
 
 import lombok.Data;
 
+/**
+ * DTO implementation of {@link LoginStatus}.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @Data
 public final class DtoLoginStatus implements LoginStatus {
 
