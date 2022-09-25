@@ -20,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -54,16 +53,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         Optional<String> subject;
 
         if (token.isPresent()) {
-            log.debug("Parsing subject from token {}", token);
-            try {
-                subject = Optional.ofNullable(tokenProcessor.getSubject(token.get()));
-            } catch (final IllegalArgumentException e) {
-                subject = Optional.empty();
-                log.warn("Unable to get JWT Token");
-            } catch (final ExpiredJwtException e) {
-                subject = Optional.empty();
-                log.warn("JWT Token has expired");
-            }
+            log.debug("Parsing subject from token");
+            subject = Optional.ofNullable(tokenProcessor.getSubject(token.get()));
         } else {
             // No token received
             subject = Optional.empty();
@@ -88,7 +79,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             token = Optional.of(header.substring(7));
         } else {
             token = Optional.empty();
-            log.warn("Authorization header '{}' does not begin with Bearer String", header);
+            log.warn("Authorization header '{}' does not begin with Bearer string, can't return token", header);
         }
 
         return token;
@@ -97,22 +88,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
-        final String                      requestTokenHeader;
+        final String                      authHeader;
         final Optional<String>            token;
         final Optional<String>            subject;
         final UserDetails                 userDetails;
         final AbstractAuthenticationToken authenticationToken;
 
-        requestTokenHeader = request.getHeader("Authorization");
+        authHeader = request.getHeader("Authorization");
 
-        if (requestTokenHeader == null) {
+        if (authHeader == null) {
             // Missing header
             log.debug("Missing authorization header");
         } else if (SecurityContextHolder.getContext()
             .getAuthentication() == null) {
             // No authentication in context
 
-            token = getToken(requestTokenHeader);
+            token = getToken(authHeader);
             subject = getSubject(token);
 
             // Once we get the token validate it.
@@ -123,6 +114,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 // authentication
                 if (tokenProcessor.validate(token.get(), userDetails.getUsername())) {
                     // Valid token
+
+                    log.debug("Valid authentication token. Will load authentication details");
 
                     authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
                         userDetails.getAuthorities());
