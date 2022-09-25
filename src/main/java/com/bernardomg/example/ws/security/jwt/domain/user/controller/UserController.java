@@ -50,6 +50,7 @@ public class UserController {
 
     /**
      * Returns all the users.
+     *
      * @return all the users
      */
     @GetMapping

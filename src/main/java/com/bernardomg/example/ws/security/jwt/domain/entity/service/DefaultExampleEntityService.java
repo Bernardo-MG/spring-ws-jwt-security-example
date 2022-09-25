@@ -24,10 +24,14 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.entity.service;
 
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.example.ws.security.jwt.domain.entity.model.DtoExampleEntity;
+import com.bernardomg.example.ws.security.jwt.domain.entity.model.ExampleEntity;
 import com.bernardomg.example.ws.security.jwt.domain.entity.model.PersistentExampleEntity;
-import com.bernardomg.example.ws.security.jwt.domain.entity.persistence.repository.ExampleEntityRepository;
+import com.bernardomg.example.ws.security.jwt.domain.entity.repository.ExampleEntityRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -35,11 +39,10 @@ import lombok.AllArgsConstructor;
  * Default implementation of the example entity service.
  *
  * @author Bernardo Mart&iacute;nez Garrido
- *
  */
 @Service
 @AllArgsConstructor
-public class DefaultExampleEntityService implements ExampleEntityService {
+public final class DefaultExampleEntityService implements ExampleEntityService {
 
     /**
      * Repository for the domain entities handled by the service.
@@ -47,8 +50,62 @@ public class DefaultExampleEntityService implements ExampleEntityService {
     private final ExampleEntityRepository entityRepository;
 
     @Override
-    public final Iterable<PersistentExampleEntity> getAllEntities() {
-        return entityRepository.findAll();
+    public final ExampleEntity create(final ExampleEntity data) {
+        final PersistentExampleEntity entity;
+        final PersistentExampleEntity saved;
+
+        entity = toEntity(data);
+
+        saved = entityRepository.save(entity);
+
+        return toDto(saved);
+    }
+
+    @Override
+    public final Boolean delete(final Long id) {
+        entityRepository.deleteById(id);
+
+        return true;
+    }
+
+    @Override
+    public final Iterable<ExampleEntity> getAll() {
+        return entityRepository.findAll()
+            .stream()
+            .map(this::toDto)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public final ExampleEntity update(final Long id, final ExampleEntity data) {
+        final PersistentExampleEntity entity;
+        final PersistentExampleEntity saved;
+
+        entity = toEntity(data);
+
+        saved = entityRepository.save(entity);
+
+        return toDto(saved);
+    }
+
+    private final ExampleEntity toDto(final PersistentExampleEntity data) {
+        final DtoExampleEntity dto;
+
+        dto = new DtoExampleEntity();
+        dto.setId(data.getId());
+        dto.setName(data.getName());
+
+        return dto;
+    }
+
+    private final PersistentExampleEntity toEntity(final ExampleEntity data) {
+        final PersistentExampleEntity entity;
+
+        entity = new PersistentExampleEntity();
+        entity.setId(data.getId());
+        entity.setName(data.getName());
+
+        return entity;
     }
 
 }

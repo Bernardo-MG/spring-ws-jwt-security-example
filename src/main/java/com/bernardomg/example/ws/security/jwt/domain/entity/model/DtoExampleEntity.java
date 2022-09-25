@@ -22,32 +22,20 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.entity.persistence.repository;
+package com.bernardomg.example.ws.security.jwt.domain.entity.model;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.Data;
 
-import com.bernardomg.example.ws.security.jwt.domain.entity.model.PersistentExampleEntity;
-
-/**
- * Spring-JPA repository for {@link PersistentExampleEntity}.
- * <p>
- * This is a simple repository just to allow the endpoints querying the entities they are asked for.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- */
-public interface ExampleEntityRepository extends JpaRepository<PersistentExampleEntity, Integer> {
+@Data
+public class DtoExampleEntity implements ExampleEntity {
 
     /**
-     * Returns all entities with a partial match to the name.
      *
-     * @param name
-     *            name for searching
-     * @param page
-     *            pagination to apply
-     * @return all entities at least partially matching the name
      */
-    public Page<PersistentExampleEntity> findByNameContaining(final String name, final Pageable page);
+    private static final long serialVersionUID = 8379048834170675677L;
+
+    private Long              id;
+
+    private String            name;
 
 }

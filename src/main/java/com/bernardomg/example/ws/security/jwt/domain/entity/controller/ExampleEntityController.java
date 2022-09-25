@@ -24,7 +24,13 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.entity.controller;
 
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,13 +55,51 @@ public class ExampleEntityController {
     private final ExampleEntityService exampleEntityService;
 
     /**
+     * Creates an entity.
+     *
+     * @param entity
+     *            entity to create
+     * @return the created entity
+     */
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ExampleEntity create(final ExampleEntity entity) {
+        return exampleEntityService.create(entity);
+    }
+
+    /**
+     * Deletes the entity for the received id.
+     *
+     * @param id
+     *            id of the entity to delete
+     * @return {@code true} if it was deleted, {@code false} otherwise
+     */
+    @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean delete(@PathVariable("id") final Long id) {
+        return exampleEntityService.delete(id);
+    }
+
+    /**
      * Returns all the entities.
      *
      * @return all the entities
      */
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<? extends ExampleEntity> read() {
-        return exampleEntityService.getAllEntities();
+        return exampleEntityService.getAll();
+    }
+
+    /**
+     * Updates the entity for the received id.
+     *
+     * @param id
+     *            entity id
+     * @param entity
+     *            new entity data
+     * @return the updated entity
+     */
+    @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ExampleEntity update(@PathVariable("id") final Long id, @RequestBody final ExampleEntity entity) {
+        return exampleEntityService.update(id, entity);
     }
 
 }

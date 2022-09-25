@@ -21,48 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-package com.bernardomg.example.ws.security.jwt.domain.entity.model;
-
-import java.io.Serializable;
-
 /**
- * A simple entity to be used as an example.
- *
- * @author Bernardo Mart&iacute;nez Garrido
+ * Repositories.
+ * <p>
+ * Similar to a DAO, a repository is a pattern which allows handling the persistence layer as if it was a collection,
+ * where entities are stored and read from.
  */
-public interface ExampleEntity extends Serializable {
 
-    /**
-     * Returns the identifier assigned to this entity.
-     * <p>
-     * If no identifier has been assigned yet, then the value is expected to be {@code null} or lower than zero.
-     *
-     * @return the entity's identifier
-     */
-    public Long getId();
-
-    /**
-     * Returns the name of the entity.
-     *
-     * @return the entity's name
-     */
-    public String getName();
-
-    /**
-     * Sets the identifier assigned to this entity.
-     *
-     * @param identifier
-     *            the identifier for the entity
-     */
-    public void setId(final Long identifier);
-
-    /**
-     * Changes the name of the entity.
-     *
-     * @param name
-     *            the name to set on the entity
-     */
-    public void setName(final String name);
-
-}
+package com.bernardomg.example.ws.security.jwt.domain.entity.repository;

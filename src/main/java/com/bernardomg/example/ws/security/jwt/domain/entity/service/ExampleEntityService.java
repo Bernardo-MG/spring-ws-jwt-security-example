@@ -36,10 +36,39 @@ import com.bernardomg.example.ws.security.jwt.domain.entity.model.ExampleEntity;
 public interface ExampleEntityService {
 
     /**
-     * Returns all the entities from the DB.
+     * Creates the received entity.
      *
-     * @return the persisted entities
+     * @param entity
+     *            entity to create
+     * @return the entity created
      */
-    public Iterable<? extends ExampleEntity> getAllEntities();
+    public ExampleEntity create(final ExampleEntity entity);
+
+    /**
+     * Deletes the entity for the received id.
+     *
+     * @param id
+     *            entity id
+     * @return {@code true} if it was deleted, {@code false} otherwise
+     */
+    public Boolean delete(final Long id);
+
+    /**
+     * Returns all the entities.
+     *
+     * @return all the entities
+     */
+    public Iterable<? extends ExampleEntity> getAll();
+
+    /**
+     * Updates the entity for the received id.
+     *
+     * @param id
+     *            entity id
+     * @param entity
+     *            new entity data
+     * @return the updated entity
+     */
+    public ExampleEntity update(final Long id, final ExampleEntity entity);
 
 }

@@ -44,7 +44,7 @@ import lombok.Data;
 @Entity(name = "ExampleEntity")
 @Table(name = "example_entities")
 @Data
-public class PersistentExampleEntity implements ExampleEntity {
+public class PersistentExampleEntity {
 
     /**
      * Serialization ID.
@@ -58,7 +58,7 @@ public class PersistentExampleEntity implements ExampleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer           id               = -1;
+    private Long              id               = -1L;
 
     /**
      * Name of the entity.
