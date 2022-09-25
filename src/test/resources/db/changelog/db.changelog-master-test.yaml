@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: structure/example.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: structure/security.yaml
+      relativeToChangelogFile: true

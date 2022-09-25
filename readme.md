@@ -1,6 +1,6 @@
-# Spring WS Basic Security Example
+# Spring WS JWT Security Example
 
-Example for basic HTTP Security with Spring.
+Example for JWT security with Spring.
 
 [![Release docs](https://img.shields.io/badge/docs-release-blue.svg)][site-release]
 [![Development docs](https://img.shields.io/badge/docs-develop-blue.svg)][site-develop]
@@ -11,7 +11,7 @@ Example for basic HTTP Security with Spring.
 ## Features
 
 - [Spring MVC](https://spring.io/)
-- Basic HTTP security
+- JWT security
 - Basic Spring Boot security auditing
 
 ## Documentation
@@ -46,7 +46,14 @@ Once running the web service will be available at [http://localhost:8080/](http:
 
 ### Requests with Postman
 
-Import `src/test/resources/auth.postman_collection.json` to get queries for all the operations including authentication.
+Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for all the operations including authentication.
+
+### Users
+
+| User    | Password | Permissions |
+|---------|----------|-------------|
+| admin   | 1234     | all         |
+| noroles | 1111     | none        |
 
 ## Collaborate
 
