@@ -1,6 +1,8 @@
 
 package com.bernardomg.example.ws.security.jwt.test.auth.jwt.processor.unit;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,36 +10,14 @@ import org.junit.jupiter.api.Test;
 import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
 import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 
-@DisplayName("JWT token processor")
-public class TestJwtTokenProcessor {
+@DisplayName("JWT token processor - validate")
+public class TestJwtTokenProcessorValidate {
 
     private final TokenProcessor processor = new JwtTokenProcessor(
-        "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 10000);
+        "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 1);
 
-    public TestJwtTokenProcessor() {
+    public TestJwtTokenProcessorValidate() {
         super();
-    }
-
-    @Test
-    @DisplayName("Generates a token")
-    public void test_generateToken() {
-        final String token;
-
-        token = processor.generateToken("subject");
-
-        Assertions.assertFalse(token.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Recovers the subject from a token")
-    public void test_getSubject_fromGeneratedToken() {
-        final String token;
-        final String subject;
-
-        token = processor.generateToken("subject");
-        subject = processor.getSubject(token);
-
-        Assertions.assertEquals("subject", subject);
     }
 
     @Test
@@ -50,6 +30,21 @@ public class TestJwtTokenProcessor {
         valid = processor.validate(token, "subject");
 
         Assertions.assertTrue(valid);
+    }
+
+    @Test
+    @DisplayName("Can't validate an expired token")
+    public void test_validate_fromGeneratedToken_expired() throws InterruptedException {
+        final String  token;
+        final Boolean valid;
+
+        token = processor.generateToken("subject");
+        
+        TimeUnit.SECONDS.sleep(2);
+        
+        valid = processor.validate(token, "abc");
+
+        Assertions.assertFalse(valid);
     }
 
     @Test

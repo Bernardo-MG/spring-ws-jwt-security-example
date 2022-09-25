@@ -25,6 +25,9 @@ public final class JwtTokenProcessor implements TokenProcessor {
 
     private final SecretKey key;
 
+    /**
+     * Token validity time in seconds.
+     */
     private final Integer   validity;
 
     public JwtTokenProcessor(final String secret, final Integer vldt) {
