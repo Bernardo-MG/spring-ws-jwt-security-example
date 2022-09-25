@@ -23,19 +23,30 @@ import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JWT token filter.
+ * Token filter. The actual token specification to use will depend on the {@link TokenProcessor} used.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class TokenFilter extends OncePerRequestFilter {
 
+    /**
+     * Token processor. Parses and validates tokens.
+     */
     private final TokenProcessor     tokenProcessor;
 
+    /**
+     * User details service. Gives access to the user, to validate the token against it.
+     */
     private final UserDetailsService userDetailsService;
 
-    public JwtTokenFilter(final UserDetailsService userDetService, final TokenProcessor processor) {
+    /**
+     * Constructs a filter with the received arguments.
+     * @param userDetService user details service
+     * @param processor token processor
+     */
+    public TokenFilter(final UserDetailsService userDetService, final TokenProcessor processor) {
         super();
 
         userDetailsService = Objects.requireNonNull(userDetService);

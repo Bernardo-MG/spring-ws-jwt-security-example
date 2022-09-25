@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * JWT token processor.
+ * <p>
+ * Expects the secret to be encoded on UTF-8.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -24,18 +26,31 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class JwtTokenProcessor implements TokenProcessor {
 
+    /**
+     * Secret key for generating tokens. Created from the secret received when constructing the processor.
+     */
     private final SecretKey key;
+    
+    /**
+     * Charset used by the secret received when constructing.
+     */
+    private final Charset charset = Charset.forName("UTF-8");
 
     /**
      * Token validity time in seconds.
      */
     private final Integer   validity;
 
-    public JwtTokenProcessor(final String secret, final Integer vldt) {
+    /**
+     * Constructs a processor with the received arguments.
+     * @param secret secret used when generating tokens
+     * @param validityTime token validity time in seconds
+     */
+    public JwtTokenProcessor(final String secret, final Integer validityTime) {
         super();
 
-        key = Keys.hmacShaKeyFor(secret.getBytes(Charset.forName("UTF-8")));
-        validity = Objects.requireNonNull(vldt);
+        key = Keys.hmacShaKeyFor(secret.getBytes(charset));
+        validity = Objects.requireNonNull(validityTime);
     }
 
     @Override
@@ -43,7 +58,9 @@ public final class JwtTokenProcessor implements TokenProcessor {
         final Date expiration;
         final Date issuedAt;
 
+        // Issued right now
         issuedAt = new Date();
+        // Expires in a number of seconds equal to validity
         expiration = new Date(System.currentTimeMillis() + (validity * 1000));
 
         log.debug("Setting expiration date {}", expiration);
