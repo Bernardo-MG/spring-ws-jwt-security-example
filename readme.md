@@ -1,6 +1,6 @@
-# Spring WS Basic Security Example
+# Spring WS JWT Security Example
 
-Example for basic HTTP Security with Spring.
+Example for JWT security with Spring.
 
 [![Release docs](https://img.shields.io/badge/docs-release-blue.svg)][site-release]
 [![Development docs](https://img.shields.io/badge/docs-develop-blue.svg)][site-develop]
@@ -11,7 +11,7 @@ Example for basic HTTP Security with Spring.
 ## Features
 
 - [Spring MVC](https://spring.io/)
-- Basic HTTP security
+- JWT security
 - Basic Spring Boot security auditing
 
 ## Documentation

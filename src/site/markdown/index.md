@@ -1,6 +1,6 @@
-# Spring WS Basic Security Example
+# Spring WS JWT Security Example
 
-Example for basic HTTP Security with Spring.
+Example for JWT security with Spring.
 
 ## Usage
 
