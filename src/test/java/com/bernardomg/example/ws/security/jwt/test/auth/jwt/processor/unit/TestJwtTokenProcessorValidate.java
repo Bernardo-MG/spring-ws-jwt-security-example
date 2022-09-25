@@ -39,9 +39,10 @@ public class TestJwtTokenProcessorValidate {
         final Boolean valid;
 
         token = processor.generateToken("subject");
-        
-        TimeUnit.SECONDS.sleep(2);
-        
+
+        TimeUnit.SECONDS.sleep(Double.valueOf(1.5)
+            .longValue());
+
         valid = processor.validate(token, "abc");
 
         Assertions.assertFalse(valid);
