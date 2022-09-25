@@ -52,10 +52,12 @@ public final class DefaultLoginService implements LoginService {
             // Valid user
             // Generate token
             token = tokenProcessor.generateToken(username);
+            status.setToken(token);
+            status.setLogged(true);
         } else {
-            token = "";
+            status.setToken("");
+            status.setLogged(false);
         }
-        status.setToken(token);
 
         return status;
     }

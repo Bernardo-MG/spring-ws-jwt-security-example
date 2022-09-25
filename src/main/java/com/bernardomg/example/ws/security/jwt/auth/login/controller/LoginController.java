@@ -37,7 +37,7 @@ import lombok.AllArgsConstructor;
 
 /**
  * Login controller. Allows a user to log into the application.
-
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -53,7 +53,9 @@ public class LoginController {
 
     /**
      * Logs in a user.
-     * @param user user details
+     *
+     * @param user
+     *            user details
      * @return the login status after the login attempt
      */
     @PostMapping

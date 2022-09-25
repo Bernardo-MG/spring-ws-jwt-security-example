@@ -69,6 +69,26 @@ public class ITLoginService {
     }
 
     @Test
+    @DisplayName("Doesn't log in with an invalid password")
+    public void testLogin_invalidPassword_notLogged() {
+        final LoginStatus status;
+
+        status = service.login("admin", "abc");
+
+        Assertions.assertFalse(status.getLogged());
+    }
+
+    @Test
+    @DisplayName("Logs in a valid user")
+    public void testLogin_logged() {
+        final LoginStatus status;
+
+        status = service.login("admin", "1234");
+
+        Assertions.assertTrue(status.getLogged());
+    }
+
+    @Test
     @DisplayName("Generates no token for a not existing user")
     public void testLogin_notExisting_notGeneratesToken() {
         final LoginStatus status;
@@ -77,6 +97,16 @@ public class ITLoginService {
 
         Assertions.assertTrue(status.getToken()
             .isEmpty());
+    }
+
+    @Test
+    @DisplayName("Doesn't log in a not existing user")
+    public void testLogin_notExisting_notLogged() {
+        final LoginStatus status;
+
+        status = service.login("abc", "1234");
+
+        Assertions.assertFalse(status.getLogged());
     }
 
 }

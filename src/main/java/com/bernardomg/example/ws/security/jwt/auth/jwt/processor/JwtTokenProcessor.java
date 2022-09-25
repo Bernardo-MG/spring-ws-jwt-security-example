@@ -27,14 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 public final class JwtTokenProcessor implements TokenProcessor {
 
     /**
+     * Charset used by the secret received when constructing.
+     */
+    private final Charset   charset = Charset.forName("UTF-8");
+
+    /**
      * Secret key for generating tokens. Created from the secret received when constructing the processor.
      */
     private final SecretKey key;
-    
-    /**
-     * Charset used by the secret received when constructing.
-     */
-    private final Charset charset = Charset.forName("UTF-8");
 
     /**
      * Token validity time in seconds.
@@ -43,8 +43,11 @@ public final class JwtTokenProcessor implements TokenProcessor {
 
     /**
      * Constructs a processor with the received arguments.
-     * @param secret secret used when generating tokens
-     * @param validityTime token validity time in seconds
+     *
+     * @param secret
+     *            secret used when generating tokens
+     * @param validityTime
+     *            token validity time in seconds
      */
     public JwtTokenProcessor(final String secret, final Integer validityTime) {
         super();

@@ -43,8 +43,11 @@ public class TokenFilter extends OncePerRequestFilter {
 
     /**
      * Constructs a filter with the received arguments.
-     * @param userDetService user details service
-     * @param processor token processor
+     *
+     * @param userDetService
+     *            user details service
+     * @param processor
+     *            token processor
      */
     public TokenFilter(final UserDetailsService userDetService, final TokenProcessor processor) {
         super();

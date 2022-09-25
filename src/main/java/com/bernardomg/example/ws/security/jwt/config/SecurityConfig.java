@@ -50,7 +50,7 @@ public class SecurityConfig {
     private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private TokenFilter           tokenFilter;
+    private TokenFilter              tokenFilter;
 
     @Autowired
     private UserDetailsService       userDetailsService;
