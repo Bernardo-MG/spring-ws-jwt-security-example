@@ -48,6 +48,13 @@ Once running the web service will be available at [http://localhost:8080/](http:
 
 Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for all the operations including authentication.
 
+### Users
+
+| User    | Password | Permissions |
+|---------|----------|-------------|
+| admin   | 1234     | all         |
+| noroles | 1111     | none        |
+
 ## Collaborate
 
 Any kind of help with the project will be well received, and there are two main ways to give such help:
