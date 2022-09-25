@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2021 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,24 +36,24 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.entrypoint.JwtAuthenticationEntryPoint;
-import com.bernardomg.example.ws.security.jwt.auth.filter.JwtTokenFilter;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.TokenFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private JwtTokenFilter              jwtTokenFilter;
+    private TokenFilter              tokenFilter;
 
     @Autowired
-    private UserDetailsService          userDetailsService;
+    private UserDetailsService       userDetailsService;
 
     public SecurityConfig() {
         super();
@@ -76,7 +76,7 @@ public class SecurityConfig {
                     .authenticated()
                     .and()
                     .exceptionHandling()
-                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .authenticationEntryPoint(authenticationEntryPoint)
                     .and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -97,7 +97,7 @@ public class SecurityConfig {
         http.userDetailsService(userDetailsService);
 
         // Add a filter to validate the tokens with every request
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

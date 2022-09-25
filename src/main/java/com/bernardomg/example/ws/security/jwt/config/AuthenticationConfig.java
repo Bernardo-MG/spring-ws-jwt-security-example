@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2017-2020 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
-import com.bernardomg.example.ws.security.jwt.auth.service.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.jwt.model.user.repository.PersistentUserRepository;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
+import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 
 /**
  * Authentication configuration.
@@ -44,6 +46,11 @@ public class AuthenticationConfig {
 
     public AuthenticationConfig() {
         super();
+    }
+
+    @Bean("authenticationEntryPoint")
+    public AuthenticationEntryPoint getAuthenticationEntryPoint() {
+        return new ErrorResponseAuthenticationEntryPoint();
     }
 
     @Bean("passwordEncoder")

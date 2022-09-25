@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7fd5c4cd-9f08-4b86-87ed-a9326d82adf1",
+		"_postman_id": "548f09ec-2381-4eda-9af2-6f82bf02b1de",
 		"name": "JWT auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -116,16 +116,11 @@
 				}
 			],
 			"auth": {
-				"type": "basic",
-				"basic": [
+				"type": "bearer",
+				"bearer": [
 					{
-						"key": "username",
-						"value": "admin",
-						"type": "string"
-					},
-					{
-						"key": "password",
-						"value": "1234",
+						"key": "token",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY2Mzg3ODg1OSwiZXhwIjoxNjYzODk2ODU5fQ.DIBmr27zIOWsqlPWVaivVto4LRPRGW2U8uZg_FokRFlSzUv8I2YrkFaYLS5ar6vUH1r3Tekr-QMwADOqKtYUcg",
 						"type": "string"
 					}
 				]
@@ -163,6 +158,10 @@
 								"exec": [
 									"pm.test(\"Authorized request\",()=>{\r",
 									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									"pm.test('Returns token', function() {\r",
+									"  pm.expect(pm.response.json()).to.have.property(\"content\");\r",
+									"  pm.expect(pm.response.json().content).to.have.property(\"token\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -174,7 +173,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"password\": \"1234\",\r\n    \"username\": \"user\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -182,19 +181,9 @@
 							}
 						},
 						"url": {
-							"raw": "/login?password=12345&username=user",
+							"raw": "/login",
 							"path": [
 								"login"
-							],
-							"query": [
-								{
-									"key": "password",
-									"value": "12345"
-								},
-								{
-									"key": "username",
-									"value": "user"
-								}
 							]
 						}
 					},

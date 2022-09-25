@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2021 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,11 @@
 
 package com.bernardomg.example.ws.security.jwt.mvc.response.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import com.bernardomg.example.ws.security.jwt.mvc.error.model.Failure;
+
 /**
  * Response to the frontend.
  *
@@ -34,18 +39,27 @@ package com.bernardomg.example.ws.security.jwt.mvc.response.model;
  */
 public interface Response<T> {
 
+    public static <T> Response<T> empty() {
+        return new ImmutableResponse<>();
+    }
+
+    public static ErrorResponse error(final Collection<? extends Failure> errors) {
+        return new ImmutableErrorResponse<>(errors);
+    }
+
+    public static ErrorResponse error(final Failure error) {
+        return new ImmutableErrorResponse<>(Arrays.asList(error));
+    }
+
+    public static <T> Response<T> of(final T content) {
+        return new ImmutableResponse<>(content);
+    }
+
     /**
      * Returns the response content.
      *
      * @return the response content
      */
     public T getContent();
-
-    /**
-     * Returns the response status.
-     *
-     * @return the response status
-     */
-    public ResponseStatus getStatus();
 
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2021 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,20 +29,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.UserForm;
 import com.bernardomg.example.ws.security.jwt.auth.login.service.LoginService;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Login controller. Allows a user to log into the application.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @RestController
 @RequestMapping("/login")
 @AllArgsConstructor
 public class LoginController {
 
+    /**
+     * Login service.
+     */
     private final LoginService service;
 
+    /**
+     * Logs in a user.
+     *
+     * @param user
+     *            user details
+     * @return the login status after the login attempt
+     */
     @PostMapping
-    public String login(@RequestBody final UserForm user) {
+    public LoginStatus login(@RequestBody final UserForm user) {
         return service.login(user.getUsername(), user.getPassword());
     }
 
