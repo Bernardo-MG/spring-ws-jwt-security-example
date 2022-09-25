@@ -22,54 +22,15 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.model.persistence;
-
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package com.bernardomg.example.ws.security.jwt.domain.user.model;
 
 import lombok.Data;
 
-/**
- * Persistent implementation of {@code Privilege}.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
- */
-@Entity(name = "Privilege")
-@Table(name = "PRIVILEGES")
 @Data
-public class PersistentPrivilege implements Serializable {
+public final class DtoPrivilege implements Privilege {
 
-    /**
-     * Serialization id.
-     */
-    private static final long serialVersionUID = 8513041662486312372L;
+    private Long   id;
 
-    /**
-     * Entity id.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
-    private Long              id;
-
-    /**
-     * Authority name.
-     */
-    @Column(name = "name", nullable = false, unique = true, length = 60)
-    private String            name;
-
-    /**
-     * Default constructor.
-     */
-    public PersistentPrivilege() {
-        super();
-    }
+    private String name;
 
 }

@@ -40,7 +40,7 @@ public interface ExampleEntity extends Serializable {
      *
      * @return the entity's identifier
      */
-    public Integer getId();
+    public Long getId();
 
     /**
      * Returns the name of the entity.
@@ -55,7 +55,7 @@ public interface ExampleEntity extends Serializable {
      * @param identifier
      *            the identifier for the entity
      */
-    public void setId(final Integer identifier);
+    public void setId(final Long identifier);
 
     /**
      * Changes the name of the entity.

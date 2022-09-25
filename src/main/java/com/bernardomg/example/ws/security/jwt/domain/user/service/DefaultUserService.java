@@ -24,9 +24,19 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.user.service;
 
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.bernardomg.example.ws.security.jwt.domain.user.model.DtoPrivilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.DtoRole;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.DtoUser;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.Privilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.Role;
 import com.bernardomg.example.ws.security.jwt.domain.user.model.User;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentPrivilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentRole;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentUser;
 import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 
 import lombok.AllArgsConstructor;
@@ -42,7 +52,57 @@ public final class DefaultUserService implements UserService {
 
     @Override
     public final Iterable<? extends User> getUsers() {
-        return repository.findAll();
+        return repository.findAll()
+            .stream()
+            .map(this::toDto)
+            .collect(Collectors.toList());
+    }
+
+    private final Privilege toDto(final PersistentPrivilege entity) {
+        final DtoPrivilege dto;
+
+        dto = new DtoPrivilege();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+
+        return dto;
+    }
+
+    private final Role toDto(final PersistentRole entity) {
+        final DtoRole dto;
+
+        dto = new DtoRole();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+
+        dto.setPrivileges(entity.getPrivileges()
+            .stream()
+            .map(this::toDto)
+            .collect(Collectors.toList()));
+
+        return dto;
+    }
+
+    private final User toDto(final PersistentUser entity) {
+        final DtoUser dto;
+
+        dto = new DtoUser();
+        dto.setId(entity.getId());
+        dto.setUsername(entity.getUsername());
+        // TODO: Filter out password
+        // dto.setPassword(null);
+        dto.setCredentialsExpired(entity.getCredentialsExpired());
+        dto.setEmail(entity.getEmail());
+        dto.setEnabled(entity.getEnabled());
+        dto.setExpired(entity.getExpired());
+        dto.setLocked(entity.getLocked());
+
+        dto.setRoles(entity.getRoles()
+            .stream()
+            .map(this::toDto)
+            .collect(Collectors.toList()));
+
+        return dto;
     }
 
 }

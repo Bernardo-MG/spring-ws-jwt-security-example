@@ -37,8 +37,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.model.Privilege;
-import com.bernardomg.example.ws.security.jwt.domain.user.model.Role;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentPrivilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentRole;
 import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentUser;
 import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 
@@ -103,7 +103,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
         final Boolean                                credentialsNonExpired;
         final Boolean                                accountNonLocked;
         final Collection<? extends GrantedAuthority> authorities;
-        final Collection<? extends Privilege>        privileges;
+        final Collection<PersistentPrivilege>        privileges;
 
         // Loads status
         enabled = user.getEnabled();
@@ -114,18 +114,19 @@ public final class PersistentUserDetailsService implements UserDetailsService {
         // Loads privileges
         privileges = StreamSupport.stream(user.getRoles()
             .spliterator(), false)
-            .map(Role::getPrivileges)
+            .map(PersistentRole::getPrivileges)
             .flatMap(p -> StreamSupport.stream(p.spliterator(), false))
             .collect(Collectors.toList());
-        log.trace("Privileges for {}: {}", user.getUsername(), privileges);
 
         // Loads authorities
         authorities = privileges.stream()
-            .map(Privilege::getName)
+            .map(PersistentPrivilege::getName)
             .distinct()
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
-        log.debug("Authorities for {}: {}", user.getUsername(), authorities);
+
+        log.trace("Privileges for {}: {}", user.getUsername(), privileges);
+        log.debug("Transformed {} privileges into authorities: {}", user.getUsername(), authorities);
 
         return new User(user.getUsername(), user.getPassword(), enabled, accountNonExpired, credentialsNonExpired,
             accountNonLocked, authorities);

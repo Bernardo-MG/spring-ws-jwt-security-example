@@ -22,29 +22,20 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.repository;
+package com.bernardomg.example.ws.security.jwt.domain.entity.model;
 
-import java.util.Collection;
+import lombok.Data;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentRole;
-
-/**
- * Repository for user roles.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
- */
-public interface PersistentRoleRepository extends JpaRepository<PersistentRole, Long> {
+@Data
+public class DtoExampleEntity implements ExampleEntity {
 
     /**
-     * Returns all the roles with one of the names received.
      *
-     * @param names
-     *            names of the roles
-     * @return roles names in the input
      */
-    public Collection<PersistentRole> findByNameIn(final Iterable<String> names);
+    private static final long serialVersionUID = 8379048834170675677L;
+
+    private Long              id;
+
+    private String            name;
 
 }

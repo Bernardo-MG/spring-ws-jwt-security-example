@@ -39,8 +39,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.model.User;
-
 import lombok.Data;
 
 /**
@@ -52,7 +50,7 @@ import lombok.Data;
 @Entity(name = "UserDetails")
 @Table(name = "USERS")
 @Data
-public class PersistentUser implements User {
+public class PersistentUser {
 
     /**
      * Serialization id.
