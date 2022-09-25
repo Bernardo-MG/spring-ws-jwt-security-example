@@ -9,6 +9,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -71,17 +72,19 @@ public final class JwtTokenProcessor implements TokenProcessor {
         final String  subj;
         final Boolean valid;
 
-        subj = getSubject(token);
-
-        if (!subj.equals(subject)) {
-            log.debug("Received subject {} does not match subject {} from token", subject, subj);
-            valid = false;
-        } else if (isExpired(token)) {
+        if (isExpired(token)) {
             log.debug("Expired token");
             valid = false;
         } else {
-            log.debug("Valid token");
-            valid = true;
+            subj = getSubject(token);
+
+            if (!subj.equals(subject)) {
+                log.debug("Received subject {} does not match subject {} from token", subject, subj);
+                valid = false;
+            } else {
+                log.debug("Valid token");
+                valid = true;
+            }
         }
 
         return valid;
@@ -128,16 +131,21 @@ public final class JwtTokenProcessor implements TokenProcessor {
      * @return {@code true} if the token is expired, {@code false} otherwise
      */
     private final Boolean isExpired(final String token) {
-        final Date    expiration;
-        final Date    current;
-        final Boolean expired;
+        final Date expiration;
+        final Date current;
+        Boolean    expired;
 
-        expiration = getClaim(token, Claims::getExpiration);
+        try {
+            expiration = getClaim(token, Claims::getExpiration);
 
-        current = new Date();
-        expired = expiration.before(current);
+            current = new Date();
+            expired = expiration.before(current);
 
-        log.debug("Token expires on {}, and the current date is {}. Expired? {}", expiration, current, expired);
+            log.debug("Token expires on {}, and the current date is {}. Expired? {}", expiration, current, expired);
+        } catch (final ExpiredJwtException e) {
+            log.debug(e.getLocalizedMessage());
+            expired = true;
+        }
 
         return expired;
     }
