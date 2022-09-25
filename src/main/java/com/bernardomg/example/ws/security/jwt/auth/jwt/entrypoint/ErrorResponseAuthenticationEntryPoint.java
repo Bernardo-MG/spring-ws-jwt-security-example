@@ -68,6 +68,7 @@ public final class ErrorResponseAuthenticationEntryPoint implements Authenticati
             final AuthenticationException authException) throws IOException, ServletException {
         final ErrorResponse resp;
         final Failure       error;
+        final ObjectMapper mapper;
 
         log.debug("Authentication failure for path {}: {}", request.getServletPath(), authException.getMessage());
 
@@ -77,7 +78,7 @@ public final class ErrorResponseAuthenticationEntryPoint implements Authenticati
         error = Failure.of("Unauthorized");
         resp = Response.error(error);
 
-        final ObjectMapper mapper = new ObjectMapper();
+        mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), resp);
     }
 
