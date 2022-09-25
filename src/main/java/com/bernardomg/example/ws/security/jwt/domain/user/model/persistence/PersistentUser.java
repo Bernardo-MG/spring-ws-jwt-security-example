@@ -24,6 +24,7 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.user.model.persistence;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -50,7 +51,7 @@ import lombok.Data;
 @Entity(name = "UserDetails")
 @Table(name = "USERS")
 @Data
-public class PersistentUser {
+public class PersistentUser implements Serializable {
 
     /**
      * Serialization id.

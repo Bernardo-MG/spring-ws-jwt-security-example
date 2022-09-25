@@ -27,15 +27,10 @@ package com.bernardomg.example.ws.security.jwt.domain.entity.model;
 import lombok.Data;
 
 @Data
-public class DtoExampleEntity implements ExampleEntity {
+public final class DtoExampleEntity implements ExampleEntity {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 8379048834170675677L;
+    private Long   id;
 
-    private Long              id;
-
-    private String            name;
+    private String name;
 
 }

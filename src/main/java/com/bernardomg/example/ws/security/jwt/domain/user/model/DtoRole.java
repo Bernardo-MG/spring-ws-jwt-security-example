@@ -30,7 +30,7 @@ import java.util.Collection;
 import lombok.Data;
 
 @Data
-public class DtoRole implements Role {
+public final class DtoRole implements Role {
 
     private Long                  id;
 

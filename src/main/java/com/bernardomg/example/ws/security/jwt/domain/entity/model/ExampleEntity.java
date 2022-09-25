@@ -24,14 +24,12 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.entity.model;
 
-import java.io.Serializable;
-
 /**
  * A simple entity to be used as an example.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  */
-public interface ExampleEntity extends Serializable {
+public interface ExampleEntity {
 
     /**
      * Returns the identifier assigned to this entity.

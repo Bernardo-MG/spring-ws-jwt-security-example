@@ -24,6 +24,8 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.entity.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +46,7 @@ import lombok.Data;
 @Entity(name = "ExampleEntity")
 @Table(name = "example_entities")
 @Data
-public class PersistentExampleEntity {
+public class PersistentExampleEntity implements Serializable {
 
     /**
      * Serialization ID.
