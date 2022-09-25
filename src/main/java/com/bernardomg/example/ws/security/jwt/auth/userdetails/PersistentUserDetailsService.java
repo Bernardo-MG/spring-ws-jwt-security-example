@@ -117,7 +117,6 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             .map(Role::getPrivileges)
             .flatMap(p -> StreamSupport.stream(p.spliterator(), false))
             .collect(Collectors.toList());
-        log.trace("Privileges for {}: {}", user.getUsername(), privileges);
 
         // Loads authorities
         authorities = privileges.stream()
@@ -125,7 +124,9 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             .distinct()
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
-        log.debug("Authorities for {}: {}", user.getUsername(), authorities);
+
+        log.trace("Privileges for {}: {}", user.getUsername(), privileges);
+        log.debug("Transformed {} privileges into authorities: {}", user.getUsername(), authorities);
 
         return new User(user.getUsername(), user.getPassword(), enabled, accountNonExpired, credentialsNonExpired,
             accountNonLocked, authorities);

@@ -24,6 +24,8 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.entity.service;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.bernardomg.example.ws.security.jwt.domain.entity.model.ExampleEntity;
 
 /**
@@ -42,6 +44,7 @@ public interface ExampleEntityService {
      *            entity to create
      * @return the entity created
      */
+    @PreAuthorize("hasAuthority('CREATE_USER')")
     public ExampleEntity create(final ExampleEntity entity);
 
     /**
@@ -51,6 +54,7 @@ public interface ExampleEntityService {
      *            entity id
      * @return {@code true} if it was deleted, {@code false} otherwise
      */
+    @PreAuthorize("hasAuthority('DELETE_USER')")
     public Boolean delete(final Long id);
 
     /**
@@ -58,6 +62,7 @@ public interface ExampleEntityService {
      *
      * @return all the entities
      */
+    @PreAuthorize("hasAuthority('READ_USER')")
     public Iterable<? extends ExampleEntity> getAll();
 
     /**
@@ -69,6 +74,7 @@ public interface ExampleEntityService {
      *            new entity data
      * @return the updated entity
      */
+    @PreAuthorize("hasAuthority('UPDATE_USER')")
     public ExampleEntity update(final Long id, final ExampleEntity entity);
 
 }
