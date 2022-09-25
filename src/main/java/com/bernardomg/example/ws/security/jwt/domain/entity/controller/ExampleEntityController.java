@@ -49,9 +49,9 @@ public class ExampleEntityController {
     private final ExampleEntityService exampleEntityService;
 
     /**
-     * Returns a collection of entities.
+     * Returns all the entities.
      *
-     * @return a collection of entities
+     * @return all the entities
      */
     @GetMapping
     public Iterable<? extends ExampleEntity> read() {

@@ -22,39 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.controller;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bernardomg.example.ws.security.jwt.domain.user.model.User;
-import com.bernardomg.example.ws.security.jwt.domain.user.service.UserService;
-
-import lombok.AllArgsConstructor;
-
 /**
- * Rest controller for the users.
- *
- * @author Bernardo Mart&iacute;nez Garrido
+ * Error model.
  */
-@RestController
-@RequestMapping("/rest/user")
-@AllArgsConstructor
-public class UserController {
 
-    /**
-     * Example entity service.
-     */
-    private final UserService service;
-
-    /**
-     * Returns all the users.
-     * @return all the users
-     */
-    @GetMapping
-    public Iterable<? extends User> read() {
-        return service.getUsers();
-    }
-
-}
+package com.bernardomg.example.ws.security.jwt.mvc.error.model;

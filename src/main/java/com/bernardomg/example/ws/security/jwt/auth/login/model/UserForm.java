@@ -35,8 +35,14 @@ import lombok.Data;
 @Data
 public class UserForm {
 
+    /**
+     * User password.
+     */
     private String password;
 
+    /**
+     * User username.
+     */
     private String username;
 
 }

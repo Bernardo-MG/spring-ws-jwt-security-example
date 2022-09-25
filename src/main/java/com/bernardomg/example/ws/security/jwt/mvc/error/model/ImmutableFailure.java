@@ -36,6 +36,9 @@ import lombok.NonNull;
 @Data
 public class ImmutableFailure implements Failure {
 
+    /**
+     * Failure message.
+     */
     @NonNull
     private final String message;
 
