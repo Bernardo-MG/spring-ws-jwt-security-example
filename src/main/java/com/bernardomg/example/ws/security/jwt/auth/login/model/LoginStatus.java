@@ -46,4 +46,11 @@ public interface LoginStatus {
      */
     public String getToken();
 
+    /**
+     * Returns the username of the user who attempted login.
+     *
+     * @return the username
+     */
+    public String getUsername();
+
 }

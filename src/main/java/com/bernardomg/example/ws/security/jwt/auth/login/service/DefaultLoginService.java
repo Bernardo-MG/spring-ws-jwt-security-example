@@ -31,7 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.login.model.DtoLoginStatus;
+import com.bernardomg.example.ws.security.jwt.auth.login.model.ImmutableLoginStatus;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
 
 import lombok.AllArgsConstructor;
@@ -65,11 +65,11 @@ public final class DefaultLoginService implements LoginService {
 
     @Override
     public final LoginStatus login(final String username, final String password) {
-        final DtoLoginStatus status;
-        final String         token;
-        final UserDetails    userDetails;
-        Boolean              validUsername;
-        Boolean              validPassword;
+        final ImmutableLoginStatus status;
+        final String               token;
+        final UserDetails          userDetails;
+        Boolean                    validUsername;
+        Boolean                    validPassword;
 
         log.trace("Generating token for {}", username);
 
@@ -84,16 +84,13 @@ public final class DefaultLoginService implements LoginService {
             validPassword = false;
         }
 
-        status = new DtoLoginStatus();
         if ((validUsername) && (validPassword)) {
             // Valid user
             // Generate token
             token = tokenProcessor.generateToken(username);
-            status.setToken(token);
-            status.setLogged(true);
+            status = new ImmutableLoginStatus(username, true, token);
         } else {
-            status.setToken("");
-            status.setLogged(false);
+            status = new ImmutableLoginStatus(username, false, "");
         }
 
         return status;

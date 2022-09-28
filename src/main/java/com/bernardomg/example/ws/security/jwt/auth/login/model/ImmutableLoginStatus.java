@@ -25,6 +25,7 @@
 package com.bernardomg.example.ws.security.jwt.auth.login.model;
 
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  * DTO implementation of {@link LoginStatus}.
@@ -33,10 +34,20 @@ import lombok.Data;
  *
  */
 @Data
-public final class DtoLoginStatus implements LoginStatus {
+public final class ImmutableLoginStatus implements LoginStatus {
 
-    private Boolean logged;
+    private final Boolean logged;
 
-    private String  token;
+    private final String  token;
+
+    private final String  username;
+
+    public ImmutableLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
+        super();
+
+        username = usnm;
+        logged = lgd;
+        token = tkn;
+    }
 
 }
