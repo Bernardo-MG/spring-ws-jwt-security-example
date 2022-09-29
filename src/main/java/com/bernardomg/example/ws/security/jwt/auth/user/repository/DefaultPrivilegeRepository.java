@@ -53,7 +53,7 @@ public final class DefaultPrivilegeRepository implements PrivilegeRepository {
     /**
      * Query for finding the privileges of a user.
      */
-    private final String                     queryForUser = "SELECT p.* AS name FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN USER_ROLES ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id";
+    private final String                     queryForUser = "SELECT p.* FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN USER_ROLES ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id";
 
     @Override
     public final Collection<Privilege> findForUser(final Long id) {
