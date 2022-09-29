@@ -129,5 +129,5 @@ databaseChangeLog:
             columnNames: role_id, privilege_id
       -  addUniqueConstraint:
             constraintName: user_roles_unique
-            tableName: role_privileges
+            tableName: user_roles
             columnNames: user_id, role_id
