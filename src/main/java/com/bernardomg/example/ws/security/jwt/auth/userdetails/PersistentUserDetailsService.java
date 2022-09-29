@@ -49,13 +49,17 @@ import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepositor
  * <p>
  * The user search is based on the username, and is case insensitive. As the persisted user details are expected to
  * contain the username in lower case.
- * <h1>Granted authorities</h1> Privileges are read moving through the model. The service receives a username and then
- * finds the privileges assigned to the related user:
+ * <h2>Granted authorities</h2>
+ * <p>
+ * Privileges are read moving through the model. The service receives a username and then finds the privileges assigned
+ * to the related user:
  * <p>
  * {@code user -> role -> privileges}
  * <p>
  * These privileges are used to create the granted authorities.
- * <h1>Exceptions</h1> When loading users any of these cases throws a {@code UsernameNotFoundException}:
+ * <h2>Exceptions</h2>
+ * <p>
+ * When loading users any of these cases throws a {@code UsernameNotFoundException}:
  * <ul>
  * <li>There is no user for the username</li>
  * <li>Theres is a user, but he has no privileges</li>
@@ -100,7 +104,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
     @Override
     public final UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final Optional<com.bernardomg.example.ws.security.jwt.auth.user.domain.User> user;
-        final Collection<? extends GrantedAuthority>                                   authorities;
+        final Collection<? extends GrantedAuthority>                                 authorities;
 
         LOGGER.debug("Asked for username {}", username);
 
