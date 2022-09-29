@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.bernardomg.example.ws.security.jwt.domain.entity.DtoPrivilege;
-import com.bernardomg.example.ws.security.jwt.domain.entity.Privilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.DtoPrivilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
 
 public final class PrivilegeRowRowMapper implements RowMapper<Privilege> {
 

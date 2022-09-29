@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.domain.entity;
+package com.bernardomg.example.ws.security.jwt.domain.user.domain;
 
 import lombok.Data;
 

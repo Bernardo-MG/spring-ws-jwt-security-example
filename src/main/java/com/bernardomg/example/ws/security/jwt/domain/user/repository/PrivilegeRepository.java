@@ -3,7 +3,7 @@ package com.bernardomg.example.ws.security.jwt.domain.user.repository;
 
 import java.util.Collection;
 
-import com.bernardomg.example.ws.security.jwt.domain.entity.Privilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
 
 /**
  * Repository for privileges.

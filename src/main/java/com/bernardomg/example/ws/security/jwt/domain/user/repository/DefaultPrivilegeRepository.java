@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.bernardomg.example.ws.security.jwt.domain.entity.Privilege;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
 
 import lombok.AllArgsConstructor;
 

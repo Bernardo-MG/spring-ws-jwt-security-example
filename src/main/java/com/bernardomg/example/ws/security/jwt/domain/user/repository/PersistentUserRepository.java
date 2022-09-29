@@ -28,7 +28,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bernardomg.example.ws.security.jwt.domain.entity.PersistentUser;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.PersistentUser;
 
 /**
  * Repository for users.
