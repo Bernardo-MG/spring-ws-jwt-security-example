@@ -38,9 +38,9 @@ import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public final class PrivilegeRowRowMapper implements RowMapper<Privilege> {
+public final class PrivilegeRowMapper implements RowMapper<Privilege> {
 
-    public PrivilegeRowRowMapper() {
+    public PrivilegeRowMapper() {
         super();
     }
 
@@ -50,6 +50,7 @@ public final class PrivilegeRowRowMapper implements RowMapper<Privilege> {
 
         try {
             privilege = new DtoPrivilege();
+            privilege.setId(rs.getLong("id"));
             privilege.setName(rs.getString("name"));
         } catch (final SQLException e) {
             // TODO: Handle better

@@ -22,29 +22,74 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.repository;
-
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.PersistentUser;
+package com.bernardomg.example.ws.security.jwt.domain.user.domain;
 
 /**
- * Repository for users.
+ * User, and all its authentication data.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface PersistentUserRepository extends JpaRepository<PersistentUser, Long> {
+public interface User {
 
     /**
-     * Returns the user details for the received username.
+     * Returns the credentials expired flag.
+     * <p>
+     * This usually means that the password is no longer valid.
      *
-     * @param username
-     *            username to search for
-     * @return the user details for the received username
+     * @return the credentials expired flag
      */
-    public Optional<PersistentUser> findOneByUsername(final String username);
+    public Boolean getCredentialsExpired();
+
+    /**
+     * Returns the user email.
+     *
+     * @return the user email
+     */
+    public String getEmail();
+
+    /**
+     * Returns the user enabled flag.
+     *
+     * @return the user enabled flag
+     */
+    public Boolean getEnabled();
+
+    /**
+     * Returns the user expired flag.
+     * <p>
+     * This means the user is no longer valid.
+     *
+     * @return the user expired flag
+     */
+    public Boolean getExpired();
+
+    /**
+     * Returns the user id.
+     *
+     * @return the user id
+     */
+    public Long getId();
+
+    /**
+     * Returns the user locked flag.
+     *
+     * @return the user locked flag
+     */
+    public Boolean getLocked();
+
+    /**
+     * Returns the user password.
+     *
+     * @return the user password
+     */
+    public String getPassword();
+
+    /**
+     * Returns the user username.
+     *
+     * @return the user username
+     */
+    public String getUsername();
 
 }

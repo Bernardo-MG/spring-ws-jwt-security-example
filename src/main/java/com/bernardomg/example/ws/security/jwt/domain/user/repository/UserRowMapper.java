@@ -24,43 +24,46 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.user.repository;
 
-import java.util.Collection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.RowMapper;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
-
-import lombok.AllArgsConstructor;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.DtoUser;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.User;
 
 /**
- * Default implementation of the privilege repository.
+ * SQL row mapper for privileges.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Repository
-@AllArgsConstructor
-public final class DefaultPrivilegeRepository implements PrivilegeRepository {
+public final class UserRowMapper implements RowMapper<User> {
 
-    /**
-     * JDBC template for running queries.
-     */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
-
-    /**
-     * Query for finding the privileges of a user.
-     */
-    private final String                     queryForUser = "SELECT p.* AS name FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN USER_ROLES ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id";
+    public UserRowMapper() {
+        super();
+    }
 
     @Override
-    public final Collection<Privilege> findForUser(final Long id) {
-        final SqlParameterSource namedParameters;
+    public final User mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+        final DtoUser user;
 
-        namedParameters = new MapSqlParameterSource().addValue("id", id);
-        return jdbcTemplate.query(queryForUser, namedParameters, new PrivilegeRowMapper());
+        try {
+            user = new DtoUser();
+            user.setId(rs.getLong("id"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setEmail(rs.getString("email"));
+            user.setCredentialsExpired(rs.getBoolean("credentials_expired"));
+            user.setEnabled(rs.getBoolean("enabled"));
+            user.setExpired(rs.getBoolean("expired"));
+            user.setLocked(rs.getBoolean("locked"));
+        } catch (final SQLException e) {
+            // TODO: Handle better
+            throw new RuntimeException(e);
+        }
+
+        return user;
     }
 
 }

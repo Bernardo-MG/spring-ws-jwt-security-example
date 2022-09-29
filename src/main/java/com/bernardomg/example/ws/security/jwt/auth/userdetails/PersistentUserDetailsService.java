@@ -38,10 +38,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.PersistentUser;
 import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 import com.bernardomg.example.ws.security.jwt.domain.user.repository.PrivilegeRepository;
+import com.bernardomg.example.ws.security.jwt.domain.user.repository.UserRepository;
 
 /**
  * User details service which takes the user data from the persistence layer.
@@ -70,17 +69,17 @@ public final class PersistentUserDetailsService implements UserDetailsService {
     /**
      * Logger.
      */
-    private static final Logger            LOGGER = LoggerFactory.getLogger(PersistentUserDetailsService.class);
+    private static final Logger       LOGGER = LoggerFactory.getLogger(PersistentUserDetailsService.class);
 
     /**
      * Repository for the privileges.
      */
-    private final PrivilegeRepository      privilegeRepo;
+    private final PrivilegeRepository privilegeRepo;
 
     /**
      * Repository for the user data.
      */
-    private final PersistentUserRepository userRepo;
+    private final UserRepository      userRepo;
 
     /**
      * Constructs a user details service.
@@ -90,7 +89,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
      * @param privilegeRepository
      *            repository for privileges
      */
-    public PersistentUserDetailsService(final PersistentUserRepository userRepository,
+    public PersistentUserDetailsService(final UserRepository userRepository,
             final PrivilegeRepository privilegeRepository) {
         super();
 
@@ -100,8 +99,8 @@ public final class PersistentUserDetailsService implements UserDetailsService {
 
     @Override
     public final UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Optional<PersistentUser>               user;
-        final Collection<? extends GrantedAuthority> authorities;
+        final Optional<com.bernardomg.example.ws.security.jwt.domain.user.domain.User> user;
+        final Collection<? extends GrantedAuthority>                                   authorities;
 
         LOGGER.debug("Asked for username {}", username);
 
@@ -149,7 +148,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
      *            entity to transform
      * @return equivalent user details
      */
-    private final UserDetails toUserDetails(final PersistentUser user,
+    private final UserDetails toUserDetails(final com.bernardomg.example.ws.security.jwt.domain.user.domain.User user,
             final Collection<? extends GrantedAuthority> authorities) {
         final Boolean enabled;
         final Boolean accountNonExpired;

@@ -24,43 +24,25 @@
 
 package com.bernardomg.example.ws.security.jwt.domain.user.repository;
 
-import java.util.Collection;
+import java.util.Optional;
 
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Repository;
-
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
-
-import lombok.AllArgsConstructor;
+import com.bernardomg.example.ws.security.jwt.domain.user.domain.User;
 
 /**
- * Default implementation of the privilege repository.
+ * Repository for users.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Repository
-@AllArgsConstructor
-public final class DefaultPrivilegeRepository implements PrivilegeRepository {
+public interface UserRepository {
 
     /**
-     * JDBC template for running queries.
+     * Returns the user details for the received username.
+     *
+     * @param username
+     *            username to search for
+     * @return the user details for the received username
      */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
-
-    /**
-     * Query for finding the privileges of a user.
-     */
-    private final String                     queryForUser = "SELECT p.* AS name FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN USER_ROLES ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id";
-
-    @Override
-    public final Collection<Privilege> findForUser(final Long id) {
-        final SqlParameterSource namedParameters;
-
-        namedParameters = new MapSqlParameterSource().addValue("id", id);
-        return jdbcTemplate.query(queryForUser, namedParameters, new PrivilegeRowMapper());
-    }
+    public Optional<User> findOneByUsername(final String username);
 
 }

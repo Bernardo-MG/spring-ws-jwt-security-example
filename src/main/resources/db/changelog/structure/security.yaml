@@ -17,7 +17,7 @@ databaseChangeLog:
                   name: email
                   type: varchar(60)
             -  column:
-                  name: name
+                  name: username
                   type: varchar(60)
                   constraints:
                      nullable: false
@@ -28,19 +28,19 @@ databaseChangeLog:
             -  column:
                   name: credentials_expired
                   type: boolean
-                  defaultValue: false
+                  defaultValue: 'false'
                   constraints:
                      nullable: false
             -  column:
                   name: enabled
                   type: boolean
-                  defaultValue: true
+                  defaultValue: 'true'
                   constraints:
                      nullable: false
             -  column:
                   name: expired
                   type: boolean
-                  defaultValue: false
+                  defaultValue: 'false'
                   constraints:
                      nullable: false
             -  column:

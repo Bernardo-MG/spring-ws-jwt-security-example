@@ -33,8 +33,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
 import com.bernardomg.example.ws.security.jwt.domain.user.repository.PrivilegeRepository;
+import com.bernardomg.example.ws.security.jwt.domain.user.repository.UserRepository;
 
 /**
  * Security configuration.
@@ -60,7 +60,7 @@ public class SecurityConfig {
     }
 
     @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository,
+    public UserDetailsService getUserDetailsService(final UserRepository userRepository,
             final PrivilegeRepository privilegeRepository) {
         return new PersistentUserDetailsService(userRepository, privilegeRepository);
     }
