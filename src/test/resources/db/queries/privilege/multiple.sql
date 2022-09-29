@@ -1,0 +1,4 @@
+INSERT INTO PRIVILEGES (id, name) VALUES
+   (1, 'CREATE_USER'),
+   (2, 'READ_USER'),
+   (3, 'UPDATE_USER');

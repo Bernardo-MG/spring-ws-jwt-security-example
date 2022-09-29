@@ -71,6 +71,8 @@ public final class DefaultLoginService implements LoginService {
         Boolean                    validUsername;
         Boolean                    validPassword;
 
+        // TODO: The password should arrive encrypted
+
         log.trace("Generating token for {}", username);
 
         try {

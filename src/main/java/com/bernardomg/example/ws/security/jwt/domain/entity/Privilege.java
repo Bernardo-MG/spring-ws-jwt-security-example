@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.model;
+package com.bernardomg.example.ws.security.jwt.domain.entity;
 
 /**
  * Role privilege. Represents a specific permission.

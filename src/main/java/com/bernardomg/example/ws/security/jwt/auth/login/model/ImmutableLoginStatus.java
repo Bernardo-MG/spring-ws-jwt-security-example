@@ -28,7 +28,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 /**
- * DTO implementation of {@link LoginStatus}.
+ * Immutable implementation of {@link LoginStatus}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *

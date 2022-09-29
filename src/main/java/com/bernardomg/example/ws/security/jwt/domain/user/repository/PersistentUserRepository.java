@@ -28,7 +28,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.PersistentUser;
+import com.bernardomg.example.ws.security.jwt.domain.entity.PersistentUser;
 
 /**
  * Repository for users.
@@ -37,15 +37,6 @@ import com.bernardomg.example.ws.security.jwt.domain.user.model.persistence.Pers
  *
  */
 public interface PersistentUserRepository extends JpaRepository<PersistentUser, Long> {
-
-    /**
-     * Returns the user details for the received email.
-     *
-     * @param email
-     *            email to search for
-     * @return the user details for the received email
-     */
-    public Optional<PersistentUser> findOneByEmail(final String email);
 
     /**
      * Returns the user details for the received username.
