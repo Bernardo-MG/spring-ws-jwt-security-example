@@ -50,6 +50,17 @@ import com.bernardomg.example.ws.security.jwt.domain.user.repository.PrivilegeRe
  * <p>
  * The user search is based on the username, and is case insensitive. As the persisted user details are expected to
  * contain the username in lower case.
+ * <h1>Granted authorities</h1> Privileges are read moving through the model. The service receives a username and then
+ * finds the privileges assigned to the related user:
+ * <p>
+ * {@code user -> role -> privileges}
+ * <p>
+ * These privileges are used to create the granted authorities.
+ * <h1>Exceptions</h1> When loading users any of these cases throws a {@code UsernameNotFoundException}:
+ * <ul>
+ * <li>There is no user for the username</li>
+ * <li>Theres is a user, but he has no privileges</li>
+ * </ul>
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -103,6 +114,11 @@ public final class PersistentUserDetailsService implements UserDetailsService {
 
         authorities = getAuthorities(user.get()
             .getId());
+
+        if (authorities.isEmpty()) {
+            LOGGER.debug("Username {} has no authorities", username);
+            throw new UsernameNotFoundException(username);
+        }
 
         LOGGER.debug("Username {} found in DB", username);
         LOGGER.debug("Authorities for {}: {}", username, authorities);
