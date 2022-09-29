@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.domain;
+package com.bernardomg.example.ws.security.jwt.auth.user.domain;
 
 import lombok.Data;
 

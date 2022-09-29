@@ -22,27 +22,42 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.domain;
+package com.bernardomg.example.ws.security.jwt.auth.user.repository;
 
-import lombok.Data;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
+import com.bernardomg.example.ws.security.jwt.auth.user.domain.DtoPrivilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.domain.Privilege;
 
 /**
- * Dto implementation of {@code Privilege}.
+ * SQL row mapper for privileges.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Data
-public final class DtoPrivilege implements Privilege {
+public final class PrivilegeRowMapper implements RowMapper<Privilege> {
 
-    /**
-     * Entity id.
-     */
-    private Long   id;
+    public PrivilegeRowMapper() {
+        super();
+    }
 
-    /**
-     * Privilege name.
-     */
-    private String name;
+    @Override
+    public final Privilege mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+        final DtoPrivilege privilege;
+
+        try {
+            privilege = new DtoPrivilege();
+            privilege.setId(rs.getLong("id"));
+            privilege.setName(rs.getString("name"));
+        } catch (final SQLException e) {
+            // TODO: Handle better
+            throw new RuntimeException(e);
+        }
+
+        return privilege;
+    }
 
 }

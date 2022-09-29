@@ -22,74 +22,27 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.domain;
+package com.bernardomg.example.ws.security.jwt.auth.user.domain;
+
+import lombok.Data;
 
 /**
- * User, and all its authentication data.
+ * Dto implementation of {@code Privilege}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface User {
+@Data
+public final class DtoPrivilege implements Privilege {
 
     /**
-     * Returns the credentials expired flag.
-     * <p>
-     * This usually means that the password is no longer valid.
-     *
-     * @return the credentials expired flag
+     * Entity id.
      */
-    public Boolean getCredentialsExpired();
+    private Long   id;
 
     /**
-     * Returns the user email.
-     *
-     * @return the user email
+     * Privilege name.
      */
-    public String getEmail();
-
-    /**
-     * Returns the user enabled flag.
-     *
-     * @return the user enabled flag
-     */
-    public Boolean getEnabled();
-
-    /**
-     * Returns the user expired flag.
-     * <p>
-     * This means the user is no longer valid.
-     *
-     * @return the user expired flag
-     */
-    public Boolean getExpired();
-
-    /**
-     * Returns the user id.
-     *
-     * @return the user id
-     */
-    public Long getId();
-
-    /**
-     * Returns the user locked flag.
-     *
-     * @return the user locked flag
-     */
-    public Boolean getLocked();
-
-    /**
-     * Returns the user password.
-     *
-     * @return the user password
-     */
-    public String getPassword();
-
-    /**
-     * Returns the user username.
-     *
-     * @return the user username
-     */
-    public String getUsername();
+    private String name;
 
 }

@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.domain.user.repository;
+package com.bernardomg.example.ws.security.jwt.auth.user.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.DtoUser;
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.User;
+import com.bernardomg.example.ws.security.jwt.auth.user.domain.DtoUser;
+import com.bernardomg.example.ws.security.jwt.auth.user.domain.User;
 
 /**
  * SQL row mapper for privileges.

@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.domain.user.repository;
+package com.bernardomg.example.ws.security.jwt.auth.user.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.User;
+import com.bernardomg.example.ws.security.jwt.auth.user.domain.User;
 
 import lombok.AllArgsConstructor;
 

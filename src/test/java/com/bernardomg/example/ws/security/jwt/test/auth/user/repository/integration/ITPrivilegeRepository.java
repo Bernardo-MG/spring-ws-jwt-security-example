@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.test.domain.user.repository.integration;
+package com.bernardomg.example.ws.security.jwt.test.auth.user.repository.integration;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.bernardomg.example.ws.security.jwt.domain.user.domain.Privilege;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.PrivilegeRepository;
+import com.bernardomg.example.ws.security.jwt.auth.user.domain.Privilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
 import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;

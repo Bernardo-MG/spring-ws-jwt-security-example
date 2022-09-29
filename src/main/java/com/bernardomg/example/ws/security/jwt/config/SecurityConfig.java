@@ -32,9 +32,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
+import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
 import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.PrivilegeRepository;
-import com.bernardomg.example.ws.security.jwt.domain.user.repository.UserRepository;
 
 /**
  * Security configuration.

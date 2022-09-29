@@ -22,8 +22,27 @@
  * SOFTWARE.
  */
 
-/**
- * User repositories.
- */
+package com.bernardomg.example.ws.security.jwt.auth.user.repository;
 
-package com.bernardomg.example.ws.security.jwt.domain.user.repository;
+import java.util.Optional;
+
+import com.bernardomg.example.ws.security.jwt.auth.user.domain.User;
+
+/**
+ * Repository for users.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface UserRepository {
+
+    /**
+     * Returns the user details for the received username.
+     *
+     * @param username
+     *            username to search for
+     * @return the user details for the received username
+     */
+    public Optional<User> findOneByUsername(final String username);
+
+}
