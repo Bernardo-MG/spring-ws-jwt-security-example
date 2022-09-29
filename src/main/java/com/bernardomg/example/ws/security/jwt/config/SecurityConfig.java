@@ -24,88 +24,45 @@
 
 package com.bernardomg.example.ws.security.jwt.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.TokenFilter;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
+import com.bernardomg.example.ws.security.jwt.domain.user.repository.PersistentUserRepository;
+import com.bernardomg.example.ws.security.jwt.domain.user.repository.PrivilegeRepository;
 
+/**
+ * Security configuration.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
-
-    @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
-
-    @Autowired
-    private TokenFilter              tokenFilter;
-
-    @Autowired
-    private UserDetailsService       userDetailsService;
 
     public SecurityConfig() {
         super();
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-        final Customizer<ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry> authorizeRequestsCustomizer;
-        final Customizer<FormLoginConfigurer<HttpSecurity>>                                                 formLoginCustomizer;
-        final Customizer<LogoutConfigurer<HttpSecurity>>                                                    logoutCustomizer;
-
-        // Authorization
-        authorizeRequestsCustomizer = c -> {
-            try {
-                c.antMatchers("/actuator/**")
-                    .permitAll()
-                    .antMatchers("/login/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(authenticationEntryPoint)
-                    .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            } catch (final Exception e) {
-                // TODO Handle exception
-                throw new RuntimeException(e);
-            }
-        };
-        // Login form
-        formLoginCustomizer = c -> c.disable();
-        // Logout
-        logoutCustomizer = c -> c.disable();
-
-        http.authorizeRequests(authorizeRequestsCustomizer)
-            .formLogin(formLoginCustomizer)
-            .logout(logoutCustomizer);
-
-        http.userDetailsService(userDetailsService);
-
-        // Add a filter to validate the tokens with every request
-        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+    @Bean("authenticationEntryPoint")
+    public AuthenticationEntryPoint getAuthenticationEntryPoint() {
+        return new ErrorResponseAuthenticationEntryPoint();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-            .antMatchers("/login/**");
+    @Bean("passwordEncoder")
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean("userDetailsService")
+    public UserDetailsService getUserDetailsService(final PersistentUserRepository userRepository,
+            final PrivilegeRepository privilegeRepository) {
+        return new PersistentUserDetailsService(userRepository, privilegeRepository);
     }
 
 }
