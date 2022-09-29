@@ -36,7 +36,8 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.Integration
 
 @IntegrationTest
 @DisplayName("Default login service")
-@Sql({ "/db/queries/user/single.sql" })
+@Sql({ "/db/queries/user/single.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
+        "/db/queries/relationship/role_privilege.sql", "/db/queries/relationship/user_role.sql" })
 public class ITLoginService {
 
     @Autowired
@@ -44,17 +45,6 @@ public class ITLoginService {
 
     public ITLoginService() {
         super();
-    }
-
-    @Test
-    @DisplayName("Generates a token for valid user")
-    public void testLogin_generatesToken() {
-        final LoginStatus status;
-
-        status = service.login("admin", "1234");
-
-        Assertions.assertFalse(status.getToken()
-            .isEmpty());
     }
 
     @Test
@@ -79,16 +69,6 @@ public class ITLoginService {
     }
 
     @Test
-    @DisplayName("Logs in a valid user")
-    public void testLogin_logged() {
-        final LoginStatus status;
-
-        status = service.login("admin", "1234");
-
-        Assertions.assertTrue(status.getLogged());
-    }
-
-    @Test
     @DisplayName("Generates no token for a not existing user")
     public void testLogin_notExisting_notGeneratesToken() {
         final LoginStatus status;
@@ -107,6 +87,27 @@ public class ITLoginService {
         status = service.login("abc", "1234");
 
         Assertions.assertFalse(status.getLogged());
+    }
+
+    @Test
+    @DisplayName("Generates a token for valid user")
+    public void testLogin_valid_generatesToken() {
+        final LoginStatus status;
+
+        status = service.login("admin", "1234");
+
+        Assertions.assertFalse(status.getToken()
+            .isEmpty());
+    }
+
+    @Test
+    @DisplayName("Logs in a valid user")
+    public void testLogin_valid_logged() {
+        final LoginStatus status;
+
+        status = service.login("admin", "1234");
+
+        Assertions.assertTrue(status.getLogged());
     }
 
 }
