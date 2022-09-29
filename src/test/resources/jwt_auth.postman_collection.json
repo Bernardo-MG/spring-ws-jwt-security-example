@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "548f09ec-2381-4eda-9af2-6f82bf02b1de",
+		"_postman_id": "d8b46786-93e5-4dc1-9033-ccd4a7ff5a8f",
 		"name": "JWT auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -82,33 +82,6 @@
 							"raw": "/entity",
 							"path": [
 								"entity"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Authorized request\",()=>{\r",
-									"    pm.expect(pm.response.code).to.eql(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "/user",
-							"path": [
-								"user"
 							]
 						}
 					},
