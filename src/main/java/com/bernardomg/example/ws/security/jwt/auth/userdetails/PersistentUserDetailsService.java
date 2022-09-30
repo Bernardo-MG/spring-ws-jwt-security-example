@@ -29,8 +29,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -41,6 +39,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.bernardomg.example.ws.security.jwt.auth.user.domain.Privilege;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * User details service which takes the user data from the persistence layer.
@@ -68,12 +68,8 @@ import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepositor
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
+@Slf4j
 public final class PersistentUserDetailsService implements UserDetailsService {
-
-    /**
-     * Logger.
-     */
-    private static final Logger       LOGGER = LoggerFactory.getLogger(PersistentUserDetailsService.class);
 
     /**
      * Repository for the privileges.
@@ -106,12 +102,12 @@ public final class PersistentUserDetailsService implements UserDetailsService {
         final Optional<com.bernardomg.example.ws.security.jwt.auth.user.domain.User> user;
         final Collection<? extends GrantedAuthority>                                 authorities;
 
-        LOGGER.debug("Asked for username {}", username);
+        log.debug("Asked for username {}", username);
 
         user = userRepo.findOneByUsername(username.toLowerCase());
 
         if (!user.isPresent()) {
-            LOGGER.debug("Username {} not found in DB", username);
+            log.debug("Username {} not found in DB", username);
             throw new UsernameNotFoundException(username);
         }
 
@@ -119,12 +115,12 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             .getId());
 
         if (authorities.isEmpty()) {
-            LOGGER.debug("Username {} has no authorities", username);
+            log.debug("Username {} has no authorities", username);
             throw new UsernameNotFoundException(username);
         }
 
-        LOGGER.debug("Username {} found in DB", username);
-        LOGGER.debug("Authorities for {}: {}", username, authorities);
+        log.debug("Username {} found in DB", username);
+        log.debug("Authorities for {}: {}", username, authorities);
 
         return toUserDetails(user.get(), authorities);
     }
