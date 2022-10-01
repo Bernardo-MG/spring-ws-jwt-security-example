@@ -8,12 +8,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 
 @DisplayName("JWT token processor - validate")
 public class TestJwtTokenProcessorValidate {
 
-    private final TokenProcessor processor = new JwtTokenProcessor(
+    private final JwtTokenProcessor processor = new JwtTokenProcessor(
         "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 1);
 
     public TestJwtTokenProcessorValidate() {

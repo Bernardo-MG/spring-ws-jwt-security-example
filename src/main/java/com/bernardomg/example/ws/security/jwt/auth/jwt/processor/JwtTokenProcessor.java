@@ -47,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class JwtTokenProcessor implements TokenProcessor {
+public final class JwtTokenProcessor implements TokenValidator, TokenGenerator {
 
     /**
      * Charset used by the secret received when constructing.

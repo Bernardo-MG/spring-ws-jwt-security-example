@@ -9,14 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
 @DisplayName("JWT token processor - get subject")
 public class TestJwtTokenProcessorGetSubject {
 
-    private final TokenProcessor processor = new JwtTokenProcessor(
+    private final JwtTokenProcessor processor = new JwtTokenProcessor(
         "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 2);
 
     public TestJwtTokenProcessorGetSubject() {

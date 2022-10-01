@@ -41,12 +41,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Token filter. The actual token specification to use will depend on the {@link TokenProcessor} used.
+ * Token filter. The actual token specification to use will depend on the {@link TokenValidator} used.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -59,7 +59,7 @@ public class TokenFilter extends OncePerRequestFilter {
     /**
      * Token processor. Parses and validates tokens.
      */
-    private final TokenProcessor     tokenProcessor;
+    private final TokenValidator     tokenValidator;
 
     /**
      * User details service. Gives access to the user, to validate the token against it.
@@ -74,11 +74,11 @@ public class TokenFilter extends OncePerRequestFilter {
      * @param processor
      *            token processor
      */
-    public TokenFilter(final UserDetailsService userDetService, final TokenProcessor processor) {
+    public TokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
         super();
 
         userDetailsService = Objects.requireNonNull(userDetService);
-        tokenProcessor = Objects.requireNonNull(processor);
+        tokenValidator = Objects.requireNonNull(processor);
 
         // TODO: Test this class
     }
@@ -95,7 +95,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
         if (token.isPresent()) {
             log.debug("Parsing subject from token");
-            subject = Optional.ofNullable(tokenProcessor.getSubject(token.get()));
+            subject = Optional.ofNullable(tokenValidator.getSubject(token.get()));
         } else {
             // No token received
             subject = Optional.empty();
@@ -162,7 +162,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
                 // if token is valid configure Spring Security to manually set
                 // authentication
-                if ((valid) && (tokenProcessor.validate(token.get(), userDetails.getUsername()))) {
+                if ((valid) && (tokenValidator.validate(token.get(), userDetails.getUsername()))) {
                     // Valid token
 
                     log.debug("Valid authentication token. Will load authentication details");
