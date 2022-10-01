@@ -136,6 +136,7 @@ public class TokenFilter extends OncePerRequestFilter {
         final Optional<String>            subject;
         final UserDetails                 userDetails;
         final AbstractAuthenticationToken authenticationToken;
+        final Boolean                     valid;
 
         authHeader = request.getHeader("Authorization");
 
@@ -155,9 +156,13 @@ public class TokenFilter extends OncePerRequestFilter {
                 log.debug("Validating token for {}", subject.get());
                 userDetails = userDetailsService.loadUserByUsername(subject.get());
 
+                // Check user status
+                valid = userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked()
+                        && userDetails.isCredentialsNonExpired() && userDetails.isEnabled();
+
                 // if token is valid configure Spring Security to manually set
                 // authentication
-                if (tokenProcessor.validate(token.get(), userDetails.getUsername())) {
+                if ((valid) && (tokenProcessor.validate(token.get(), userDetails.getUsername()))) {
                     // Valid token
 
                     log.debug("Valid authentication token. Will load authentication details");

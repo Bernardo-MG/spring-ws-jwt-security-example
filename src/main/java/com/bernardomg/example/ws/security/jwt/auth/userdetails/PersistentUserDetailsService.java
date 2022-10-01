@@ -101,6 +101,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
     public final UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final Optional<com.bernardomg.example.ws.security.jwt.auth.user.model.User> user;
         final Collection<? extends GrantedAuthority>                                authorities;
+        final UserDetails                                                           details;
 
         user = userRepo.findOneByUsername(username.toLowerCase());
 
@@ -117,10 +118,16 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
-        log.debug("User {} exists and is valid", username);
-        log.debug("Authorities for {}: {}", username, authorities);
+        details = toUserDetails(user.get(), authorities);
 
-        return toUserDetails(user.get(), authorities);
+        log.debug("User {} exists", username);
+        log.debug("Authorities for {}: {}", username, details.getAuthorities());
+        log.debug("User {} is enabled: {}", username, details.isEnabled());
+        log.debug("User {} is non expired: {}", username, details.isAccountNonExpired());
+        log.debug("User {} is non locked: {}", username, details.isAccountNonLocked());
+        log.debug("User {} has credentials non expired: {}", username, details.isCredentialsNonExpired());
+
+        return details;
     }
 
     /**
