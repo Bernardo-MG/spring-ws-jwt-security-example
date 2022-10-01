@@ -34,7 +34,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest
@@ -44,18 +43,15 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrat
 public final class ITExampleEntityControllerSecurityExpiredUser {
 
     @Autowired
-    private MockMvc        mockMvc;
-
-    @Autowired
-    private TokenProcessor tokenProcessor;
+    private MockMvc mockMvc;
 
     public ITExampleEntityControllerSecurityExpiredUser() {
         super();
     }
 
     @Test
-    @DisplayName("An authorized request is rejected")
-    public final void testGet_authorized() throws Exception {
+    @DisplayName("An authenticated request is not authorized")
+    public final void testGet_authenticated_notAuthorized() throws Exception {
         final ResultActions result;
 
         result = mockMvc.perform(getRequestAuthorized());
@@ -66,12 +62,8 @@ public final class ITExampleEntityControllerSecurityExpiredUser {
     }
 
     private final RequestBuilder getRequestAuthorized() {
-        final String token;
-
-        token = tokenProcessor.generateToken("admin");
-
         return MockMvcRequestBuilders.get("/rest/entity")
-            .header("Authorization", "Bearer " + token);
+            .header("Authorization", "Basic YWRtaW46MTIzNA==");
     }
 
 }

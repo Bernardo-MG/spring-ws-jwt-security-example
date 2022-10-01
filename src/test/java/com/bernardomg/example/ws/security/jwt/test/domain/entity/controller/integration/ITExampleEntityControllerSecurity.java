@@ -34,7 +34,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest
@@ -44,17 +43,14 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrat
 public final class ITExampleEntityControllerSecurity {
 
     @Autowired
-    private MockMvc        mockMvc;
-
-    @Autowired
-    private TokenProcessor tokenProcessor;
+    private MockMvc mockMvc;
 
     public ITExampleEntityControllerSecurity() {
         super();
     }
 
     @Test
-    @DisplayName("An authorized request is accepted")
+    @DisplayName("An authenticated request is authorized")
     public final void testGet_authorized() throws Exception {
         final ResultActions result;
 
@@ -66,7 +62,7 @@ public final class ITExampleEntityControllerSecurity {
     }
 
     @Test
-    @DisplayName("An unauthorized request is rejected")
+    @DisplayName("A not authenticated request is not authorized")
     public final void testGet_unauthorized() throws Exception {
         final ResultActions result;
 
@@ -82,12 +78,8 @@ public final class ITExampleEntityControllerSecurity {
     }
 
     private final RequestBuilder getRequestAuthorized() {
-        final String token;
-
-        token = tokenProcessor.generateToken("admin");
-
         return MockMvcRequestBuilders.get("/rest/entity")
-            .header("Authorization", "Bearer " + token);
+            .header("Authorization", "Basic YWRtaW46MTIzNA==");
     }
 
 }
