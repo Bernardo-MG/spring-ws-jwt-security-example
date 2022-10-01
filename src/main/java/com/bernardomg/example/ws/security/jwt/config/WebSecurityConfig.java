@@ -108,10 +108,4 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-            .antMatchers("/login/**");
-    }
-
 }
