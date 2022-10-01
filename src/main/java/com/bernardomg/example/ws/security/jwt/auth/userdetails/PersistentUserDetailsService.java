@@ -105,7 +105,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
         user = userRepo.findOneByUsername(username.toLowerCase());
 
         if (!user.isPresent()) {
-            log.debug("Username {} not found in DB", username);
+            log.warn("Username {} not found in DB", username);
             throw new UsernameNotFoundException(username);
         }
 
@@ -113,7 +113,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             .getId());
 
         if (authorities.isEmpty()) {
-            log.debug("Username {} has no authorities", username);
+            log.warn("Username {} has no authorities", username);
             throw new UsernameNotFoundException(username);
         }
 

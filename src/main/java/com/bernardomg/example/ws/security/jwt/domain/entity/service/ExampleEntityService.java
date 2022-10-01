@@ -44,7 +44,7 @@ public interface ExampleEntityService {
      *            entity to create
      * @return the entity created
      */
-    @PreAuthorize("hasAuthority('CREATE_USER')")
+    @PreAuthorize("hasAuthority('CREATE_DATA')")
     public ExampleEntity create(final ExampleEntity entity);
 
     /**
@@ -54,7 +54,7 @@ public interface ExampleEntityService {
      *            entity id
      * @return {@code true} if it was deleted, {@code false} otherwise
      */
-    @PreAuthorize("hasAuthority('DELETE_USER')")
+    @PreAuthorize("hasAuthority('DELETE_DATA')")
     public Boolean delete(final Long id);
 
     /**
@@ -62,7 +62,7 @@ public interface ExampleEntityService {
      *
      * @return all the entities
      */
-    @PreAuthorize("hasAuthority('READ_USER')")
+    @PreAuthorize("hasAuthority('READ_DATA')")
     public Iterable<? extends ExampleEntity> getAll();
 
     /**
@@ -74,7 +74,7 @@ public interface ExampleEntityService {
      *            new entity data
      * @return the updated entity
      */
-    @PreAuthorize("hasAuthority('UPDATE_USER')")
+    @PreAuthorize("hasAuthority('UPDATE_DATA')")
     public ExampleEntity update(final Long id, final ExampleEntity entity);
 
 }
