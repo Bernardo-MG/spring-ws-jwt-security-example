@@ -100,7 +100,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
     @Override
     public final UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final Optional<com.bernardomg.example.ws.security.jwt.auth.user.model.User> user;
-        final Collection<? extends GrantedAuthority>                                authorities;
+        final Collection<GrantedAuthority>                                authorities;
         final UserDetails                                                           details;
 
         user = userRepo.findOneByUsername(username.toLowerCase());
@@ -137,7 +137,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
      *            id of the user
      * @return all the authorities for the user
      */
-    private final Collection<? extends GrantedAuthority> getAuthorities(final Long id) {
+    private final Collection<GrantedAuthority> getAuthorities(final Long id) {
         return privilegeRepo.findForUser(id)
             .stream()
             .map(Privilege::getName)
@@ -154,7 +154,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
      * @return equivalent user details
      */
     private final UserDetails toUserDetails(final com.bernardomg.example.ws.security.jwt.auth.user.model.User user,
-            final Collection<? extends GrantedAuthority> authorities) {
+            final Collection<GrantedAuthority> authorities) {
         final Boolean enabled;
         final Boolean accountNonExpired;
         final Boolean credentialsNonExpired;
