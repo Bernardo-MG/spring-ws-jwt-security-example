@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.domain.User;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.User;
 
 import lombok.AllArgsConstructor;
 

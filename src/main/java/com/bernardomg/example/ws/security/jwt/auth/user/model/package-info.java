@@ -26,4 +26,4 @@
  * User model.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.user.domain;
+package com.bernardomg.example.ws.security.jwt.auth.user.model;

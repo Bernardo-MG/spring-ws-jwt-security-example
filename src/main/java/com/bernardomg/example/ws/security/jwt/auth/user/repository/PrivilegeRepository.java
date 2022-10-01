@@ -26,7 +26,7 @@ package com.bernardomg.example.ws.security.jwt.auth.user.repository;
 
 import java.util.Collection;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.domain.Privilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.Privilege;
 
 /**
  * Repository for privileges.

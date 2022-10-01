@@ -29,8 +29,8 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.domain.DtoPrivilege;
-import com.bernardomg.example.ws.security.jwt.auth.user.domain.Privilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.DtoPrivilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.Privilege;
 
 /**
  * SQL row mapper for privileges.

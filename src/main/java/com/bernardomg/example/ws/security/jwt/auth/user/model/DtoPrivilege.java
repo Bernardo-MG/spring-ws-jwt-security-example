@@ -22,57 +22,27 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.user.domain;
+package com.bernardomg.example.ws.security.jwt.auth.user.model;
 
 import lombok.Data;
 
 /**
- * Dto implementation of {@code User}.
+ * Dto implementation of {@code Privilege}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Data
-public class DtoUser implements User {
-
-    /**
-     * User expired flag.
-     */
-    private Boolean credentialsExpired = false;
-
-    /**
-     * User email.
-     */
-    private String  email;
-
-    /**
-     * User enabled flag.
-     */
-    private Boolean enabled            = true;
-
-    /**
-     * User expired flag.
-     */
-    private Boolean expired            = false;
+public final class DtoPrivilege implements Privilege {
 
     /**
      * Entity id.
      */
-    private Long    id;
+    private Long   id;
 
     /**
-     * User locked flag.
+     * Privilege name.
      */
-    private Boolean locked             = false;
-
-    /**
-     * User password.
-     */
-    private String  password;
-
-    /**
-     * User name.
-     */
-    private String  username;
+    private String name;
 
 }

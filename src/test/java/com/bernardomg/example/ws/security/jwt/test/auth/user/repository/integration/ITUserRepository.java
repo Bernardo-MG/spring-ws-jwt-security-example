@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.domain.User;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.User;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 

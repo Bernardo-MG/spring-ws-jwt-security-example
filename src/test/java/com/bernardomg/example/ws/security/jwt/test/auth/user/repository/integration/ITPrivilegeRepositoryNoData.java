@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.domain.Privilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.Privilege;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
