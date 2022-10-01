@@ -73,9 +73,7 @@ public class WebSecurityConfig {
         // Authorization
         authorizeRequestsCustomizer = c -> {
             try {
-                c.antMatchers("/actuator/**")
-                    .permitAll()
-                    .antMatchers("/login/**")
+                c.antMatchers("/actuator/**", "/login/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
