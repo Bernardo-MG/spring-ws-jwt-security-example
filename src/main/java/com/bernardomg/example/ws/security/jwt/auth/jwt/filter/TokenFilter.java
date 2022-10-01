@@ -152,6 +152,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
             // Once we get the token validate it.
             if (subject.isPresent()) {
+                log.debug("Validating token for {}", subject.get());
                 userDetails = userDetailsService.loadUserByUsername(subject.get());
 
                 // if token is valid configure Spring Security to manually set
