@@ -25,7 +25,6 @@
 package com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -49,12 +48,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class ErrorResponseAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
-
-    /**
-     * Serialization ID.
-     */
-    private static final long serialVersionUID = 3481060353509546161L;
+public final class ErrorResponseAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     /**
      * Default constructor.

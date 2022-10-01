@@ -102,8 +102,6 @@ public final class PersistentUserDetailsService implements UserDetailsService {
         final Optional<com.bernardomg.example.ws.security.jwt.auth.user.domain.User> user;
         final Collection<? extends GrantedAuthority>                                 authorities;
 
-        log.debug("Asked for username {}", username);
-
         user = userRepo.findOneByUsername(username.toLowerCase());
 
         if (!user.isPresent()) {
@@ -119,7 +117,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
-        log.debug("Username {} found in DB", username);
+        log.debug("User {} exists and is valid", username);
         log.debug("Authorities for {}: {}", username, authorities);
 
         return toUserDetails(user.get(), authorities);

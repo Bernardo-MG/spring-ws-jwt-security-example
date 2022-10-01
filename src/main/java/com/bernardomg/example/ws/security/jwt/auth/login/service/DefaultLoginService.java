@@ -24,6 +24,8 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.login.service;
 
+import java.util.Optional;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,35 +67,43 @@ public final class DefaultLoginService implements LoginService {
 
     @Override
     public final LoginStatus login(final String username, final String password) {
-        final ImmutableLoginStatus status;
-        final String               token;
-        final UserDetails          userDetails;
-        Boolean                    validUsername;
-        Boolean                    validPassword;
+        final LoginStatus     status;
+        final String          token;
+        final Boolean         logged;
+        Optional<UserDetails> details;
 
-        // TODO: The password should arrive encrypted
-
-        log.trace("Generating token for {}", username);
+        log.debug("Log in attempt for {}", username);
 
         try {
-            userDetails = userDetailsService.loadUserByUsername(username);
-            validUsername = userDetails.getUsername()
-                .equals(username);
-            validPassword = passwordEncoder.matches(password, userDetails.getPassword());
+            details = Optional.of(userDetailsService.loadUserByUsername(username));
         } catch (final UsernameNotFoundException e) {
-            log.debug("Username {} not found", username);
-            validUsername = false;
-            validPassword = false;
+            details = Optional.empty();
         }
 
-        if ((validUsername) && (validPassword)) {
+        if (details.isEmpty()) {
+            // No user found for username
+            log.debug("No user for username {}", username);
+            logged = false;
+        } else {
+            // Validate password
+            logged = passwordEncoder.matches(password, details.get()
+                .getPassword());
+            if (!logged) {
+                log.debug("Received password doesn't match the one stored for username {}", username);
+            }
+        }
+
+        if (logged) {
             // Valid user
             // Generate token
             token = tokenProcessor.generateToken(username);
-            status = new ImmutableLoginStatus(username, true, token);
         } else {
-            status = new ImmutableLoginStatus(username, false, "");
+            token = "";
         }
+
+        status = new ImmutableLoginStatus(username, logged, token);
+
+        log.debug("Finished log in attempt for {}. Logged in: {}", username, status.getLogged());
 
         return status;
     }

@@ -81,22 +81,25 @@ public final class JwtTokenProcessor implements TokenProcessor {
 
     @Override
     public final String generateToken(final String subject) {
-        final Date expiration;
-        final Date issuedAt;
+        final Date   expiration;
+        final Date   issuedAt;
+        final String token;
 
         // Issued right now
         issuedAt = new Date();
         // Expires in a number of seconds equal to validity
         expiration = new Date(System.currentTimeMillis() + (validity * 1000));
 
-        log.debug("Setting expiration date {}", expiration);
-
-        return Jwts.builder()
+        token = Jwts.builder()
             .setSubject(subject)
             .setIssuedAt(issuedAt)
             .setExpiration(expiration)
             .signWith(key, SignatureAlgorithm.HS512)
             .compact();
+
+        log.debug("Created token for subject {} with expiration date {}", subject, expiration);
+
+        return token;
     }
 
     @Override

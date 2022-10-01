@@ -54,6 +54,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TokenFilter extends OncePerRequestFilter {
 
+    private final String             tokenHeaderIdentifier = "Bearer";
+
     /**
      * Token processor. Parses and validates tokens.
      */
@@ -77,6 +79,8 @@ public class TokenFilter extends OncePerRequestFilter {
 
         userDetailsService = Objects.requireNonNull(userDetService);
         tokenProcessor = Objects.requireNonNull(processor);
+
+        // TODO: Test this class
     }
 
     /**
@@ -110,13 +114,15 @@ public class TokenFilter extends OncePerRequestFilter {
     private final Optional<String> getToken(final String header) {
         final Optional<String> token;
 
-        // JWT Token is in the form "Bearer token". Remove Bearer word and get
-        // only the Token
-        if (header.startsWith("Bearer ")) {
-            token = Optional.of(header.substring(7));
+        if (header.trim()
+            .startsWith(tokenHeaderIdentifier + " ")) {
+            // Token received
+            // Take it by removing the identifier
+            token = Optional.of(header.substring(tokenHeaderIdentifier.length() + 1));
         } else {
+            // No token received
             token = Optional.empty();
-            log.warn("Authorization header '{}' does not begin with Bearer string, can't return token", header);
+            log.warn("Authorization header '{}' has an invalid structure, can't return token", header);
         }
 
         return token;
@@ -139,6 +145,7 @@ public class TokenFilter extends OncePerRequestFilter {
         } else if (SecurityContextHolder.getContext()
             .getAuthentication() == null) {
             // No authentication in context
+            // Will load a new authentication from the token
 
             token = getToken(authHeader);
             subject = getSubject(token);
