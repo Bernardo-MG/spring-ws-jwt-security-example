@@ -100,7 +100,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
     @Override
     public final UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final Optional<com.bernardomg.example.ws.security.jwt.auth.user.model.User> user;
-        final Collection<? extends GrantedAuthority>                                 authorities;
+        final Collection<? extends GrantedAuthority>                                authorities;
 
         user = userRepo.findOneByUsername(username.toLowerCase());
 
