@@ -36,7 +36,7 @@ public class ITPrivilegeRepository {
 
         result = repository.findForUser(1L);
 
-        Assertions.assertEquals(3, IterableUtils.size(result));
+        Assertions.assertEquals(4, IterableUtils.size(result));
     }
 
     @Test
@@ -50,9 +50,10 @@ public class ITPrivilegeRepository {
             .map(Privilege::getName)
             .collect(Collectors.toList());
 
-        Assertions.assertTrue(privileges.contains("CREATE_USER"));
-        Assertions.assertTrue(privileges.contains("READ_USER"));
-        Assertions.assertTrue(privileges.contains("UPDATE_USER"));
+        Assertions.assertTrue(privileges.contains("CREATE_DATA"));
+        Assertions.assertTrue(privileges.contains("READ_DATA"));
+        Assertions.assertTrue(privileges.contains("UPDATE_DATA"));
+        Assertions.assertTrue(privileges.contains("DELETE_DATA"));
     }
 
     @Test
