@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class TokenFilter extends OncePerRequestFilter {
+public final class TokenFilter extends OncePerRequestFilter {
 
     private final String             tokenHeaderIdentifier = "Bearer";
 
@@ -118,7 +118,8 @@ public class TokenFilter extends OncePerRequestFilter {
             .startsWith(tokenHeaderIdentifier + " ")) {
             // Token received
             // Take it by removing the identifier
-            token = Optional.of(header.substring(tokenHeaderIdentifier.length() + 1));
+            token = Optional.of(header.substring(tokenHeaderIdentifier.length())
+                .trim());
         } else {
             // No token received
             token = Optional.empty();
@@ -128,15 +129,26 @@ public class TokenFilter extends OncePerRequestFilter {
         return token;
     }
 
+    /**
+     * Checks if the user is valid. This means it has no flag marking it as not usable.
+     *
+     * @param userDetails
+     *            user the check
+     * @return {@code true} if the user is valid, {@code false} otherwise
+     */
+    private final Boolean isValid(final UserDetails userDetails) {
+        return userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked()
+                && userDetails.isCredentialsNonExpired() && userDetails.isEnabled();
+    }
+
     @Override
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+    protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
         final String                      authHeader;
         final Optional<String>            token;
         final Optional<String>            subject;
         final UserDetails                 userDetails;
         final AbstractAuthenticationToken authenticationToken;
-        final Boolean                     valid;
 
         authHeader = request.getHeader("Authorization");
 
@@ -156,14 +168,8 @@ public class TokenFilter extends OncePerRequestFilter {
                 log.debug("Validating token for {}", subject.get());
                 userDetails = userDetailsService.loadUserByUsername(subject.get());
 
-                // Check user status
-                valid = userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked()
-                        && userDetails.isCredentialsNonExpired() && userDetails.isEnabled();
-
-                // if token is valid configure Spring Security to manually set
-                // authentication
-                if ((valid) && (tokenValidator.validate(token.get(), userDetails.getUsername()))) {
-                    // Valid token
+                if ((isValid(userDetails)) && (!tokenValidator.hasExpired(token.get()))) {
+                    // User valid and token not expired
 
                     log.debug("Valid authentication token. Will load authentication details");
 

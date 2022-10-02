@@ -42,14 +42,12 @@ public interface TokenValidator {
     public String getSubject(final String token);
 
     /**
-     * Validates the token and subject.
+     * Check if the token has expired.
      *
      * @param token
      *            token to validate
-     * @param username
-     *            subject of the token
-     * @return {@code true} if the token is valid, {@code false} otherwise
+     * @return {@code true} if the token has expired, {@code false} otherwise
      */
-    public Boolean validate(final String token, final String username);
+    public Boolean hasExpired(final String token);
 
 }
