@@ -52,7 +52,7 @@ public class JwtConfig {
     }
 
     @Bean("tokenProcessor")
-    public TokenValidator getTokenProcessor(@Value("${jwt.secret}") final String secret,
+    public JwtTokenProcessor getTokenProcessor(@Value("${jwt.secret}") final String secret,
             @Value("${jwt.validity}") final Integer validity) {
         return new JwtTokenProcessor(secret, validity);
     }
