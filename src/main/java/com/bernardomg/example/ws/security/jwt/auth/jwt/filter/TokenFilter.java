@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -81,6 +82,24 @@ public final class TokenFilter extends OncePerRequestFilter {
         tokenValidator = Objects.requireNonNull(processor);
 
         // TODO: Test this class
+    }
+
+    /**
+     * Returns an authentication object created from the user and request.
+     *
+     * @param userDetails
+     *            user for the authentication
+     * @param request
+     *            request details for the authentication
+     * @return an authentication object
+     */
+    private final Authentication getAuthentication(final UserDetails userDetails, final HttpServletRequest request) {
+        final AbstractAuthenticationToken authenticationToken;
+
+        authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        return authenticationToken;
     }
 
     /**
@@ -144,11 +163,11 @@ public final class TokenFilter extends OncePerRequestFilter {
     @Override
     protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
-        final String                      authHeader;
-        final Optional<String>            token;
-        final Optional<String>            subject;
-        final UserDetails                 userDetails;
-        final AbstractAuthenticationToken authenticationToken;
+        final String           authHeader;
+        final Optional<String> token;
+        final Optional<String> subject;
+        final UserDetails      userDetails;
+        final Authentication   authentication;
 
         authHeader = request.getHeader("Authorization");
 
@@ -165,7 +184,7 @@ public final class TokenFilter extends OncePerRequestFilter {
 
             // Once we get the token validate it.
             if (subject.isPresent()) {
-                log.debug("Validating token for {}", subject.get());
+                log.debug("Validating authentication token for {}", subject.get());
                 userDetails = userDetailsService.loadUserByUsername(subject.get());
 
                 if ((isValid(userDetails)) && (!tokenValidator.hasExpired(token.get()))) {
@@ -173,14 +192,10 @@ public final class TokenFilter extends OncePerRequestFilter {
 
                     log.debug("Valid authentication token. Will load authentication details");
 
-                    authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    // After setting the Authentication in the context, we specify
-                    // that the current user is authenticated. So it passes the
-                    // Spring Security Configurations successfully.
+                    // Create and register authentication
+                    authentication = getAuthentication(userDetails, request);
                     SecurityContextHolder.getContext()
-                        .setAuthentication(authenticationToken);
+                        .setAuthentication(authentication);
                 }
             }
         }
