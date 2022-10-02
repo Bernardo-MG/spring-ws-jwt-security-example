@@ -30,8 +30,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.TokenFilter;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenValidator;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenValidator;
 
 /**
  * Authentication configuration.

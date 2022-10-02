@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.jwt.processor;
+package com.bernardomg.example.ws.security.jwt.auth.jwt.token;
 
 /**
- * Token processor.
+ * Token validator.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *

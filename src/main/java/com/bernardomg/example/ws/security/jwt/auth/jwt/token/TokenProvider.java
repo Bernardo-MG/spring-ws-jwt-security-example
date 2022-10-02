@@ -22,8 +22,23 @@
  * SOFTWARE.
  */
 
-/**
- * JWT token processors.
- */
+package com.bernardomg.example.ws.security.jwt.auth.jwt.token;
 
-package com.bernardomg.example.ws.security.jwt.auth.jwt.processor;
+/**
+ * Token provider.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface TokenProvider {
+
+    /**
+     * Returns a token for the subject.
+     *
+     * @param subject
+     *            subject of the token
+     * @return token for the subject
+     */
+    public String generateToken(final String subject);
+
+}

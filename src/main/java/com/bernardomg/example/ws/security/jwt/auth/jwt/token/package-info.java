@@ -22,23 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.jwt.processor;
-
 /**
- * Token validator.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
+ * JWT token processors.
  */
-public interface TokenGenerator {
 
-    /**
-     * Generates a token for the subject.
-     *
-     * @param subject
-     *            subject of the token
-     * @return token for the subject
-     */
-    public String generateToken(final String subject);
-
-}
+package com.bernardomg.example.ws.security.jwt.auth.jwt.token;

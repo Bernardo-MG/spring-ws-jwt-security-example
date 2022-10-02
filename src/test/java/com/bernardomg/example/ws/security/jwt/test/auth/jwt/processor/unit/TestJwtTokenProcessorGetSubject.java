@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
 
 import io.jsonwebtoken.ExpiredJwtException;
 

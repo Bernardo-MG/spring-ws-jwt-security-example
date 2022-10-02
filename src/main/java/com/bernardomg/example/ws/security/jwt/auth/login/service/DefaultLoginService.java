@@ -32,7 +32,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenGenerator;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.ImmutableLoginStatus;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
 
@@ -58,7 +58,7 @@ public final class DefaultLoginService implements LoginService {
     /**
      * Token generator, creates authentication tokens.
      */
-    private final TokenGenerator     tokenGenerator;
+    private final TokenProvider      tokenGenerator;
 
     /**
      * User details service, to find and validate users.

@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenGenerator;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenProvider;
 
 @DisplayName("JWT token processor - generate token")
 public class TestJwtTokenProcessorGenerateToken {
 
-    private final TokenGenerator processor = new JwtTokenProcessor(
+    private final TokenProvider processor = new JwtTokenProcessor(
         "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 1);
 
     public TestJwtTokenProcessorGenerateToken() {

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.jwt.processor;
+package com.bernardomg.example.ws.security.jwt.auth.jwt.token;
 
 import java.nio.charset.Charset;
 import java.util.Date;
@@ -47,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class JwtTokenProcessor implements TokenValidator, TokenGenerator {
+public final class JwtTokenProcessor implements TokenValidator, TokenProvider {
 
     /**
      * Charset used by the secret received when constructing.

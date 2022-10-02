@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
 
 @DisplayName("JWT token processor - validate")
 public class TestJwtTokenProcessorValidate {

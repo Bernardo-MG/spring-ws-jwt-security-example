@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenGenerator;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest
@@ -44,10 +44,10 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrat
 public final class ITExampleEntityControllerSecurityExpiredUser {
 
     @Autowired
-    private MockMvc        mockMvc;
+    private MockMvc       mockMvc;
 
     @Autowired
-    private TokenGenerator tokenGenerator;
+    private TokenProvider tokenGenerator;
 
     public ITExampleEntityControllerSecurityExpiredUser() {
         super();
