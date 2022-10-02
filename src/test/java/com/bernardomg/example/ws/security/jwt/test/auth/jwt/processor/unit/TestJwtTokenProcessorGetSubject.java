@@ -24,7 +24,7 @@ public class TestJwtTokenProcessorGetSubject {
 
     @Test
     @DisplayName("Recovers the subject from a token")
-    public void test_getSubject_fromGeneratedToken() {
+    public void testGetSubject_fromGeneratedToken() {
         final String token;
         final String subject;
 
@@ -36,7 +36,7 @@ public class TestJwtTokenProcessorGetSubject {
 
     @Test
     @DisplayName("Recovering the subject from an expired token generates an exception")
-    public void test_getSubject_fromGeneratedToken_expired() throws InterruptedException {
+    public void testGetSubject_fromGeneratedToken_expired() throws InterruptedException {
         final String     token;
         final Executable executable;
 

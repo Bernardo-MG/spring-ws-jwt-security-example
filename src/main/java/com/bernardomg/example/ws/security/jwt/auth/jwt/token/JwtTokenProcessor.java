@@ -50,11 +50,6 @@ import lombok.extern.slf4j.Slf4j;
 public final class JwtTokenProcessor implements TokenValidator, TokenProvider {
 
     /**
-     * Charset used by the secret received when constructing.
-     */
-    private final Charset   charset = Charset.forName("UTF-8");
-
-    /**
      * Secret key for generating tokens. Created from the secret received when constructing the processor.
      */
     private final SecretKey key;
@@ -75,7 +70,8 @@ public final class JwtTokenProcessor implements TokenValidator, TokenProvider {
     public JwtTokenProcessor(final String secret, final Integer validityTime) {
         super();
 
-        key = Keys.hmacShaKeyFor(secret.getBytes(charset));
+        Objects.requireNonNull(secret);
+        key = Keys.hmacShaKeyFor(secret.getBytes(Charset.forName("UTF-8")));
         validity = Objects.requireNonNull(validityTime);
     }
 

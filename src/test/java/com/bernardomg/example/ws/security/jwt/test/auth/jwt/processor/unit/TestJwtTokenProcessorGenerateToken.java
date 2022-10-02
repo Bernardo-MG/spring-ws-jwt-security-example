@@ -20,7 +20,7 @@ public class TestJwtTokenProcessorGenerateToken {
 
     @Test
     @DisplayName("Generates a token")
-    public void test_generateToken() {
+    public void testGenerateToken() {
         final String token;
 
         token = processor.generateToken("subject");
