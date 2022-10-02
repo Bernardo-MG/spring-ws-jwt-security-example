@@ -5,3 +5,16 @@ databaseChangeLog:
   - include:
       file: structure/security.yaml
       relativeToChangelogFile: true
+  - include:
+      file: structure/sequence.yaml
+      relativeToChangelogFile: true
+  - changeSet:
+      id: initial_data
+      author: Bernardo
+      changes:
+        - sqlFile:
+            encoding: UTF-8
+            path: data/initial_sequences.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
