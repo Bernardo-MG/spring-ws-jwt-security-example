@@ -179,6 +179,8 @@ public final class TokenFilter extends OncePerRequestFilter {
             // No authentication in context
             // Will load a new authentication from the token
 
+            log.debug("No authentication in context. Will load a new authentication from the token");
+
             token = getToken(authHeader);
             subject = getSubject(token);
 
