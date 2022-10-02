@@ -25,7 +25,7 @@ public class ITLoginServiceNoPrivileges {
 
     @Test
     @DisplayName("An existing user can't log in")
-    public final void testLogin_valid() throws Exception {
+    public final void testLogin_valid() {
         final LoginStatus result;
 
         result = service.login("admin", "1234");

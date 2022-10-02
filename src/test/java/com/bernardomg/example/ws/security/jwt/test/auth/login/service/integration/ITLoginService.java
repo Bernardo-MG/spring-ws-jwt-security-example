@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenGenerator;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
 import com.bernardomg.example.ws.security.jwt.auth.login.service.LoginService;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
@@ -18,7 +19,10 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.Integration
 public class ITLoginService {
 
     @Autowired
-    private LoginService service;
+    private LoginService   service;
+
+    @Autowired
+    private TokenGenerator tokenGenerator;
 
     public ITLoginService() {
         super();
@@ -26,7 +30,7 @@ public class ITLoginService {
 
     @Test
     @DisplayName("An existing user with invalid password doesn't log in")
-    public final void testLogin_invalidPassword() throws Exception {
+    public final void testLogin_invalidPassword() {
         final LoginStatus result;
 
         result = service.login("admin", "abc");
@@ -36,7 +40,7 @@ public class ITLoginService {
 
     @Test
     @DisplayName("A not existing user doesn't log in")
-    public final void testLogin_notExisting() throws Exception {
+    public final void testLogin_notExisting() {
         final LoginStatus result;
 
         result = service.login("abc", "1234");
@@ -46,12 +50,26 @@ public class ITLoginService {
 
     @Test
     @DisplayName("An existing user with valid password logs in")
-    public final void testLogin_valid() throws Exception {
+    public final void testLogin_valid() {
         final LoginStatus result;
 
         result = service.login("admin", "1234");
 
         Assertions.assertTrue(result.getLogged());
+    }
+
+    @Test
+    @DisplayName("A valid login returns all the data")
+    public final void testLogin_valid_data() {
+        final LoginStatus result;
+        final String      token;
+
+        result = service.login("admin", "1234");
+
+        token = tokenGenerator.generateToken("admin");
+
+        Assertions.assertEquals("admin", result.getUsername());
+        Assertions.assertEquals(token, result.getToken());
     }
 
 }

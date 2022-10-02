@@ -23,7 +23,7 @@ public class ITLoginServiceNoData {
 
     @Test
     @DisplayName("Trying to log in returns a user which isn't logged in")
-    public final void testLogin_invalidPassword() throws Exception {
+    public final void testLogin_invalidPassword() {
         final LoginStatus result;
 
         result = service.login("admin", "abc");
