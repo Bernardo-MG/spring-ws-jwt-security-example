@@ -17,12 +17,17 @@
    </Appenders>
 
    <Loggers>
-
       <!-- Application log -->
       <Logger name="com.bernardomg.example" level="debug" additivity="false">
          <AppenderRef ref="console" />
       </Logger>
 
+      <!-- Spring Framework -->
+      <Logger name="org.springframework.security" level="error" additivity="false">
+         <AppenderRef ref="console" />
+      </Logger>
+
+      <!-- Root -->
       <Root level="error">
          <AppenderRef ref="console" />
       </Root>
