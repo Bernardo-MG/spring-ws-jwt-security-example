@@ -8,15 +8,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.JwtTokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
 @DisplayName("JWT token processor - get subject")
 public class TestJwtTokenProcessorGetSubject {
 
-    private final TokenProcessor processor = new JwtTokenProcessor(
+    private final JwtTokenProcessor processor = new JwtTokenProcessor(
         "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 2);
 
     public TestJwtTokenProcessorGetSubject() {
@@ -25,7 +24,7 @@ public class TestJwtTokenProcessorGetSubject {
 
     @Test
     @DisplayName("Recovers the subject from a token")
-    public void test_getSubject_fromGeneratedToken() {
+    public void testGetSubject_fromGeneratedToken() {
         final String token;
         final String subject;
 
@@ -37,7 +36,7 @@ public class TestJwtTokenProcessorGetSubject {
 
     @Test
     @DisplayName("Recovering the subject from an expired token generates an exception")
-    public void test_getSubject_fromGeneratedToken_expired() throws InterruptedException {
+    public void testGetSubject_fromGeneratedToken_expired() throws InterruptedException {
         final String     token;
         final Executable executable;
 

@@ -35,29 +35,32 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Token filter. The actual token specification to use will depend on the {@link TokenProcessor} used.
+ * Token filter. The actual token specification to use will depend on the {@link TokenValidator} used.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-public class TokenFilter extends OncePerRequestFilter {
+public final class TokenFilter extends OncePerRequestFilter {
+
+    private final String             tokenHeaderIdentifier = "Bearer";
 
     /**
      * Token processor. Parses and validates tokens.
      */
-    private final TokenProcessor     tokenProcessor;
+    private final TokenValidator     tokenValidator;
 
     /**
      * User details service. Gives access to the user, to validate the token against it.
@@ -72,11 +75,31 @@ public class TokenFilter extends OncePerRequestFilter {
      * @param processor
      *            token processor
      */
-    public TokenFilter(final UserDetailsService userDetService, final TokenProcessor processor) {
+    public TokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
         super();
 
         userDetailsService = Objects.requireNonNull(userDetService);
-        tokenProcessor = Objects.requireNonNull(processor);
+        tokenValidator = Objects.requireNonNull(processor);
+
+        // TODO: Test this class
+    }
+
+    /**
+     * Returns an authentication object created from the user and request.
+     *
+     * @param userDetails
+     *            user for the authentication
+     * @param request
+     *            request details for the authentication
+     * @return an authentication object
+     */
+    private final Authentication getAuthentication(final UserDetails userDetails, final HttpServletRequest request) {
+        final AbstractAuthenticationToken authenticationToken;
+
+        authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        return authenticationToken;
     }
 
     /**
@@ -91,7 +114,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
         if (token.isPresent()) {
             log.debug("Parsing subject from token");
-            subject = Optional.ofNullable(tokenProcessor.getSubject(token.get()));
+            subject = Optional.ofNullable(tokenValidator.getSubject(token.get()));
         } else {
             // No token received
             subject = Optional.empty();
@@ -110,26 +133,41 @@ public class TokenFilter extends OncePerRequestFilter {
     private final Optional<String> getToken(final String header) {
         final Optional<String> token;
 
-        // JWT Token is in the form "Bearer token". Remove Bearer word and get
-        // only the Token
-        if (header.startsWith("Bearer ")) {
-            token = Optional.of(header.substring(7));
+        if (header.trim()
+            .startsWith(tokenHeaderIdentifier + " ")) {
+            // Token received
+            // Take it by removing the identifier
+            token = Optional.of(header.substring(tokenHeaderIdentifier.length())
+                .trim());
         } else {
+            // No token received
             token = Optional.empty();
-            log.warn("Authorization header '{}' does not begin with Bearer string, can't return token", header);
+            log.warn("Authorization header '{}' has an invalid structure, can't return token", header);
         }
 
         return token;
     }
 
+    /**
+     * Checks if the user is valid. This means it has no flag marking it as not usable.
+     *
+     * @param userDetails
+     *            user the check
+     * @return {@code true} if the user is valid, {@code false} otherwise
+     */
+    private final Boolean isValid(final UserDetails userDetails) {
+        return userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked()
+                && userDetails.isCredentialsNonExpired() && userDetails.isEnabled();
+    }
+
     @Override
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+    protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
-        final String                      authHeader;
-        final Optional<String>            token;
-        final Optional<String>            subject;
-        final UserDetails                 userDetails;
-        final AbstractAuthenticationToken authenticationToken;
+        final String           authHeader;
+        final Optional<String> token;
+        final Optional<String> subject;
+        final UserDetails      userDetails;
+        final Authentication   authentication;
 
         authHeader = request.getHeader("Authorization");
 
@@ -139,29 +177,27 @@ public class TokenFilter extends OncePerRequestFilter {
         } else if (SecurityContextHolder.getContext()
             .getAuthentication() == null) {
             // No authentication in context
+            // Will load a new authentication from the token
+
+            log.debug("No authentication in context. Will load a new authentication from the token");
 
             token = getToken(authHeader);
             subject = getSubject(token);
 
             // Once we get the token validate it.
             if (subject.isPresent()) {
+                log.debug("Validating authentication token for {}", subject.get());
                 userDetails = userDetailsService.loadUserByUsername(subject.get());
 
-                // if token is valid configure Spring Security to manually set
-                // authentication
-                if (tokenProcessor.validate(token.get(), userDetails.getUsername())) {
-                    // Valid token
+                if ((isValid(userDetails)) && (!tokenValidator.hasExpired(token.get()))) {
+                    // User valid and token not expired
 
                     log.debug("Valid authentication token. Will load authentication details");
 
-                    authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    // After setting the Authentication in the context, we specify
-                    // that the current user is authenticated. So it passes the
-                    // Spring Security Configurations successfully.
+                    // Create and register authentication
+                    authentication = getAuthentication(userDetails, request);
                     SecurityContextHolder.getContext()
-                        .setAuthentication(authenticationToken);
+                        .setAuthentication(authentication);
                 }
             }
         }

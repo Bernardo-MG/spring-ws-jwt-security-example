@@ -18,7 +18,12 @@ Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for 
 
 ### Users
 
-| User    | Password | Permissions |
-|---------|----------|-------------|
-| admin   | 1234     | all         |
-| noroles | 1111     | none        |
+| User     | Password | Permissions    |
+|----------|----------|----------------|
+| admin    | 1234     | all            |
+| noroles  | 1111     | none           |
+| locked   | 1111     | all            |
+| expired  | 1111     | all            |
+| disabled | 1111     | all            |
+| expcreds | 1111     | all            |
+| noread   | 1111     | all minus read |

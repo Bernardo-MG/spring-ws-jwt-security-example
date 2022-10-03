@@ -1,26 +1,3 @@
-/**
- * The MIT License (MIT)
- * <p>
- * Copyright (c) 2022 the original author or authors.
- * <p>
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * <p>
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * <p>
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 
 package com.bernardomg.example.ws.security.jwt.test.auth.login.service.integration;
 
@@ -30,83 +7,69 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
-import com.bernardomg.example.ws.security.jwt.auth.login.service.DefaultLoginService;
+import com.bernardomg.example.ws.security.jwt.auth.login.service.LoginService;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
 @IntegrationTest
-@DisplayName("Default login service")
-@Sql({ "/db/queries/user/single.sql" })
+@DisplayName("Login service")
+@Sql({ "/db/queries/user/single.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
+        "/db/queries/relationship/role_privilege.sql", "/db/queries/relationship/user_role.sql" })
 public class ITLoginService {
 
     @Autowired
-    private DefaultLoginService service;
+    private LoginService  service;
+
+    @Autowired
+    private TokenProvider tokenGenerator;
 
     public ITLoginService() {
         super();
     }
 
     @Test
-    @DisplayName("Generates a token for valid user")
-    public void testLogin_generatesToken() {
-        final LoginStatus status;
+    @DisplayName("An existing user with invalid password doesn't log in")
+    public final void testLogin_invalidPassword() {
+        final LoginStatus result;
 
-        status = service.login("admin", "1234");
+        result = service.login("admin", "abc");
 
-        Assertions.assertFalse(status.getToken()
-            .isEmpty());
+        Assertions.assertFalse(result.getLogged());
     }
 
     @Test
-    @DisplayName("Generates no token for an invalid password")
-    public void testLogin_invalidPassword_notGeneratesToken() {
-        final LoginStatus status;
+    @DisplayName("A not existing user doesn't log in")
+    public final void testLogin_notExisting() {
+        final LoginStatus result;
 
-        status = service.login("admin", "abc");
+        result = service.login("abc", "1234");
 
-        Assertions.assertTrue(status.getToken()
-            .isEmpty());
+        Assertions.assertFalse(result.getLogged());
     }
 
     @Test
-    @DisplayName("Doesn't log in with an invalid password")
-    public void testLogin_invalidPassword_notLogged() {
-        final LoginStatus status;
+    @DisplayName("An existing user with valid password logs in")
+    public final void testLogin_valid() {
+        final LoginStatus result;
 
-        status = service.login("admin", "abc");
+        result = service.login("admin", "1234");
 
-        Assertions.assertFalse(status.getLogged());
+        Assertions.assertTrue(result.getLogged());
     }
 
     @Test
-    @DisplayName("Logs in a valid user")
-    public void testLogin_logged() {
-        final LoginStatus status;
+    @DisplayName("A valid login returns all the data")
+    public final void testLogin_valid_data() {
+        final LoginStatus result;
+        final String      token;
 
-        status = service.login("admin", "1234");
+        result = service.login("admin", "1234");
 
-        Assertions.assertTrue(status.getLogged());
-    }
+        token = tokenGenerator.generateToken("admin");
 
-    @Test
-    @DisplayName("Generates no token for a not existing user")
-    public void testLogin_notExisting_notGeneratesToken() {
-        final LoginStatus status;
-
-        status = service.login("abc", "1234");
-
-        Assertions.assertTrue(status.getToken()
-            .isEmpty());
-    }
-
-    @Test
-    @DisplayName("Doesn't log in a not existing user")
-    public void testLogin_notExisting_notLogged() {
-        final LoginStatus status;
-
-        status = service.login("abc", "1234");
-
-        Assertions.assertFalse(status.getLogged());
+        Assertions.assertEquals("admin", result.getUsername());
+        Assertions.assertEquals(token, result.getToken());
     }
 
 }

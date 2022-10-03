@@ -18,7 +18,3 @@ databaseChangeLog:
                   type: varchar(50)
                   constraints:
                     nullable: false
-      modifySql:
-        - append:
-            dbms: mysql
-            value: ' ENGINE=InnoDB DEFAULT CHARSET=latin1'

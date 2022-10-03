@@ -18,8 +18,8 @@
 
    <Loggers>
       <!-- Application log -->
-      <Logger name="com.bernardomg.example" level="debug" additivity="false">
-         <AppenderRef ref="file" />
+      <Logger name="com.bernardomg.example" level="error" additivity="false">
+         <AppenderRef ref="console" />
       </Logger>
 
       <!-- Spring Framework -->

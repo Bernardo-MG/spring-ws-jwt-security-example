@@ -19,7 +19,7 @@
 
    <groupId>com.bernardomg.example</groupId>
    <artifactId>spring-ws-jwt-security-example</artifactId>
-   <version>1.0.0</version>
+   <version>1.1.0</version>
    <packaging>war</packaging>
 
    <name>Spring JWT Security Example</name>
@@ -117,7 +117,7 @@
       <!-- ============================================== -->
       <!-- =============== MANIFEST DATA ================ -->
       <!-- ============================================== -->
-      <manifest.name>com/bernardomg/example/ws/security/basic</manifest.name>
+      <manifest.name>com/bernardomg/example/ws/security/jwt</manifest.name>
       <!-- ============================================== -->
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->

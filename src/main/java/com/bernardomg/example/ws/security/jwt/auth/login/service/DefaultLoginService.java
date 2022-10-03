@@ -24,14 +24,16 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.login.service;
 
+import java.util.Optional;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.processor.TokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.login.model.DtoLoginStatus;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.auth.login.model.ImmutableLoginStatus;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
 
 import lombok.AllArgsConstructor;
@@ -54,9 +56,9 @@ public final class DefaultLoginService implements LoginService {
     private final PasswordEncoder    passwordEncoder;
 
     /**
-     * Token processor, to handle authentication tokens.
+     * Token generator, creates authentication tokens.
      */
-    private final TokenProcessor     tokenProcessor;
+    private final TokenProvider      tokenGenerator;
 
     /**
      * User details service, to find and validate users.
@@ -65,36 +67,43 @@ public final class DefaultLoginService implements LoginService {
 
     @Override
     public final LoginStatus login(final String username, final String password) {
-        final DtoLoginStatus status;
-        final String         token;
-        final UserDetails    userDetails;
-        Boolean              validUsername;
-        Boolean              validPassword;
+        final LoginStatus     status;
+        final String          token;
+        final Boolean         logged;
+        Optional<UserDetails> details;
 
-        log.trace("Generating token for {}", username);
+        log.debug("Log in attempt for {}", username);
 
         try {
-            userDetails = userDetailsService.loadUserByUsername(username);
-            validUsername = userDetails.getUsername()
-                .equals(username);
-            validPassword = passwordEncoder.matches(password, userDetails.getPassword());
+            details = Optional.of(userDetailsService.loadUserByUsername(username));
         } catch (final UsernameNotFoundException e) {
-            log.debug("Username {} not found", username);
-            validUsername = false;
-            validPassword = false;
+            details = Optional.empty();
         }
 
-        status = new DtoLoginStatus();
-        if ((validUsername) && (validPassword)) {
+        if (details.isEmpty()) {
+            // No user found for username
+            log.debug("No user for username {}", username);
+            logged = false;
+        } else {
+            // Validate password
+            logged = passwordEncoder.matches(password, details.get()
+                .getPassword());
+            if (!logged) {
+                log.debug("Received password doesn't match the one stored for username {}", username);
+            }
+        }
+
+        if (logged) {
             // Valid user
             // Generate token
-            token = tokenProcessor.generateToken(username);
-            status.setToken(token);
-            status.setLogged(true);
+            token = tokenGenerator.generateToken(username);
         } else {
-            status.setToken("");
-            status.setLogged(false);
+            token = "";
         }
+
+        status = new ImmutableLoginStatus(username, logged, token);
+
+        log.debug("Finished log in attempt for {}. Logged in: {}", username, status.getLogged());
 
         return status;
     }
