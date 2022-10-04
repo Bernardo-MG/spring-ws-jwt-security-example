@@ -29,8 +29,14 @@ import lombok.Data;
 @Data
 public final class DtoExampleEntity implements ExampleEntity {
 
+    /**
+     * Entity id.
+     */
     private Long   id;
 
+    /**
+     * Entity name.
+     */
     private String name;
 
 }
