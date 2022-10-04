@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.model.Privilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.PersistentPrivilege;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
@@ -32,7 +32,7 @@ public class ITPrivilegeRepository {
     @Test
     @DisplayName("Returns all the privileges for a user")
     public void testFindForUser_Count() {
-        final Iterable<? extends Privilege> result;
+        final Iterable<PersistentPrivilege> result;
 
         result = repository.findForUser(1L);
 
@@ -42,12 +42,12 @@ public class ITPrivilegeRepository {
     @Test
     @DisplayName("Returns all the data for the privileges of a user")
     public void testFindForUser_Data() {
-        final Collection<? extends Privilege> result;
+        final Collection<PersistentPrivilege> result;
         final Collection<String>              privileges;
 
         result = repository.findForUser(1L);
         privileges = result.stream()
-            .map(Privilege::getName)
+            .map(PersistentPrivilege::getName)
             .collect(Collectors.toList());
 
         Assertions.assertTrue(privileges.contains("CREATE_DATA"));
@@ -59,7 +59,7 @@ public class ITPrivilegeRepository {
     @Test
     @DisplayName("Returns no privileges for a not existing user")
     public void testFindForUser_notExisting() {
-        final Iterable<? extends Privilege> result;
+        final Iterable<PersistentPrivilege> result;
 
         result = repository.findForUser(-1L);
 

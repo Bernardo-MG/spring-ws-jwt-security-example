@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.model.User;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.PersistentUser;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
@@ -28,7 +28,7 @@ public class ITUserRepository {
     @Test
     @DisplayName("Returns the user for an existing username")
     public void testFindForUser_existing() {
-        final Optional<User> result;
+        final Optional<PersistentUser> result;
 
         result = repository.findOneByUsername("admin");
 
@@ -40,7 +40,7 @@ public class ITUserRepository {
     @Test
     @DisplayName("Returns no data for a not existing username")
     public void testFindForUser_notExisting() {
-        final Optional<User> result;
+        final Optional<PersistentUser> result;
 
         result = repository.findOneByUsername("abc");
 

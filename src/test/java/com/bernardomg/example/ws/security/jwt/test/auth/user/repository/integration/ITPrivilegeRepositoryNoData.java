@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bernardomg.example.ws.security.jwt.auth.user.model.Privilege;
+import com.bernardomg.example.ws.security.jwt.auth.user.model.PersistentPrivilege;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
@@ -26,7 +26,7 @@ public class ITPrivilegeRepositoryNoData {
     @Test
     @DisplayName("Returns all the privileges for a user")
     public void testFindForUser_Count() {
-        final Iterable<? extends Privilege> result;
+        final Iterable<PersistentPrivilege> result;
 
         result = repository.findForUser(1L);
 
