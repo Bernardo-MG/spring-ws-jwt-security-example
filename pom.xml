@@ -474,7 +474,6 @@
 
    <build>
       <defaultGoal>clean package</defaultGoal>
-      <finalName>resource-server</finalName>
       <plugins>
          <plugin>
             <!-- Changes -->
