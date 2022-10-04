@@ -25,6 +25,7 @@
 package com.bernardomg.example.ws.security.jwt.auth.userdetails;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -104,7 +105,7 @@ public final class PersistentUserDetailsService implements UserDetailsService {
         final Collection<? extends GrantedAuthority> authorities;
         final UserDetails                            details;
 
-        user = userRepo.findOneByUsername(username.toLowerCase());
+        user = userRepo.findOneByUsername(username.toLowerCase(Locale.getDefault()));
 
         if (!user.isPresent()) {
             log.warn("Username {} not found in DB", username);

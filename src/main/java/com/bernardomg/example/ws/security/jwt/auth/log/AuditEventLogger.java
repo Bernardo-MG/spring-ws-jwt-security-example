@@ -42,6 +42,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuditEventLogger {
 
+    public AuditEventLogger() {
+        super();
+    }
+
     @EventListener
     public void auditEventHappened(final AuditApplicationEvent auditApplicationEvent) {
         final AuditEvent               auditEvent;

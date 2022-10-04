@@ -166,9 +166,9 @@
       <!-- ================== SPRING ==================== -->
       <!-- ============================================== -->
       <dependency>
-         <!-- Spring AOP -->
+         <!-- Spring Web MVC -->
          <groupId>org.springframework</groupId>
-         <artifactId>spring-aop</artifactId>
+         <artifactId>spring-webmvc</artifactId>
       </dependency>
       <dependency>
          <!-- Spring beans -->
@@ -181,29 +181,9 @@
          <artifactId>spring-context</artifactId>
       </dependency>
       <dependency>
-         <!-- Spring context support -->
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-context-support</artifactId>
-      </dependency>
-      <dependency>
          <!-- Spring Core -->
          <groupId>org.springframework</groupId>
          <artifactId>spring-core</artifactId>
-      </dependency>
-      <dependency>
-         <!-- Spring JDBC -->
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-jdbc</artifactId>
-      </dependency>
-      <dependency>
-         <!-- Spring Data JPA -->
-         <groupId>org.springframework.data</groupId>
-         <artifactId>spring-data-jpa</artifactId>
-      </dependency>
-      <dependency>
-         <!-- Spring OXM -->
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-oxm</artifactId>
       </dependency>
       <dependency>
          <!-- Spring transactions -->
@@ -215,13 +195,62 @@
          <groupId>org.springframework</groupId>
          <artifactId>spring-web</artifactId>
       </dependency>
+      <!-- ============================================== -->
+      <!-- =============== SPRING DATA ================== -->
+      <!-- ============================================== -->
       <dependency>
-         <!-- Spring ORM -->
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-orm</artifactId>
+         <!-- Spring Data JPA -->
+         <groupId>org.springframework.data</groupId>
+         <artifactId>spring-data-jpa</artifactId>
+      </dependency>
+      <dependency>
+         <!-- Spring Data Commons -->
+         <groupId>org.springframework.data</groupId>
+         <artifactId>spring-data-commons</artifactId>
+      </dependency>
+      <!-- ============================================== -->
+      <!-- ============= SPRING SECURITY ================ -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Spring Security Core -->
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-core</artifactId>
+      </dependency>
+      <dependency>
+         <!-- Spring Security Config -->
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-config</artifactId>
+      </dependency>
+      <dependency>
+         <!-- Spring Security Config -->
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-web</artifactId>
+      </dependency>
+      <dependency>
+         <!-- Spring Security Crypto -->
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-crypto</artifactId>
       </dependency>
       <!-- ============================================== -->
       <!-- =============== SPRING BOOT ================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Spring Boot -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot</artifactId>
+      </dependency>
+      <dependency>
+         <!-- Spring Boot Actuator -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-actuator</artifactId>
+      </dependency>
+      <dependency>
+         <!-- Spring Boot Autoconfigure -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-autoconfigure</artifactId>
+      </dependency>
+      <!-- ============================================== -->
+      <!-- =========== SPRING BOOT STARTER ============== -->
       <!-- ============================================== -->
       <dependency>
          <!-- Spring Boot Starter: Web -->
@@ -313,12 +342,6 @@
          <artifactId>hibernate-ehcache</artifactId>
       </dependency>
       <dependency>
-         <!-- Hibernate validator -->
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-validator</artifactId>
-         <version>${hibernate.validator.version}</version>
-      </dependency>
-      <dependency>
          <!-- Hikari CP -->
          <groupId>com.zaxxer</groupId>
          <artifactId>HikariCP</artifactId>
@@ -351,6 +374,15 @@
                <artifactId>logback-classic</artifactId>
             </exclusion>
          </exclusions>
+      </dependency>
+      <!-- ============================================== -->
+      <!-- ================ SERVLET ===================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Servlet API -->
+         <groupId>javax.servlet</groupId>
+         <artifactId>javax.servlet-api</artifactId>
+         <scope>provided</scope>
       </dependency>
       <!-- ============================================== -->
       <!-- ================== LOMBOK ==================== -->
@@ -424,9 +456,15 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <!-- JUnit Jupiter Engine -->
+         <!-- JUnit Jupiter API -->
          <groupId>org.junit.jupiter</groupId>
-         <artifactId>junit-jupiter-engine</artifactId>
+         <artifactId>junit-jupiter-api</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- JUnit Jupiter -->
+         <groupId>org.junit.jupiter</groupId>
+         <artifactId>junit-jupiter</artifactId>
          <scope>test</scope>
       </dependency>
       <dependency>
@@ -465,6 +503,18 @@
                <artifactId>junit-vintage-engine</artifactId>
             </exclusion>
          </exclusions>
+      </dependency>
+      <dependency>
+         <!-- Spring Boot Test -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-test</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- Spring Boot Test Autoconfigure -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-test-autoconfigure</artifactId>
+         <scope>test</scope>
       </dependency>
    </dependencies>
 

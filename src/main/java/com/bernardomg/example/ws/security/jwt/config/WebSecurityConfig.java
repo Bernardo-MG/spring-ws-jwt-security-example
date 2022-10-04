@@ -39,7 +39,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.TokenFilter;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
 
 /**
  * Web security configuration.
@@ -55,7 +55,7 @@ public class WebSecurityConfig {
     private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private TokenFilter              tokenFilter;
+    private JwtTokenFilter              tokenFilter;
 
     @Autowired
     private UserDetailsService       userDetailsService;

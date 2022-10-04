@@ -84,7 +84,7 @@ public final class JwtTokenProcessor implements TokenValidator, TokenProvider {
         // Issued right now
         issuedAt = new Date();
         // Expires in a number of seconds equal to validity
-        expiration = new Date(System.currentTimeMillis() + (validity * 1000));
+        expiration = new Date(System.currentTimeMillis() + (validity * 1000L));
 
         token = Jwts.builder()
             .setSubject(subject)

@@ -47,14 +47,17 @@ import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenValidator;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Token filter. The actual token specification to use will depend on the {@link TokenValidator} used.
+ * JWT token filter. Takes the JWT token from the request, validates it and initializes the authentication.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-public final class TokenFilter extends OncePerRequestFilter {
+public final class JwtTokenFilter extends OncePerRequestFilter {
 
+    /**
+     * Token header identifier. This is added before the token to tell which kind of token it is.
+     */
     private final String             tokenHeaderIdentifier = "Bearer";
 
     /**
@@ -75,7 +78,7 @@ public final class TokenFilter extends OncePerRequestFilter {
      * @param processor
      *            token processor
      */
-    public TokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
+    public JwtTokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
         super();
 
         userDetailsService = Objects.requireNonNull(userDetService);
