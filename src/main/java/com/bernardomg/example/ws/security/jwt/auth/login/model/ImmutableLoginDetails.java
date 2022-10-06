@@ -24,33 +24,39 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.login.model;
 
+import lombok.Data;
+import lombok.NonNull;
+
 /**
- * Status after a login attempt.
+ * Immutable implementation of {@link LoginDetails}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface LoginStatus {
+@Data
+public final class ImmutableLoginDetails implements LoginDetails {
 
     /**
-     * Returns if the logging attempt was successful.
-     *
-     * @return {@code true} if the login was successful, {@code false} otherwise
+     * Flag telling if the login was successful.
      */
-    public Boolean getLogged();
+    private final Boolean logged;
 
     /**
-     * Returns the security token.
-     *
-     * @return the security token
+     * Security token.
      */
-    public String getToken();
+    private final String  token;
 
     /**
-     * Returns the username of the user who attempted login.
-     *
-     * @return the username
+     * Username of the user who attempted login.
      */
-    public String getUsername();
+    private final String  username;
+
+    public ImmutableLoginDetails(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
+        super();
+
+        username = usnm;
+        logged = lgd;
+        token = tkn;
+    }
 
 }

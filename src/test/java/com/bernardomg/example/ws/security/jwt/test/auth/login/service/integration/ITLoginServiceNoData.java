@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
+import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginDetails;
 import com.bernardomg.example.ws.security.jwt.auth.login.service.LoginService;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
@@ -24,7 +24,7 @@ public class ITLoginServiceNoData {
     @Test
     @DisplayName("Trying to log in returns a user which isn't logged in")
     public final void testLogin_invalidPassword() {
-        final LoginStatus result;
+        final LoginDetails result;
 
         result = service.login("admin", "abc");
 

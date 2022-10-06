@@ -24,8 +24,8 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.login.service;
 
-import com.bernardomg.example.ws.security.jwt.auth.login.model.ImmutableLoginStatus;
-import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
+import com.bernardomg.example.ws.security.jwt.auth.login.model.ImmutableLoginDetails;
+import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginDetails;
 import com.bernardomg.example.ws.security.jwt.auth.login.validation.LoginValidator;
 import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
 
@@ -60,7 +60,7 @@ public final class TokenLoginService implements LoginService {
     }
 
     @Override
-    public final LoginStatus login(final String username, final String password) {
+    public final LoginDetails login(final String username, final String password) {
         final Boolean valid;
         final String  token;
 
@@ -80,7 +80,7 @@ public final class TokenLoginService implements LoginService {
             log.debug("Failed login for {}", username);
         }
 
-        return new ImmutableLoginStatus(username, valid, token);
+        return new ImmutableLoginDetails(username, valid, token);
     }
 
 }

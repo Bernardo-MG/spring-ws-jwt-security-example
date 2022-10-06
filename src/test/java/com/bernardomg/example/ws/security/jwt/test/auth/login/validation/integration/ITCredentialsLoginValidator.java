@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.bernardomg.example.ws.security.jwt.auth.login.validation.LoginValidator;
 import com.bernardomg.example.ws.security.jwt.auth.login.validation.CredentialsLoginValidator;
+import com.bernardomg.example.ws.security.jwt.auth.login.validation.LoginValidator;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.IntegrationTest;
 
 @IntegrationTest
@@ -22,8 +22,7 @@ public class ITCredentialsLoginValidator {
     private final LoginValidator validator;
 
     @Autowired
-    public ITCredentialsLoginValidator(final UserDetailsService userDetsService,
-            final PasswordEncoder passEncoder) {
+    public ITCredentialsLoginValidator(final UserDetailsService userDetsService, final PasswordEncoder passEncoder) {
         super();
 
         validator = new CredentialsLoginValidator(userDetsService, passEncoder);
