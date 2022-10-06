@@ -67,12 +67,41 @@ public final class DefaultLoginService implements LoginService {
 
     @Override
     public final LoginStatus login(final String username, final String password) {
-        final Boolean         logged;
-        final LoginStatus     status;
-        final String          token;
-        Optional<UserDetails> details;
+        final Boolean     logged;
+        final LoginStatus status;
+        final String      token;
 
         log.debug("Log in attempt for {}", username);
+
+        logged = validateUser(username, password);
+
+        if (logged) {
+            // Valid user
+            // Generate token
+            token = tokenGenerator.generateToken(username);
+        } else {
+            token = "";
+        }
+
+        status = new ImmutableLoginStatus(username, logged, token);
+
+        log.debug("Finished log in attempt for {}. Logged in: {}", username, logged);
+
+        return status;
+    }
+
+    /**
+     * Checks if the user is valid and allows to attempt a login.
+     *
+     * @param username
+     *            username to authenticate
+     * @param password
+     *            password to authenticate
+     * @return {@true} if the user is valid, {@code false} otherwise
+     */
+    private final Boolean validateUser(final String username, final String password) {
+        final Boolean         logged;
+        Optional<UserDetails> details;
 
         // Find the user
         try {
@@ -95,19 +124,7 @@ public final class DefaultLoginService implements LoginService {
             }
         }
 
-        if (logged) {
-            // Valid user
-            // Generate token
-            token = tokenGenerator.generateToken(username);
-        } else {
-            token = "";
-        }
-
-        status = new ImmutableLoginStatus(username, logged, token);
-
-        log.debug("Finished log in attempt for {}. Logged in: {}", username, logged);
-
-        return status;
+        return logged;
     }
 
 }
