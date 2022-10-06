@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.login.service;
+package com.bernardomg.example.ws.security.jwt.auth.login.validation;
 
 import java.util.Optional;
 
@@ -30,25 +30,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import com.bernardomg.example.ws.security.jwt.auth.login.model.ImmutableLoginStatus;
-import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
-import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
-
-import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Default implementation of the login service.
+ * Basic login validator, which checks these rules:
+ * <ul>
+ * <li>There is a user for the received username</li>
+ * <li>Received password matches with the user password</li>
+ * </ul>
+ * <h2>Finding the user</h2>
+ * <p>
+ * {@link UserDetailsService} is used for finding the user. This means that only those users available to the Spring
+ * security context will be valid.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Service
 @Slf4j
-@AllArgsConstructor
-public final class DefaultLoginService implements LoginService {
+public final class ValidUserNameAndPasswordLoginValidator implements LoginValidator {
 
     /**
      * Password encoder, for validating passwords.
@@ -56,51 +57,21 @@ public final class DefaultLoginService implements LoginService {
     private final PasswordEncoder    passwordEncoder;
 
     /**
-     * Token provider, creates authentication tokens.
-     */
-    private final TokenProvider      tokenProvider;
-
-    /**
      * User details service, to find and validate users.
      */
     private final UserDetailsService userDetailsService;
 
-    @Override
-    public final LoginStatus login(final String username, final String password) {
-        final Boolean     valid;
-        final LoginStatus status;
-        final String      token;
+    public ValidUserNameAndPasswordLoginValidator(@NonNull final UserDetailsService userDetsService,
+            @NonNull final PasswordEncoder passEncoder) {
+        super();
 
-        log.debug("Log in attempt for {}", username);
-
-        valid = validateUser(username, password);
-
-        if (valid) {
-            // Valid user
-            // Generate token
-            token = tokenProvider.generateToken(username);
-        } else {
-            token = "";
-        }
-
-        status = new ImmutableLoginStatus(username, valid, token);
-
-        log.debug("Finished log in attempt for {}. Logged in: {}", username, valid);
-
-        return status;
+        userDetailsService = userDetsService;
+        passwordEncoder = passEncoder;
     }
 
-    /**
-     * Checks if the user is valid and allows to attempt a login.
-     *
-     * @param username
-     *            username to authenticate
-     * @param password
-     *            password to authenticate
-     * @return {@true} if the user is valid, {@code false} otherwise
-     */
-    private final Boolean validateUser(final String username, final String password) {
-        final Boolean         logged;
+    @Override
+    public final Boolean isValid(final String username, final String password) {
+        final Boolean         valid;
         Optional<UserDetails> details;
 
         // Find the user
@@ -110,21 +81,21 @@ public final class DefaultLoginService implements LoginService {
             details = Optional.empty();
         }
 
-        // Check if the user is valid
         if (details.isEmpty()) {
             // No user found for username
             log.debug("No user for username {}", username);
-            logged = false;
+            valid = false;
         } else {
+            // User exists
             // Validate password
-            logged = passwordEncoder.matches(password, details.get()
+            valid = passwordEncoder.matches(password, details.get()
                 .getPassword());
-            if (!logged) {
+            if (!valid) {
                 log.debug("Received password doesn't match the one stored for username {}", username);
             }
         }
 
-        return logged;
+        return valid;
     }
 
 }
