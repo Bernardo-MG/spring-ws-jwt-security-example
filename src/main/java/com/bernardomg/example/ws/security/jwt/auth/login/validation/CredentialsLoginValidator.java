@@ -35,7 +35,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Basic login validator, which checks these rules:
+ * Basic login validator, which checks the credentials with these rules:
  * <ul>
  * <li>There is a user for the received username</li>
  * <li>Received password matches with the user password</li>
@@ -49,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class ValidUserNameAndPasswordLoginValidator implements LoginValidator {
+public final class CredentialsLoginValidator implements LoginValidator {
 
     /**
      * Password encoder, for validating passwords.
@@ -61,7 +61,7 @@ public final class ValidUserNameAndPasswordLoginValidator implements LoginValida
      */
     private final UserDetailsService userDetailsService;
 
-    public ValidUserNameAndPasswordLoginValidator(@NonNull final UserDetailsService userDetsService,
+    public CredentialsLoginValidator(@NonNull final UserDetailsService userDetsService,
             @NonNull final PasswordEncoder passEncoder) {
         super();
 
