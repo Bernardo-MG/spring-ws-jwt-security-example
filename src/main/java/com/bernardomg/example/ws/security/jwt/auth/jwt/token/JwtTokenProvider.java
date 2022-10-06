@@ -24,30 +24,25 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.jwt.token;
 
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Objects;
-import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JWT token processor.
- * <p>
- * Expects the secret to be encoded on UTF-8.
+ * JWT token provider.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-public final class JwtTokenProcessor implements TokenValidator, TokenProvider {
+public final class JwtTokenProvider implements TokenProvider {
 
     /**
      * Secret key for generating tokens. Created from the secret received when constructing the processor.
@@ -62,16 +57,15 @@ public final class JwtTokenProcessor implements TokenValidator, TokenProvider {
     /**
      * Constructs a processor with the received arguments.
      *
-     * @param secret
-     *            secret used when generating tokens
+     * @param secretKey
+     *            key used when generating tokens
      * @param validityTime
      *            token validity time in seconds
      */
-    public JwtTokenProcessor(final String secret, final Integer validityTime) {
+    public JwtTokenProvider(final SecretKey secretKey, final Integer validityTime) {
         super();
 
-        Objects.requireNonNull(secret);
-        key = Keys.hmacShaKeyFor(secret.getBytes(Charset.forName("UTF-8")));
+        key = Objects.requireNonNull(secretKey);
         validity = Objects.requireNonNull(validityTime);
     }
 
@@ -96,71 +90,6 @@ public final class JwtTokenProcessor implements TokenValidator, TokenProvider {
         log.debug("Created token for subject {} with expiration date {}", subject, expiration);
 
         return token;
-    }
-
-    @Override
-    public final String getSubject(final String token) {
-        final String subject;
-
-        subject = getClaim(token, Claims::getSubject);
-
-        log.debug("Found subject {}", subject);
-
-        return subject;
-    }
-
-    @Override
-    public final Boolean hasExpired(final String token) {
-        final Date expiration;
-        final Date current;
-        Boolean    expired;
-
-        try {
-            expiration = getClaim(token, Claims::getExpiration);
-
-            current = new Date();
-            expired = expiration.before(current);
-
-            log.debug("Token expires on {}, and the current date is {}. Expired? {}", expiration, current, expired);
-        } catch (final ExpiredJwtException e) {
-            log.debug(e.getLocalizedMessage());
-            expired = true;
-        }
-
-        return expired;
-    }
-
-    /**
-     * Returns all claims from the token.
-     *
-     * @param token
-     *            token to parse
-     * @return all the claims from the token
-     */
-    private final Claims getAllClaims(final String token) {
-        return Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
-    }
-
-    /**
-     * Returns a claim from the token, defined through the claim resolver.
-     *
-     * @param <T>
-     *            type of the claim
-     * @param token
-     *            token to parse
-     * @param resolver
-     *            claim resolver
-     * @return the claim from the token and resolver
-     */
-    private final <T> T getClaim(final String token, final Function<Claims, T> resolver) {
-        final Claims claims;
-
-        claims = getAllClaims(token);
-        return resolver.apply(claims);
     }
 
 }

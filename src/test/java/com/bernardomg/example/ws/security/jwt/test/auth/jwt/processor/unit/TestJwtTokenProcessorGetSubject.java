@@ -1,25 +1,41 @@
 
 package com.bernardomg.example.ws.security.jwt.test.auth.jwt.processor.unit;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
+
+import javax.crypto.SecretKey;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProvider;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenValidator;
+import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.Keys;
 
 @DisplayName("JWT token processor - get subject")
 public class TestJwtTokenProcessorGetSubject {
 
-    private final JwtTokenProcessor processor = new JwtTokenProcessor(
-        "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 2);
+    private final TokenProvider     provider;
+
+    private final JwtTokenValidator validator;
 
     public TestJwtTokenProcessorGetSubject() {
         super();
+
+        final SecretKey key;
+
+        key = Keys.hmacShaKeyFor(
+            "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+                .getBytes(Charset.forName("UTF-8")));
+
+        provider = new JwtTokenProvider(key, 1);
+        validator = new JwtTokenValidator(key);
     }
 
     @Test
@@ -28,8 +44,8 @@ public class TestJwtTokenProcessorGetSubject {
         final String token;
         final String subject;
 
-        token = processor.generateToken("subject");
-        subject = processor.getSubject(token);
+        token = provider.generateToken("subject");
+        subject = validator.getSubject(token);
 
         Assertions.assertEquals("subject", subject);
     }
@@ -40,12 +56,12 @@ public class TestJwtTokenProcessorGetSubject {
         final String     token;
         final Executable executable;
 
-        token = processor.generateToken("subject");
+        token = provider.generateToken("subject");
 
-        TimeUnit.SECONDS.sleep(Double.valueOf(2.5)
+        TimeUnit.SECONDS.sleep(Double.valueOf(2)
             .longValue());
 
-        executable = () -> processor.getSubject(token);
+        executable = () -> validator.getSubject(token);
 
         Assertions.assertThrows(ExpiredJwtException.class, executable);
     }

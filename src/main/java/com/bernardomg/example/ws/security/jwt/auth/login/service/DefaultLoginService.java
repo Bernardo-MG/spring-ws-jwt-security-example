@@ -32,9 +32,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.ImmutableLoginStatus;
 import com.bernardomg.example.ws.security.jwt.auth.login.model.LoginStatus;
+import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,9 +56,9 @@ public final class DefaultLoginService implements LoginService {
     private final PasswordEncoder    passwordEncoder;
 
     /**
-     * Token generator, creates authentication tokens.
+     * Token provider, creates authentication tokens.
      */
-    private final TokenProvider      tokenGenerator;
+    private final TokenProvider      tokenProvider;
 
     /**
      * User details service, to find and validate users.
@@ -78,7 +78,7 @@ public final class DefaultLoginService implements LoginService {
         if (logged) {
             // Valid user
             // Generate token
-            token = tokenGenerator.generateToken(username);
+            token = tokenProvider.generateToken(username);
         } else {
             token = "";
         }

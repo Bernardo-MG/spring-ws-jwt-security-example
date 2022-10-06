@@ -22,31 +22,32 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
-import com.bernardomg.example.ws.security.jwt.auth.token.TokenValidator;
+package com.bernardomg.example.ws.security.jwt.auth.token;
 
 /**
- * Authentication configuration.
+ * Token validator.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-public class JwtConfig {
+public interface TokenValidator {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * Returns the subject from the received token.
+     *
+     * @param token
+     *            to parse and extract the subject
+     * @return subject from the token
+     */
+    public String getSubject(final String token);
 
-    @Bean("jwtTokenFilter")
-    public JwtTokenFilter getJwtTokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
-        return new JwtTokenFilter(userDetService, processor);
-    }
+    /**
+     * Check if the token has expired.
+     *
+     * @param token
+     *            token to validate
+     * @return {@code true} if the token has expired, {@code false} otherwise
+     */
+    public Boolean hasExpired(final String token);
 
 }

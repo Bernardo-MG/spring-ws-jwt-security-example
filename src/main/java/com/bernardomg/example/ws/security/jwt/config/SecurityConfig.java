@@ -24,6 +24,11 @@
 
 package com.bernardomg.example.ws.security.jwt.config;
 
+import java.nio.charset.Charset;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,9 +38,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProvider;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenValidator;
+import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
 import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
+
+import io.jsonwebtoken.security.Keys;
 
 /**
  * Security configuration.
@@ -56,9 +66,24 @@ public class SecurityConfig {
         return new ErrorResponseAuthenticationEntryPoint();
     }
 
+    @Bean("jwtSecretKey")
+    public SecretKey getJwtSecretKey(@Value("${jwt.secret}") final String secret) {
+        return Keys.hmacShaKeyFor(secret.getBytes(Charset.forName("UTF-8")));
+    }
+
     @Bean("passwordEncoder")
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean("tokenProcessor")
+    public JwtTokenValidator getTokenProcessor(final SecretKey key) {
+        return new JwtTokenValidator(key);
+    }
+
+    @Bean("tokenProvider")
+    public TokenProvider getTokenProvider(final SecretKey key, @Value("${jwt.validity}") final Integer validity) {
+        return new JwtTokenProvider(key, validity);
     }
 
     @Bean("userDetailsService")

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.jwt.token;
+package com.bernardomg.example.ws.security.jwt.auth.token;
 
 /**
  * Token provider.

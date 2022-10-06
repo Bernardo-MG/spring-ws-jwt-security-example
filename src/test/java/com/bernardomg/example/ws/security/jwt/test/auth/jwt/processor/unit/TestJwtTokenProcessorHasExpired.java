@@ -1,22 +1,39 @@
 
 package com.bernardomg.example.ws.security.jwt.test.auth.jwt.processor.unit;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
+
+import javax.crypto.SecretKey;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProvider;
+import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenValidator;
+import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
+
+import io.jsonwebtoken.security.Keys;
 
 @DisplayName("JWT token processor - has expired")
 public class TestJwtTokenProcessorHasExpired {
 
-    private final JwtTokenProcessor processor = new JwtTokenProcessor(
-        "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", 1);
+    private final TokenProvider     provider;
+
+    private final JwtTokenValidator validator;
 
     public TestJwtTokenProcessorHasExpired() {
         super();
+
+        final SecretKey key;
+
+        key = Keys.hmacShaKeyFor(
+            "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+                .getBytes(Charset.forName("UTF-8")));
+
+        provider = new JwtTokenProvider(key, 1);
+        validator = new JwtTokenValidator(key);
     }
 
     @Test
@@ -25,8 +42,8 @@ public class TestJwtTokenProcessorHasExpired {
         final String  token;
         final Boolean expired;
 
-        token = processor.generateToken("subject");
-        expired = processor.hasExpired(token);
+        token = provider.generateToken("subject");
+        expired = validator.hasExpired(token);
 
         Assertions.assertFalse(expired);
     }
@@ -37,12 +54,12 @@ public class TestJwtTokenProcessorHasExpired {
         final String  token;
         final Boolean expired;
 
-        token = processor.generateToken("subject");
+        token = provider.generateToken("subject");
 
         TimeUnit.SECONDS.sleep(Double.valueOf(1.5)
             .longValue());
 
-        expired = processor.hasExpired(token);
+        expired = validator.hasExpired(token);
 
         Assertions.assertTrue(expired);
     }
