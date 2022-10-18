@@ -39,18 +39,48 @@ import com.bernardomg.example.ws.security.jwt.mvc.error.model.Failure;
  */
 public interface Response<T> {
 
+    /**
+     * Creates an empty response.
+     *
+     * @param <T>
+     *            response content type
+     * @return an empty response
+     */
     public static <T> Response<T> empty() {
         return new ImmutableResponse<>();
     }
 
-    public static ErrorResponse error(final Collection<? extends Failure> errors) {
-        return new ImmutableErrorResponse<>(errors);
+    /**
+     * Creates an error response.
+     *
+     * @param failures
+     *            failures which caused the error
+     * @return an error response
+     */
+    public static ErrorResponse error(final Collection<? extends Failure> failures) {
+        return new ImmutableErrorResponse<>(failures);
     }
 
-    public static ErrorResponse error(final Failure error) {
-        return new ImmutableErrorResponse<>(Arrays.asList(error));
+    /**
+     * Creates an error response.
+     *
+     * @param failure
+     *            failure which caused the error
+     * @return an error response
+     */
+    public static ErrorResponse error(final Failure failure) {
+        return new ImmutableErrorResponse<>(Arrays.asList(failure));
     }
 
+    /**
+     * Creates a response with the specified content.
+     *
+     * @param <T>
+     *            response content type
+     * @param content
+     *            response content
+     * @return response with the received content
+     */
     public static <T> Response<T> of(final T content) {
         return new ImmutableResponse<>(content);
     }
