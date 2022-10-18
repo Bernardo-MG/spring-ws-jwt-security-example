@@ -22,34 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
-import com.bernardomg.example.ws.security.jwt.auth.property.JwtProperties;
-import com.bernardomg.example.ws.security.jwt.auth.token.TokenValidator;
-
 /**
- * Authentication configuration.
- *
- * @author Bernardo Martínez Garrido
- *
+ * Property components.
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
 
-    public JwtConfig() {
-        super();
-    }
-
-    @Bean("jwtTokenFilter")
-    public JwtTokenFilter getJwtTokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
-        return new JwtTokenFilter(userDetService, processor);
-    }
-
-}
+package com.bernardomg.example.ws.security.jwt.auth.property;

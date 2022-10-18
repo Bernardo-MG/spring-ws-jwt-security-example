@@ -28,7 +28,6 @@ import java.nio.charset.Charset;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -44,6 +43,7 @@ import com.bernardomg.example.ws.security.jwt.auth.login.service.LoginService;
 import com.bernardomg.example.ws.security.jwt.auth.login.service.TokenLoginService;
 import com.bernardomg.example.ws.security.jwt.auth.login.validation.CredentialsLoginValidator;
 import com.bernardomg.example.ws.security.jwt.auth.login.validation.LoginValidator;
+import com.bernardomg.example.ws.security.jwt.auth.property.JwtProperties;
 import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
@@ -71,8 +71,9 @@ public class SecurityConfig {
     }
 
     @Bean("jwtSecretKey")
-    public SecretKey getJwtSecretKey(@Value("${jwt.secret}") final String secret) {
-        return Keys.hmacShaKeyFor(secret.getBytes(Charset.forName("UTF-8")));
+    public SecretKey getJwtSecretKey(final JwtProperties properties) {
+        return Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(Charset.forName("UTF-8")));
     }
 
     @Bean("loginService")
@@ -95,8 +96,8 @@ public class SecurityConfig {
     }
 
     @Bean("tokenProvider")
-    public TokenProvider getTokenProvider(final SecretKey key, @Value("${jwt.validity}") final Integer validity) {
-        return new JwtTokenProvider(key, validity);
+    public TokenProvider getTokenProvider(final SecretKey key, final JwtProperties properties) {
+        return new JwtTokenProvider(key, properties.getValidity());
     }
 
     @Bean("userDetailsService")
