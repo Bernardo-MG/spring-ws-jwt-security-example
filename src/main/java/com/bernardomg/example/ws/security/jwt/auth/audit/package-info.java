@@ -23,7 +23,7 @@
  */
 
 /**
- * Authentication logging.
+ * Audit components.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.log;
+package com.bernardomg.example.ws.security.jwt.auth.audit;
