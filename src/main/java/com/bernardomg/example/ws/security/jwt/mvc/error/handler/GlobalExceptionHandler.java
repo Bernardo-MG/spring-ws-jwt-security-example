@@ -57,16 +57,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ AuthenticationException.class, AccessDeniedException.class })
-    public final ResponseEntity<Object> handleAuthenticationException(final Exception ex, final WebRequest request)
-            throws Exception {
+    public final ResponseEntity<Object> handleAuthenticationException(final Exception ex, final WebRequest request) {
         log.error(ex.getMessage(), ex);
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({ RuntimeException.class })
-    public final ResponseEntity<Object> handleExceptionDefault(final Exception ex, final WebRequest request)
-            throws Exception {
+    public final ResponseEntity<Object> handleExceptionDefault(final Exception ex, final WebRequest request) {
         log.error(ex.getMessage(), ex);
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -51,12 +51,21 @@ import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.JwtTokenFilter;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    /**
+     * Authentication entry point.
+     */
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
+    /**
+     * Token filter.
+     */
     @Autowired
     private JwtTokenFilter           tokenFilter;
 
+    /**
+     * User details service.
+     */
     @Autowired
     private UserDetailsService       userDetailsService;
 
