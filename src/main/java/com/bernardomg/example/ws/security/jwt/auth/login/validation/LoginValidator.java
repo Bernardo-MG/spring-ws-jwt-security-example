@@ -33,7 +33,7 @@ public interface LoginValidator {
      *            username to authenticate
      * @param password
      *            password to authenticate
-     * @return {@true} if the user is valid, {@code false} otherwise
+     * @return {@code true} if the user is valid, {@code false} otherwise
      */
     public Boolean isValid(final String username, final String password);
 
