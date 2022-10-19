@@ -24,6 +24,12 @@
 
 package com.bernardomg.example.ws.security.jwt.auth.login.validation;
 
+/**
+ * Validator which checks if a user can log into the application.
+ * 
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 public interface LoginValidator {
 
     /**
