@@ -27,7 +27,7 @@
 -- This SQL script populates the initial sequences.
 -- ****************************************
 
-INSERT INTO sequences (seq_name, seq_count) VALUES
+INSERT INTO sequences (name, count) VALUES
    ('users', 0),
    ('roles', 0),
    ('privileges', 0);
