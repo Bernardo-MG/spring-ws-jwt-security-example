@@ -56,7 +56,7 @@ public class TestJwtTokenProcessorHasExpired {
 
         token = provider.generateToken("subject");
 
-        TimeUnit.SECONDS.sleep(Double.valueOf(1.5)
+        TimeUnit.SECONDS.sleep(Double.valueOf(2)
             .longValue());
 
         expired = validator.hasExpired(token);
