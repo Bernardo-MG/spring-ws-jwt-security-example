@@ -32,7 +32,7 @@ public class TestJwtTokenProcessorHasExpired {
             "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 .getBytes(Charset.forName("UTF-8")));
 
-        provider = new JwtTokenProvider(key, 2);
+        provider = new JwtTokenProvider(key, 5);
         validator = new JwtTokenValidator(key);
     }
 
@@ -56,7 +56,7 @@ public class TestJwtTokenProcessorHasExpired {
 
         token = provider.generateToken("subject");
 
-        TimeUnit.SECONDS.sleep(Double.valueOf(2.5)
+        TimeUnit.SECONDS.sleep(Double.valueOf(6)
             .longValue());
 
         expired = validator.hasExpired(token);
