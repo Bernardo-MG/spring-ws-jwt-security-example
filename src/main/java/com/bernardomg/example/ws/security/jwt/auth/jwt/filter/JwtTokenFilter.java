@@ -94,12 +94,15 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
      *            user for the authentication
      * @param request
      *            request details for the authentication
+     * @param token
+     *            parsed security token
      * @return an authentication object
      */
-    private final Authentication getAuthentication(final UserDetails userDetails, final HttpServletRequest request) {
+    private final Authentication getAuthentication(final UserDetails userDetails, final HttpServletRequest request,
+            final String token) {
         final AbstractAuthenticationToken authenticationToken;
 
-        authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         return authenticationToken;
@@ -112,30 +115,22 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
      *            the token to parse
      * @return the subject from the token if found, or an empty {@code Optional} otherwise
      */
-    private final Optional<String> getSubject(final Optional<String> token) {
-        Optional<String> subject;
-
-        if (token.isPresent()) {
-            log.debug("Parsing subject from token");
-            subject = Optional.ofNullable(tokenValidator.getSubject(token.get()));
-        } else {
-            // No token received
-            subject = Optional.empty();
-        }
-
-        return subject;
+    private final Optional<String> getSubject(final String token) {
+        return Optional.ofNullable(tokenValidator.getSubject(token));
     }
 
     /**
      * Takes the token from the authorization header.
      *
-     * @param header
-     *            header with the token
+     * @param request
+     *            request containing the header with the token
      * @return the token if found, or an empty {@code Optional} otherwise
      */
-    private final Optional<String> getToken(final String header) {
+    private final Optional<String> getToken(final HttpServletRequest request) {
+        final String           header;
         final Optional<String> token;
 
+        header = request.getHeader("Authorization");
         if (header.trim()
             .startsWith(tokenHeaderIdentifier + " ")) {
             // Token received
@@ -166,43 +161,44 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
-        final String           authHeader;
         final Optional<String> token;
         final Optional<String> subject;
         final UserDetails      userDetails;
         final Authentication   authentication;
 
-        authHeader = request.getHeader("Authorization");
+        token = getToken(request);
 
-        if (authHeader == null) {
+        if (token.isEmpty()) {
             // Missing header
             log.debug("Missing authorization header");
-        } else if (SecurityContextHolder.getContext()
-            .getAuthentication() == null) {
-            // No authentication in context
+        } else if (!tokenValidator.hasExpired(token.get())) {
+            // Token not expired
             // Will load a new authentication from the token
 
-            log.debug("No authentication in context. Will load a new authentication from the token");
+            // Takes subject from the token
+            subject = getSubject(token.get());
 
-            token = getToken(authHeader);
-            subject = getSubject(token);
-
-            // Once we get the token validate it.
-            if (subject.isPresent()) {
-                log.debug("Validating authentication token for {}", subject.get());
+            if (subject.isEmpty()) {
+                log.debug("Could not find subject in token {}", token.get());
+            } else {
+                // Found subject
+                // Searchs for user
                 userDetails = userDetailsService.loadUserByUsername(subject.get());
 
-                if ((isValid(userDetails)) && (!tokenValidator.hasExpired(token.get()))) {
-                    // User valid and token not expired
-
-                    log.debug("Valid authentication token. Will load authentication details");
+                if (isValid(userDetails)) {
+                    // User valid
+                    log.debug("Authenticated {}", subject.get());
 
                     // Create and register authentication
-                    authentication = getAuthentication(userDetails, request);
+                    authentication = getAuthentication(userDetails, request, token.get());
                     SecurityContextHolder.getContext()
                         .setAuthentication(authentication);
+                } else {
+                    log.debug("Invalid user {}", subject.get());
                 }
             }
+        } else {
+            log.debug("Invalid token {}", token.get());
         }
 
         chain.doFilter(request, response);

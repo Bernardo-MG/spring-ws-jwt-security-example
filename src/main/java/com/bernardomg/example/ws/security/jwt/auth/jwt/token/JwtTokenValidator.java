@@ -34,6 +34,7 @@ import com.bernardomg.example.ws.security.jwt.auth.token.TokenValidator;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,20 +48,24 @@ import lombok.extern.slf4j.Slf4j;
 public final class JwtTokenValidator implements TokenValidator {
 
     /**
-     * Secret key for generating tokens. Created from the secret received when constructing the validator.
+     * JWT parser for reading tokens.
      */
-    private final SecretKey key;
+    private final JwtParser parser;
 
     /**
      * Constructs a validator with the received arguments.
      *
-     * @param secretKey
+     * @param key
      *            key used when generating tokens
      */
-    public JwtTokenValidator(final SecretKey secretKey) {
+    public JwtTokenValidator(final SecretKey key) {
         super();
 
-        key = Objects.requireNonNull(secretKey);
+        Objects.requireNonNull(key);
+
+        parser = Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build();
     }
 
     @Override
@@ -103,10 +108,7 @@ public final class JwtTokenValidator implements TokenValidator {
      * @return all the claims from the token
      */
     private final Claims getAllClaims(final String token) {
-        return Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build()
-            .parseClaimsJws(token)
+        return parser.parseClaimsJws(token)
             .getBody();
     }
 
