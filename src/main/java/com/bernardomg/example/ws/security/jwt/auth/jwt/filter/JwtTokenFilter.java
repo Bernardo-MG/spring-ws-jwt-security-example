@@ -33,6 +33,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -131,8 +132,8 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
         final Optional<String> token;
 
         header = request.getHeader("Authorization");
-        if (header.trim()
-            .startsWith(tokenHeaderIdentifier + " ")) {
+        if ((!Strings.isEmpty(header)) && (header.trim()
+            .startsWith(tokenHeaderIdentifier + " "))) {
             // Token received
             // Take it by removing the identifier
             token = Optional.of(header.substring(tokenHeaderIdentifier.length())
