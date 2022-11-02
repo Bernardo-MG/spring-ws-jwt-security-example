@@ -57,6 +57,9 @@ public class WebSecurityConfig {
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
+    /**
+     * JWT token validator.
+     */
     @Autowired
     private TokenValidator           tokenValidator;
 
