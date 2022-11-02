@@ -22,30 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.auth.property;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import lombok.Data;
-
 /**
- * JWT configuration properties.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
+ * JWT configuration components.
  */
-@Data
-@ConfigurationProperties(prefix = "jwt")
-public final class JwtProperties {
 
-    /**
-     * Secret seed for generating JWT tokens.
-     */
-    private String  secret;
-
-    /**
-     * Validity length, in seconds, for JWT tokens.
-     */
-    private Integer validity;
-
-}
+package com.bernardomg.example.ws.security.jwt.auth.jwt.configuration;

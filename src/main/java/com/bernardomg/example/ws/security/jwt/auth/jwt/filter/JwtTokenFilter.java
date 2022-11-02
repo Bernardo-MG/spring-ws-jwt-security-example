@@ -61,7 +61,7 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
     private final String             tokenHeaderIdentifier = "Bearer";
 
     /**
-     * Token processor. Parses and validates tokens.
+     * Token validator.
      */
     private final TokenValidator     tokenValidator;
 
@@ -75,14 +75,14 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
      *
      * @param userDetService
      *            user details service
-     * @param processor
-     *            token processor
+     * @param validator
+     *            token validator
      */
-    public JwtTokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
+    public JwtTokenFilter(final UserDetailsService userDetService, final TokenValidator validator) {
         super();
 
         userDetailsService = Objects.requireNonNull(userDetService);
-        tokenValidator = Objects.requireNonNull(processor);
+        tokenValidator = Objects.requireNonNull(validator);
 
         // TODO: Test this class
     }

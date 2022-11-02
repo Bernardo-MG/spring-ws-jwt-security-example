@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.ws.security.jwt.test.auth.jwt.processor.unit;
+package com.bernardomg.example.ws.security.jwt.test.auth.token.unit;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;

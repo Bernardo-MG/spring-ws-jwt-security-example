@@ -90,14 +90,14 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean("tokenProcessor")
-    public JwtTokenValidator getTokenProcessor(final SecretKey key) {
-        return new JwtTokenValidator(key);
-    }
-
     @Bean("tokenProvider")
     public TokenProvider getTokenProvider(final SecretKey key, final JwtProperties properties) {
         return new JwtTokenProvider(key, properties.getValidity());
+    }
+
+    @Bean("tokenValidator")
+    public JwtTokenValidator getTokenValidator(final SecretKey key) {
+        return new JwtTokenValidator(key);
     }
 
     @Bean("userDetailsService")

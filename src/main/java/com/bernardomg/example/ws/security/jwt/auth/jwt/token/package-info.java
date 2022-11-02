@@ -23,7 +23,7 @@
  */
 
 /**
- * JWT token processors.
+ * JWT token components.
  */
 
 package com.bernardomg.example.ws.security.jwt.auth.jwt.token;

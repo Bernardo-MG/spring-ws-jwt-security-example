@@ -47,12 +47,12 @@ import lombok.extern.slf4j.Slf4j;
 public final class JwtTokenValidator implements TokenValidator {
 
     /**
-     * Secret key for generating tokens. Created from the secret received when constructing the processor.
+     * Secret key for generating tokens. Created from the secret received when constructing the validator.
      */
     private final SecretKey key;
 
     /**
-     * Constructs a processor with the received arguments.
+     * Constructs a validator with the received arguments.
      *
      * @param secretKey
      *            key used when generating tokens

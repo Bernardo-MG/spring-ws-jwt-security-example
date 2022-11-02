@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class JwtTokenProvider implements TokenProvider {
 
     /**
-     * Secret key for generating tokens. Created from the secret received when constructing the processor.
+     * Secret key for generating tokens. Created from the secret received when constructing the provider.
      */
     private final SecretKey key;
 
@@ -55,7 +55,7 @@ public final class JwtTokenProvider implements TokenProvider {
     private final Integer   validity;
 
     /**
-     * Constructs a processor with the received arguments.
+     * Constructs a provider with the received arguments.
      *
      * @param secretKey
      *            key used when generating tokens
