@@ -41,8 +41,6 @@ import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvide
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.ws.security.jwt.security.login.service.LoginService;
 import com.bernardomg.example.ws.security.jwt.security.login.service.TokenLoginService;
-import com.bernardomg.example.ws.security.jwt.security.login.validation.CredentialsLoginValidator;
-import com.bernardomg.example.ws.security.jwt.security.login.validation.LoginValidator;
 import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
 import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.security.user.repository.PrivilegeRepository;
@@ -79,10 +77,7 @@ public class SecurityConfig {
     @Bean("loginService")
     public LoginService getLoginService(final UserDetailsService userDetailsService,
             final PasswordEncoder passwordEncoder, final TokenProvider tokenProv) {
-        final LoginValidator loginValidator;
-
-        loginValidator = new CredentialsLoginValidator(userDetailsService, passwordEncoder);
-        return new TokenLoginService(tokenProv, loginValidator);
+        return new TokenLoginService(userDetailsService, passwordEncoder, tokenProv);
     }
 
     @Bean("passwordEncoder")

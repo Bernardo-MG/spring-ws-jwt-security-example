@@ -24,10 +24,11 @@
 
 package com.bernardomg.example.ws.security.jwt.security.login.service;
 
-import com.bernardomg.example.ws.security.jwt.security.login.model.LoginDetails;
+import com.bernardomg.example.ws.security.jwt.security.login.model.LoginStatus;
 
 /**
- * Login service. Takes the user credentials and returns a token.
+ * Login service. Handles the login process, which receives a user credentials and returns the login status, which tells
+ * if the login was successful or not.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -35,7 +36,7 @@ import com.bernardomg.example.ws.security.jwt.security.login.model.LoginDetails;
 public interface LoginService {
 
     /**
-     * Receives credentials and returns the login status. If it was valid then it contains a token.
+     * Receives credentials and returns the login status.
      *
      * @param username
      *            username to authenticate
@@ -43,6 +44,6 @@ public interface LoginService {
      *            password to authenticate
      * @return login status
      */
-    public LoginDetails login(final String username, final String password);
+    public LoginStatus login(final String username, final String password);
 
 }

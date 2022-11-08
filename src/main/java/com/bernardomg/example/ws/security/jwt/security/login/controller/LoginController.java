@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.example.ws.security.jwt.security.login.model.LoginDetails;
-import com.bernardomg.example.ws.security.jwt.security.login.model.UserForm;
+import com.bernardomg.example.ws.security.jwt.security.login.model.LoginRequest;
+import com.bernardomg.example.ws.security.jwt.security.login.model.LoginStatus;
 import com.bernardomg.example.ws.security.jwt.security.login.service.LoginService;
 
 import lombok.AllArgsConstructor;
@@ -52,15 +52,15 @@ public class LoginController {
     private final LoginService service;
 
     /**
-     * Logs in a user.
+     * Attempts to log in a user, returning the login status.
      *
-     * @param user
-     *            user details
+     * @param request
+     *            login request
      * @return the login status after the login attempt
      */
     @PostMapping
-    public LoginDetails login(@RequestBody final UserForm user) {
-        return service.login(user.getUsername(), user.getPassword());
+    public LoginStatus login(@RequestBody final LoginRequest request) {
+        return service.login(request.getUsername(), request.getPassword());
     }
 
 }

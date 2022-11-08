@@ -22,8 +22,28 @@
  * SOFTWARE.
  */
 
-/**
- * Login validation.
- */
+package com.bernardomg.example.ws.security.jwt.security.login.model;
 
-package com.bernardomg.example.ws.security.jwt.security.login.validation;
+/**
+ * Status after a login attempt. Will tell if the login attempt was successful or not, through the {@code logged} field.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface LoginStatus {
+
+    /**
+     * Returns if the logging attempt was successful.
+     *
+     * @return {@code true} if the login was successful, {@code false} otherwise
+     */
+    public Boolean getLogged();
+
+    /**
+     * Returns the username of the user who attempted login.
+     *
+     * @return the username
+     */
+    public String getUsername();
+
+}

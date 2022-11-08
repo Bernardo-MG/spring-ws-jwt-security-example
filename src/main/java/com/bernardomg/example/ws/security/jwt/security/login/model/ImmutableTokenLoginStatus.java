@@ -22,25 +22,52 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.security.login.validation;
+package com.bernardomg.example.ws.security.jwt.security.login.model;
+
+import lombok.Data;
+import lombok.NonNull;
 
 /**
- * Validator which checks if a user can log into the application.
+ * Immutable implementation of {@link TokenLoginStatus}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface LoginValidator {
+@Data
+public final class ImmutableTokenLoginStatus implements TokenLoginStatus {
 
     /**
-     * Checks if the user is valid and allows to attempt a login.
-     *
-     * @param username
-     *            username to authenticate
-     * @param password
-     *            password to authenticate
-     * @return {@code true} if the user is valid, {@code false} otherwise
+     * Flag telling if the login was successful.
      */
-    public Boolean isValid(final String username, final String password);
+    private final Boolean logged;
+
+    /**
+     * Security token.
+     */
+    private final String  token;
+
+    /**
+     * Username of the user who attempted login.
+     */
+    private final String  username;
+
+    /**
+     * Builds a login status with the specified arguments.
+     *
+     * @param user
+     *            username
+     * @param flag
+     *            logged status
+     * @param tokn
+     *            authentication token
+     */
+    public ImmutableTokenLoginStatus(@NonNull final String user, @NonNull final Boolean flag,
+            @NonNull final String tokn) {
+        super();
+
+        username = user;
+        logged = flag;
+        token = tokn;
+    }
 
 }

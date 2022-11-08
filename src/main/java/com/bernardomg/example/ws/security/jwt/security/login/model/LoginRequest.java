@@ -25,38 +25,24 @@
 package com.bernardomg.example.ws.security.jwt.security.login.model;
 
 import lombok.Data;
-import lombok.NonNull;
 
 /**
- * Immutable implementation of {@link LoginDetails}.
+ * Login request DTO. Contains all the data for a login attempt. Used to map requests from the frontend.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Data
-public final class ImmutableLoginDetails implements LoginDetails {
+public class LoginRequest {
 
     /**
-     * Flag telling if the login was successful.
+     * User password.
      */
-    private final Boolean logged;
+    private String password;
 
     /**
-     * Security token.
+     * User username.
      */
-    private final String  token;
-
-    /**
-     * Username of the user who attempted login.
-     */
-    private final String  username;
-
-    public ImmutableLoginDetails(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
-        super();
-
-        username = usnm;
-        logged = lgd;
-        token = tkn;
-    }
+    private String username;
 
 }

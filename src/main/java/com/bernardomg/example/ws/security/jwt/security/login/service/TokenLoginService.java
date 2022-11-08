@@ -24,9 +24,11 @@
 
 package com.bernardomg.example.ws.security.jwt.security.login.service;
 
-import com.bernardomg.example.ws.security.jwt.security.login.model.ImmutableLoginDetails;
-import com.bernardomg.example.ws.security.jwt.security.login.model.LoginDetails;
-import com.bernardomg.example.ws.security.jwt.security.login.validation.LoginValidator;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.bernardomg.example.ws.security.jwt.security.login.model.ImmutableTokenLoginStatus;
+import com.bernardomg.example.ws.security.jwt.security.login.model.LoginStatus;
 import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
 
 import lombok.NonNull;
@@ -35,6 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Login service for token-based authentication. Will generate a token on a successful login, and add it to the login
  * status.
+ * <h2>Tokens</h2>
+ * <p>
+ * The {@link TokenProvider} will generate tokens after a succesful login attempt.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -43,44 +48,58 @@ import lombok.extern.slf4j.Slf4j;
 public final class TokenLoginService implements LoginService {
 
     /**
-     * Login validator.
-     */
-    private final LoginValidator loginValidator;
-
-    /**
      * Token provider, creates authentication tokens.
      */
-    private final TokenProvider  tokenProvider;
+    private final TokenProvider tokenProvider;
 
-    public TokenLoginService(@NonNull final TokenProvider tokenProv, @NonNull final LoginValidator loginValid) {
+    /**
+     * Wrapped login service.
+     */
+    private final LoginService  wrapped;
+
+    /**
+     * Builds a service with the specified arguments.
+     *
+     * @param userDetService
+     *            user details service to acquire users
+     * @param passEncoder
+     *            password encoder to validate passwords
+     * @param tProvider
+     *            token provider
+     */
+    public TokenLoginService(@NonNull final UserDetailsService userDetService,
+            @NonNull final PasswordEncoder passEncoder, @NonNull final TokenProvider tProvider) {
         super();
 
-        loginValidator = loginValid;
-        tokenProvider = tokenProv;
+        wrapped = new BasicLoginService(userDetService, passEncoder);
+        tokenProvider = tProvider;
     }
 
     @Override
-    public final LoginDetails login(final String username, final String password) {
-        final Boolean valid;
-        final String  token;
+    public final LoginStatus login(final String username, final String password) {
+        final String      token;
+        final LoginStatus basicStatus;
+        final LoginStatus status;
 
         log.debug("Log in attempt for {}", username);
 
-        valid = loginValidator.isValid(username, password);
+        basicStatus = wrapped.login(username, password);
 
-        if (valid) {
+        if (basicStatus.getLogged()) {
             // Valid user
             // Generate token
             token = tokenProvider.generateToken(username);
             log.debug("Successful login for {}", username);
+            status = new ImmutableTokenLoginStatus(username, basicStatus.getLogged(), token);
         } else {
             // Invalid user
             // No token
             token = "";
             log.debug("Failed login for {}", username);
+            status = basicStatus;
         }
 
-        return new ImmutableLoginDetails(username, valid, token);
+        return status;
     }
 
 }

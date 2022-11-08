@@ -24,25 +24,19 @@
 
 package com.bernardomg.example.ws.security.jwt.security.login.model;
 
-import lombok.Data;
-
 /**
- * Contains all the data for a login attempt.
+ * Status after a login attempt including a token.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Data
-public class UserForm {
+public interface TokenLoginStatus extends LoginStatus {
 
     /**
-     * User password.
+     * Returns the security token.
+     *
+     * @return the security token
      */
-    private String password;
-
-    /**
-     * User username.
-     */
-    private String username;
+    public String getToken();
 
 }
