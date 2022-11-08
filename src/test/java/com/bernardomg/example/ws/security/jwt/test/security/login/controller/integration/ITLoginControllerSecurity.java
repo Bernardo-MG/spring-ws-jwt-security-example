@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.test.domain.entity.controller.integration;
+package com.bernardomg.example.ws.security.jwt.test.security.login.controller.integration;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -34,44 +35,37 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest
-@DisplayName("Example entity controller - security - credentials expired user")
-@Sql({ "/db/queries/user/credentials_expired.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
+@DisplayName("Login controller - security")
+@Sql({ "/db/queries/user/single.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
         "/db/queries/relationship/role_privilege.sql", "/db/queries/relationship/user_role.sql" })
-public final class ITExampleEntityControllerSecurityCredentialsExpiredUser {
+public final class ITLoginControllerSecurity {
 
     @Autowired
-    private MockMvc       mockMvc;
+    private MockMvc mockMvc;
 
-    @Autowired
-    private TokenProvider tokenGenerator;
-
-    public ITExampleEntityControllerSecurityCredentialsExpiredUser() {
+    public ITLoginControllerSecurity() {
         super();
     }
 
     @Test
-    @DisplayName("An authenticated request is not authorized")
-    public final void testGet_authenticated_notAuthorized() throws Exception {
+    @DisplayName("Accepts unauthenticated requests")
+    public final void testGet_unauthorized() throws Exception {
         final ResultActions result;
 
-        result = mockMvc.perform(getRequestAuthorized());
+        result = mockMvc.perform(getRequest());
 
         // The operation was accepted
         result.andExpect(MockMvcResultMatchers.status()
-            .isUnauthorized());
+            .isOk());
     }
 
-    private final RequestBuilder getRequestAuthorized() {
-        final String token;
-
-        token = tokenGenerator.generateToken("admin");
-
-        return MockMvcRequestBuilders.get("/rest/entity")
-            .header("Authorization", "Bearer " + token);
+    private final RequestBuilder getRequest() {
+        return MockMvcRequestBuilders.post("/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{ \"username\":\"admin\", \"password\":\"1234\" }");
     }
 
 }

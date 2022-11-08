@@ -22,25 +22,27 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.security.login.service;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import com.bernardomg.example.ws.security.jwt.security.login.model.LoginDetails;
 
 /**
- * Authentication configuration.
+ * Login service. Takes the user credentials and returns a token.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public interface LoginService {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * Receives credentials and returns the login status. If it was valid then it contains a token.
+     *
+     * @param username
+     *            username to authenticate
+     * @param password
+     *            password to authenticate
+     * @return login status
+     */
+    public LoginDetails login(final String username, final String password);
 
 }

@@ -22,25 +22,23 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+package com.bernardomg.example.ws.security.jwt.security.token;
 
 /**
- * Authentication configuration.
+ * Token provider.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public interface TokenProvider {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * Returns a token for the subject.
+     *
+     * @param subject
+     *            subject of the token
+     * @return token for the subject
+     */
+    public String generateToken(final String subject);
 
 }

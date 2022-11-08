@@ -22,25 +22,25 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+package com.bernardomg.example.ws.security.jwt.security.login.validation;
 
 /**
- * Authentication configuration.
+ * Validator which checks if a user can log into the application.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public interface LoginValidator {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * Checks if the user is valid and allows to attempt a login.
+     *
+     * @param username
+     *            username to authenticate
+     * @param password
+     *            password to authenticate
+     * @return {@code true} if the user is valid, {@code false} otherwise
+     */
+    public Boolean isValid(final String username, final String password);
 
 }

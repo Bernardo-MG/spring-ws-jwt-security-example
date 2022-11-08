@@ -22,25 +22,35 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+package com.bernardomg.example.ws.security.jwt.security.login.model;
 
 /**
- * Authentication configuration.
+ * Status after a login attempt.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public interface LoginDetails {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * Returns if the logging attempt was successful.
+     *
+     * @return {@code true} if the login was successful, {@code false} otherwise
+     */
+    public Boolean getLogged();
+
+    /**
+     * Returns the security token.
+     *
+     * @return the security token
+     */
+    public String getToken();
+
+    /**
+     * Returns the username of the user who attempted login.
+     *
+     * @return the username
+     */
+    public String getUsername();
 
 }

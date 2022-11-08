@@ -22,25 +22,45 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.security.login.controller;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import com.bernardomg.example.ws.security.jwt.security.login.model.LoginDetails;
+import com.bernardomg.example.ws.security.jwt.security.login.model.UserForm;
+import com.bernardomg.example.ws.security.jwt.security.login.service.LoginService;
+
+import lombok.AllArgsConstructor;
 
 /**
- * Authentication configuration.
+ * Login controller. Allows a user to log into the application.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+@RestController
+@RequestMapping("/login")
+@AllArgsConstructor
+public class LoginController {
 
-    public JwtConfig() {
-        super();
+    /**
+     * Login service.
+     */
+    private final LoginService service;
+
+    /**
+     * Logs in a user.
+     *
+     * @param user
+     *            user details
+     * @return the login status after the login attempt
+     */
+    @PostMapping
+    public LoginDetails login(@RequestBody final UserForm user) {
+        return service.login(user.getUsername(), user.getPassword());
     }
 
 }

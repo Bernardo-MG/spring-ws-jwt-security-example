@@ -22,25 +22,41 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.security.login.model;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import lombok.Data;
+import lombok.NonNull;
 
 /**
- * Authentication configuration.
+ * Immutable implementation of {@link LoginDetails}.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+@Data
+public final class ImmutableLoginDetails implements LoginDetails {
 
-    public JwtConfig() {
+    /**
+     * Flag telling if the login was successful.
+     */
+    private final Boolean logged;
+
+    /**
+     * Security token.
+     */
+    private final String  token;
+
+    /**
+     * Username of the user who attempted login.
+     */
+    private final String  username;
+
+    public ImmutableLoginDetails(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
         super();
+
+        username = usnm;
+        logged = lgd;
+        token = tkn;
     }
 
 }

@@ -22,25 +22,38 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.security.user.repository;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import java.util.Optional;
 
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.bernardomg.example.ws.security.jwt.security.user.model.PersistentUser;
 
 /**
- * Authentication configuration.
+ * Repository for users.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public interface UserRepository extends JpaRepository<PersistentUser, Long> {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * Returns the user details for the received email.
+     *
+     * @param email
+     *            email to search for
+     * @return the user details for the received email
+     */
+    public Optional<PersistentUser> findOneByEmail(final String email);
+
+    /**
+     * Returns the user details for the received username.
+     *
+     * @param username
+     *            username to search for
+     * @return the user details for the received username
+     */
+    public Optional<PersistentUser> findOneByUsername(final String username);
 
 }

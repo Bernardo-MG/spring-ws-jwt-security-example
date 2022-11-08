@@ -22,25 +22,27 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.security.login.model;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import lombok.Data;
 
 /**
- * Authentication configuration.
+ * Contains all the data for a login attempt.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+@Data
+public class UserForm {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * User password.
+     */
+    private String password;
+
+    /**
+     * User username.
+     */
+    private String username;
 
 }

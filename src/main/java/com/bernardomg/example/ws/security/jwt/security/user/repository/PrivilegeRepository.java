@@ -22,25 +22,33 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.ws.security.jwt.config;
+package com.bernardomg.example.ws.security.jwt.security.user.repository;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import java.util.Collection;
 
-import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.bernardomg.example.ws.security.jwt.security.user.model.PersistentPrivilege;
 
 /**
- * Authentication configuration.
+ * Repository for privileges.
  *
- * @author Bernardo Martínez Garrido
+ * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public interface PrivilegeRepository extends JpaRepository<PersistentPrivilege, Long> {
 
-    public JwtConfig() {
-        super();
-    }
+    /**
+     * Returns all the privileges for a user. This requires a join from the user up to the privileges.
+     *
+     * @param id
+     *            user id
+     * @return all the privileges for the user
+     */
+    @Query(value = "SELECT p.* FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN user_roles ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id",
+            nativeQuery = true)
+    public Collection<PersistentPrivilege> findForUser(@Param("id") final Long id);
 
 }

@@ -36,18 +36,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProvider;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.ws.security.jwt.auth.login.service.LoginService;
-import com.bernardomg.example.ws.security.jwt.auth.login.service.TokenLoginService;
-import com.bernardomg.example.ws.security.jwt.auth.login.validation.CredentialsLoginValidator;
-import com.bernardomg.example.ws.security.jwt.auth.login.validation.LoginValidator;
-import com.bernardomg.example.ws.security.jwt.auth.property.JwtProperties;
-import com.bernardomg.example.ws.security.jwt.auth.token.TokenProvider;
-import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
-import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
-import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
+import com.bernardomg.example.ws.security.jwt.security.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenValidator;
+import com.bernardomg.example.ws.security.jwt.security.login.service.LoginService;
+import com.bernardomg.example.ws.security.jwt.security.login.service.TokenLoginService;
+import com.bernardomg.example.ws.security.jwt.security.login.validation.CredentialsLoginValidator;
+import com.bernardomg.example.ws.security.jwt.security.login.validation.LoginValidator;
+import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.user.repository.PrivilegeRepository;
+import com.bernardomg.example.ws.security.jwt.security.user.repository.UserRepository;
+import com.bernardomg.example.ws.security.jwt.security.userdetails.PersistentUserDetailsService;
 
 import io.jsonwebtoken.security.Keys;
 
