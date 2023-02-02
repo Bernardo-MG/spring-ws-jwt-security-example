@@ -39,8 +39,7 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrat
 
 @MvcIntegrationTest
 @DisplayName("Example entity controller - security - expired user")
-@Sql({ "/db/queries/user/expired.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
-        "/db/queries/relationship/role_privilege.sql", "/db/queries/relationship/user_role.sql" })
+@Sql({ "/db/queries/user/expired.sql", "/db/queries/security/default_role.sql" })
 public final class ITExampleEntityControllerSecurityExpiredUser {
 
     @Autowired

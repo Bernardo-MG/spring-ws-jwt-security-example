@@ -37,9 +37,7 @@ public class ITBasicLoginService {
 
     @Test
     @DisplayName("Doesn't log in a disabled user")
-    @Sql({ "/db/queries/privilege/multiple.sql", "/db/queries/role/single.sql",
-            "/db/queries/user/disabled.sql", "/db/queries/relationship/role_privilege.sql",
-            "/db/queries/relationship/user_role.sql" })
+    @Sql({ "/db/queries/user/disabled.sql", "/db/queries/security/default_role.sql" })
     public void testLogIn_Disabled() {
         final LoginStatus status;
 
@@ -51,9 +49,7 @@ public class ITBasicLoginService {
 
     @Test
     @DisplayName("Logs in with a valid user")
-    @Sql({ "/db/queries/privilege/multiple.sql", "/db/queries/role/single.sql",
-            "/db/queries/user/single.sql", "/db/queries/relationship/role_privilege.sql",
-            "/db/queries/relationship/user_role.sql" })
+    @Sql({ "/db/queries/user/single.sql", "/db/queries/security/default_role.sql" })
     public void testLogIn_Valid() {
         final LoginStatus details;
 

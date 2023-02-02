@@ -13,7 +13,7 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.Integration
 
 @IntegrationTest
 @DisplayName("Login service - no privileges")
-@Sql({ "/db/queries/user/single.sql", "/db/queries/role/single.sql", "/db/queries/relationship/user_role.sql" })
+@Sql({ "/db/queries/user/single.sql", "/db/queries/security/default_role_no_privileges.sql" })
 public class ITLoginServiceNoPrivileges {
 
     @Autowired

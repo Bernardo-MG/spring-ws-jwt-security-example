@@ -18,8 +18,7 @@ import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
 @IntegrationTest
 @DisplayName("Privilege repository")
-@Sql({ "/db/queries/user/single.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
-        "/db/queries/relationship/role_privilege.sql", "/db/queries/relationship/user_role.sql" })
+@Sql({ "/db/queries/user/single.sql", "/db/queries/security/default_role.sql" })
 public class ITPrivilegeRepository {
 
     @Autowired

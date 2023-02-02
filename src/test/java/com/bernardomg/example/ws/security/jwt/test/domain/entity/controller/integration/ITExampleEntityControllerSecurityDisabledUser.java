@@ -39,8 +39,7 @@ import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrat
 
 @MvcIntegrationTest
 @DisplayName("Example entity controller - security - disabled user")
-@Sql({ "/db/queries/user/disabled.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
-        "/db/queries/relationship/role_privilege.sql", "/db/queries/relationship/user_role.sql" })
+@Sql({ "/db/queries/user/disabled.sql", "/db/queries/security/default_role.sql" })
 public final class ITExampleEntityControllerSecurityDisabledUser {
 
     @Autowired
