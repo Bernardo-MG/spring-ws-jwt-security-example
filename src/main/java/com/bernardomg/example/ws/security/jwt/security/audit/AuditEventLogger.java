@@ -26,8 +26,6 @@ package com.bernardomg.example.ws.security.jwt.security.audit;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
 import org.springframework.context.event.EventListener;
@@ -45,11 +43,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class AuditEventLogger {
-
-    /**
-     * Logger for the event listener.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuditEventLogger.class);
 
     @EventListener
     public void auditEventHappened(final AuditApplicationEvent auditApplicationEvent) {
@@ -92,7 +85,7 @@ public class AuditEventLogger {
             messageBuilder.append(")");
         }
 
-        LOGGER.debug(messageBuilder.toString());
+        log.debug(messageBuilder.toString());
     }
 
 }
