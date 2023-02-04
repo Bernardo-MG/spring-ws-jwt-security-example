@@ -56,7 +56,7 @@ public class ITTokenLoginService {
 
     @Test
     @DisplayName("Logs in with a valid user")
-    @Sql({ "/db/queries/privilege/multiple.sql", "/db/queries/security/default_role.sql" })
+    @Sql({ "/db/queries/user/single.sql", "/db/queries/security/default_role.sql" })
     public void testLogIn_Valid() {
         final LoginStatus status;
 
