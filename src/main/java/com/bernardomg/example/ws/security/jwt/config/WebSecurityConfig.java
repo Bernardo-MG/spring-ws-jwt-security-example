@@ -39,7 +39,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.bernardomg.example.ws.security.jwt.security.jwt.configuration.JwtSecurityConfigurer;
-import com.bernardomg.example.ws.security.jwt.security.token.TokenValidator;
+import com.bernardomg.example.ws.security.jwt.security.token.validator.TokenValidator;
 
 /**
  * Web security configuration.
@@ -82,7 +82,7 @@ public class WebSecurityConfig {
         // Authorization
         authorizeRequestsCustomizer = c -> {
             try {
-                c.antMatchers("/actuator/**", "/login/**")
+                c.antMatchers("/actuator/**", "/login/**", "/token/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()

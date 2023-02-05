@@ -30,7 +30,7 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
-import com.bernardomg.example.ws.security.jwt.security.token.TokenValidator;
+import com.bernardomg.example.ws.security.jwt.security.token.validator.TokenValidator;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

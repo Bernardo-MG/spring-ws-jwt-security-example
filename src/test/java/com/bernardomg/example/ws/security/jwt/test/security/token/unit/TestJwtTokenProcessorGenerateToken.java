@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvider;
-import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.token.provider.TokenProvider;
 
 import io.jsonwebtoken.security.Keys;
 

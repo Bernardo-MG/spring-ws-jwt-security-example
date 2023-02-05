@@ -29,7 +29,7 @@ import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.token.provider.TokenProvider;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

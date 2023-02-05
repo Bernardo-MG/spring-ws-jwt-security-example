@@ -40,7 +40,7 @@ import com.bernardomg.example.ws.security.jwt.security.jwt.entrypoint.ErrorRespo
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvider;
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
-import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.token.provider.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.security.user.repository.PrivilegeRepository;
 import com.bernardomg.example.ws.security.jwt.security.user.repository.UserRepository;
 import com.bernardomg.example.ws.security.jwt.security.userdetails.PersistentUserDetailsService;

@@ -23,7 +23,7 @@
  */
 
 /**
- * Token components.
+ * Token validator.
  */
 
-package com.bernardomg.example.ws.security.jwt.security.token;
+package com.bernardomg.example.ws.security.jwt.security.token.validator;

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.function.Executable;
 
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvider;
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.token.provider.TokenProvider;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.Keys;
