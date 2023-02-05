@@ -39,8 +39,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import com.bernardomg.example.ws.security.jwt.security.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvider;
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.ws.security.jwt.security.login.service.LoginService;
-import com.bernardomg.example.ws.security.jwt.security.login.service.TokenLoginService;
 import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
 import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.security.user.repository.PrivilegeRepository;
@@ -72,12 +70,6 @@ public class SecurityConfig {
     public SecretKey getJwtSecretKey(final JwtProperties properties) {
         return Keys.hmacShaKeyFor(properties.getSecret()
             .getBytes(Charset.forName("UTF-8")));
-    }
-
-    @Bean("loginService")
-    public LoginService getLoginService(final UserDetailsService userDetailsService,
-            final PasswordEncoder passwordEncoder, final TokenProvider tokenProv) {
-        return new TokenLoginService(userDetailsService, passwordEncoder, tokenProv);
     }
 
     @Bean("passwordEncoder")
