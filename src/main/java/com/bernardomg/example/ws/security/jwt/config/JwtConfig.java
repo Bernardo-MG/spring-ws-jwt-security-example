@@ -24,14 +24,10 @@
 
 package com.bernardomg.example.ws.security.jwt.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.filter.TokenFilter;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.JwtTokenProcessor;
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenValidator;
+import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
 
 /**
  * Authentication configuration.
@@ -40,21 +36,11 @@ import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenValidator;
  *
  */
 @Configuration
+@EnableConfigurationProperties(JwtProperties.class)
 public class JwtConfig {
 
     public JwtConfig() {
         super();
-    }
-
-    @Bean("jwtTokenFilter")
-    public TokenFilter getJwtTokenFilter(final UserDetailsService userDetService, final TokenValidator processor) {
-        return new TokenFilter(userDetService, processor);
-    }
-
-    @Bean("tokenProcessor")
-    public JwtTokenProcessor getTokenProcessor(@Value("${jwt.secret}") final String secret,
-            @Value("${jwt.validity}") final Integer validity) {
-        return new JwtTokenProcessor(secret, validity);
     }
 
 }

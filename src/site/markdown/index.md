@@ -27,3 +27,8 @@ Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for 
 | disabled | 1111     | all            |
 | expcreds | 1111     | all            |
 | noread   | 1111     | all minus read |
+
+## Database
+
+All the data is stored in a H2 in-memory database.
+

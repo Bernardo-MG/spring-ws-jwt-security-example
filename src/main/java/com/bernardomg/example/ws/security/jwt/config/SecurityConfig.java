@@ -24,6 +24,10 @@
 
 package com.bernardomg.example.ws.security.jwt.config;
 
+import java.nio.charset.Charset;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -32,10 +36,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
-import com.bernardomg.example.ws.security.jwt.auth.user.repository.PrivilegeRepository;
-import com.bernardomg.example.ws.security.jwt.auth.user.repository.UserRepository;
-import com.bernardomg.example.ws.security.jwt.auth.userdetails.PersistentUserDetailsService;
+import com.bernardomg.example.ws.security.jwt.security.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenValidator;
+import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;
+import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.user.repository.PrivilegeRepository;
+import com.bernardomg.example.ws.security.jwt.security.user.repository.UserRepository;
+import com.bernardomg.example.ws.security.jwt.security.userdetails.PersistentUserDetailsService;
+
+import io.jsonwebtoken.security.Keys;
 
 /**
  * Security configuration.
@@ -56,9 +66,25 @@ public class SecurityConfig {
         return new ErrorResponseAuthenticationEntryPoint();
     }
 
+    @Bean("jwtSecretKey")
+    public SecretKey getJwtSecretKey(final JwtProperties properties) {
+        return Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(Charset.forName("UTF-8")));
+    }
+
     @Bean("passwordEncoder")
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean("tokenProvider")
+    public TokenProvider getTokenProvider(final SecretKey key, final JwtProperties properties) {
+        return new JwtTokenProvider(key, properties.getValidity());
+    }
+
+    @Bean("tokenValidator")
+    public JwtTokenValidator getTokenValidator(final SecretKey key) {
+        return new JwtTokenValidator(key);
     }
 
     @Bean("userDetailsService")

@@ -25,6 +25,7 @@
 package com.bernardomg.example.ws.security.jwt.mvc.response.model;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import com.bernardomg.example.ws.security.jwt.mvc.error.model.Failure;
 
@@ -56,7 +57,7 @@ public class ImmutableErrorResponse<T> implements ErrorResponse {
     public ImmutableErrorResponse(@NonNull final Collection<? extends Failure> errs) {
         super();
 
-        errors = errs;
+        errors = Collections.unmodifiableCollection(errs);
     }
 
 }

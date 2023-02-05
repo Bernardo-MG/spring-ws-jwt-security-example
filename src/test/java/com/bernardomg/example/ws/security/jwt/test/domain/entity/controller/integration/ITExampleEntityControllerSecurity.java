@@ -34,13 +34,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.ws.security.jwt.auth.jwt.token.TokenProvider;
+import com.bernardomg.example.ws.security.jwt.security.token.TokenProvider;
 import com.bernardomg.example.ws.security.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest
 @DisplayName("Example entity controller - security")
-@Sql({ "/db/queries/user/single.sql", "/db/queries/role/single.sql", "/db/queries/privilege/multiple.sql",
-        "/db/queries/relationship/role_privilege.sql", "/db/queries/relationship/user_role.sql" })
+@Sql({ "/db/queries/user/single.sql", "/db/queries/security/default_role.sql" })
 public final class ITExampleEntityControllerSecurity {
 
     @Autowired

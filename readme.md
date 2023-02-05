@@ -2,6 +2,25 @@
 
 Example for JWT security with Spring.
 
+As this is a Spring Boot app it may be run with Maven or through your preferred IDE.
+
+```
+mvn spring-boot:run
+```
+
+Once running the web service will be available at [http://localhost:8080/](http://localhost:8080/).
+
+## Requests with Postman
+
+Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for all the operations including authentication.
+
+## Users
+
+| User    | Password | Permissions |
+|---------|----------|-------------|
+| admin   | 1234     | all         |
+| noread  | 1111     | none        |
+
 [![Release docs](https://img.shields.io/badge/docs-release-blue.svg)][site-release]
 [![Development docs](https://img.shields.io/badge/docs-develop-blue.svg)][site-develop]
 
@@ -33,27 +52,6 @@ mvn verify site
 ```
 
 The verify phase is required, otherwise some of the reports won't be generated.
-
-## Usage
-
-As this is a Spring Boot app it may be run with Maven or through your preferred IDE.
-
-```
-mvn spring-boot:run
-```
-
-Once running the web service will be available at [http://localhost:8080/](http://localhost:8080/).
-
-### Requests with Postman
-
-Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for all the operations including authentication.
-
-### Users
-
-| User    | Password | Permissions |
-|---------|----------|-------------|
-| admin   | 1234     | all         |
-| noread  | 1111     | none        |
 
 ## Collaborate
 
