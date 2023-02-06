@@ -36,7 +36,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import com.bernardomg.example.ws.security.jwt.security.jwt.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.ws.security.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenProvider;
 import com.bernardomg.example.ws.security.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.ws.security.jwt.security.property.JwtProperties;

@@ -26,4 +26,4 @@
  * JWT entry points.
  */
 
-package com.bernardomg.example.ws.security.jwt.security.jwt.entrypoint;
+package com.bernardomg.example.ws.security.jwt.security.entrypoint;
