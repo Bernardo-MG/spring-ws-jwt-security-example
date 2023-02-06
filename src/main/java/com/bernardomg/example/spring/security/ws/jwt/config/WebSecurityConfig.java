@@ -109,6 +109,11 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    /**
+     * Returns the request authorisation configuration.
+     *
+     * @return the request authorisation configuration
+     */
     private final Customizer<ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry>
             getAuthorizeRequestsCustomizer() {
         return c -> {
