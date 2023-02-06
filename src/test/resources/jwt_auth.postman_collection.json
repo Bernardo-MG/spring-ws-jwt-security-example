@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4ccc7c19-4cc7-442d-888d-91c75c9cc626",
+		"_postman_id": "56002a57-4092-4e05-85a9-044df3887d95",
 		"name": "JWT auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -48,8 +48,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Unauthorized request\",()=>{\r",
-									"    pm.expect(pm.response.code).to.eql(401);\r",
+									"pm.test(\"Unauthorized request\", () => {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response contains the error properties\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.errors).to.have.lengthOf(1);\r",
+									"    pm.expect(responseJson.errors[0].message).to.eql('Unauthorized');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -101,8 +107,13 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Authorized request\",()=>{\r",
-									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"pm.test(\"Authorized request\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response contains the data\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('content');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -128,7 +139,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY3NTY0MTQzMCwiZXhwIjoxNjc1NjU5NDMwfQ.7Eax7CV8zKHL_oFCVkFJXbeUsuhv_PY4AO3NIblzXu5_qiY9Pufvj4ehRYlRj5tNCWbK0zcIkQP8EFHzmiW0Jg",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY3NTY2ODkzNCwiZXhwIjoxNjc1Njg2OTM0fQ._oR6pAYlrhpdQq23gTJdGwGncoxAoaAE-GDKdWHQC_TRLcVxdAZDaO02pSfx8JlmAIH2usOnld-NtStjvzNQyw",
 						"type": "string"
 					}
 				]
