@@ -132,16 +132,21 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
         final Optional<String> token;
 
         header = request.getHeader("Authorization");
-        if ((!Strings.isEmpty(header)) && (header.trim()
+
+        if (header == null) {
+            // No token received
+            token = Optional.empty();
+            log.warn("Missing authorization header, can't return token", header);
+        } else if ((!Strings.isEmpty(header)) && (header.trim()
             .startsWith(tokenHeaderIdentifier + " "))) {
             // Token received
             // Take it by removing the identifier
             token = Optional.of(header.substring(tokenHeaderIdentifier.length())
                 .trim());
         } else {
-            // No token received
+            // Invalid token received
             token = Optional.empty();
-            log.warn("Authorization header '{}' has an invalid structure, can't return token", header);
+            log.warn("Authorization header has an invalid structure, can't return token");
         }
 
         return token;
@@ -171,7 +176,7 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
 
         if (token.isEmpty()) {
             // Missing header
-            log.debug("Missing authorization header");
+            log.debug("Missing authorization token");
         } else if (!tokenValidator.hasExpired(token.get())) {
             // Token not expired
             // Will load a new authentication from the token

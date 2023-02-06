@@ -86,13 +86,16 @@ public final class JwtTokenValidator implements TokenValidator {
         Boolean    expired;
 
         try {
+            // Acquire expiration claim
             expiration = getClaim(token, Claims::getExpiration);
 
+            // Compare expiration to current date
             current = new Date();
             expired = expiration.before(current);
 
-            log.debug("Token expires on {}, and the current date is {}. Expired? {}", expiration, current, expired);
+            log.debug("Token expires on {}, and the current date is {}. Expired: {}", expiration, current, expired);
         } catch (final ExpiredJwtException e) {
+            // Token parsing failed due to expiration date
             log.debug(e.getLocalizedMessage());
             expired = true;
         }
@@ -120,7 +123,7 @@ public final class JwtTokenValidator implements TokenValidator {
      * @param token
      *            token to parse
      * @param resolver
-     *            claim resolver
+     *            claim resolver to pick the wanted claim
      * @return the claim from the token and resolver
      */
     private final <T> T getClaim(final String token, final Function<Claims, T> resolver) {
