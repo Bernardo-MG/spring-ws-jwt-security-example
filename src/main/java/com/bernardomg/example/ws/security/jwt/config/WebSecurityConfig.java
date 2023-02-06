@@ -106,7 +106,7 @@ public class WebSecurityConfig {
             getAuthorizeRequestsCustomizer() {
         return c -> {
             try {
-                c.antMatchers("/actuator/**", "/login/**", "/token/**")
+                c.antMatchers("/actuator/**", "/token/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
