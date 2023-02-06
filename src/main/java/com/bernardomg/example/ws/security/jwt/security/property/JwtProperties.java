@@ -35,7 +35,7 @@ import lombok.Data;
  *
  */
 @Data
-@ConfigurationProperties(prefix = "jwt")
+@ConfigurationProperties(prefix = "security.jwt")
 public final class JwtProperties {
 
     /**
