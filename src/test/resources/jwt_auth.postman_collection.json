@@ -98,6 +98,80 @@
 			]
 		},
 		{
+			"name": "Wrong authorization scheme",
+			"item": [
+				{
+					"name": "Get data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Unauthorized request\", () => {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response contains the error properties\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.errors).to.have.lengthOf(1);\r",
+									"    pm.expect(responseJson.errors[0].message).to.eql('Unauthorized');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/rest/entity",
+							"path": [
+								"rest",
+								"entity"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "1234",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "admin",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "Authorized",
 			"item": [
 				{
