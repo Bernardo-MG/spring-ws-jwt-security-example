@@ -1,11 +1,11 @@
 {"properties": [
   {
-    "name": "jwt.secret",
+    "name": "security.jwt.secret",
     "type": "java.lang.String",
     "description": "Secret seed for generating JWT tokens"
   },
   {
-    "name": "jwt.validity",
+    "name": "security.jwt.validity",
     "type": "java.lang.Integer",
     "description": "Validity length, in seconds, for JWT tokens"
   }

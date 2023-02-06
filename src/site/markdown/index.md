@@ -1,22 +1,22 @@
 # Spring WS JWT Security Example
 
-Example for JWT security with Spring.
+Example for setting up JWT HTTP Security on a web service with Spring Boot.
 
 ## Usage
 
-As this is a Spring Boot app it may be run with Maven or through your preferred IDE.
+Just run it as any Spring boot application:
 
 ```
 mvn spring-boot:run
 ```
 
-Once running the web service will be available at [http://localhost:8080/](http://localhost:8080/).
+And the web service be available at [http://localhost:8080/](http://localhost:8080/).
 
-### Requests with Postman
+## Requests with Postman
 
-Import `src/test/resources/jwt_auth.postman_collection.json` to get queries for all the operations including authentication.
+To make things easier import `src/test/resources/jwt_auth.postman_collection.json` into Postman. It includes all the queries needed to test the project.
 
-### Users
+## Users
 
 | User     | Password | Permissions    |
 |----------|----------|----------------|
