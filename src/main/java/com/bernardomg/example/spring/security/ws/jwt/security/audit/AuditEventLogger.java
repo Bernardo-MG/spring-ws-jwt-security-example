@@ -42,10 +42,16 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Component
 @Slf4j
-public class AuditEventLogger {
+public final class AuditEventLogger {
 
+    /**
+     * Intercepts audit events and logs them.
+     *
+     * @param auditApplicationEvent
+     *            event to log
+     */
     @EventListener
-    public void auditEventHappened(final AuditApplicationEvent auditApplicationEvent) {
+    public final void auditEventHappened(final AuditApplicationEvent auditApplicationEvent) {
         final AuditEvent               auditEvent;
         final Object                   details;
         final WebAuthenticationDetails webDetails;

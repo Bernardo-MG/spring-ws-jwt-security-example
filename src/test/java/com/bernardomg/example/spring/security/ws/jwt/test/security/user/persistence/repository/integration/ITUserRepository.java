@@ -1,5 +1,5 @@
 
-package com.bernardomg.example.spring.security.ws.jwt.test.security.user.repository.integration;
+package com.bernardomg.example.spring.security.ws.jwt.test.security.user.persistence.repository.integration;
 
 import java.util.Optional;
 
@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.user.model.PersistentUser;
-import com.bernardomg.example.spring.security.ws.jwt.security.user.repository.UserRepository;
+import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model.PersistentUser;
+import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.UserRepository;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.IntegrationTest;
 
 @IntegrationTest

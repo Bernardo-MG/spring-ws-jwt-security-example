@@ -22,24 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.mvc.error.model;
-
-import lombok.Data;
-import lombok.NonNull;
-
 /**
- * Immutable failure object.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
+ * User model.
  */
-@Data
-public class ImmutableFailure implements Failure {
 
-    /**
-     * Failure message.
-     */
-    @NonNull
-    private final String message;
-
-}
+package com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model;

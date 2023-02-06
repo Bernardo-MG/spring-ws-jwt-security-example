@@ -22,38 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.user.repository;
-
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.user.model.PersistentUser;
-
 /**
- * Repository for users.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
+ * User repositories.
  */
-public interface UserRepository extends JpaRepository<PersistentUser, Long> {
 
-    /**
-     * Returns the user details for the received email.
-     *
-     * @param email
-     *            email to search for
-     * @return the user details for the received email
-     */
-    public Optional<PersistentUser> findOneByEmail(final String email);
-
-    /**
-     * Returns the user details for the received username.
-     *
-     * @param username
-     *            username to search for
-     * @return the user details for the received username
-     */
-    public Optional<PersistentUser> findOneByUsername(final String username);
-
-}
+package com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository;

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.user.model;
+package com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model;
 
 import java.io.Serializable;
 
@@ -33,83 +33,42 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
 
 import lombok.Data;
 
 /**
- * Dto implementation of {@code User}.
+ * Persistent privilege data.
+ * <p>
+ * JPA entities shouldn't end mixed up with the domain model. For this reason this class won't extend any generic
+ * interface, and instead is a JPA POJO.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Data
-@Entity(name = "User")
-@Table(name = "users")
-@TableGenerator(name = "seq_users_id", table = "sequences", pkColumnName = "sequence", valueColumnName = "count",
+@Entity(name = "Privilege")
+@Table(name = "privileges")
+@TableGenerator(name = "seq_privileges_id", table = "sequences", pkColumnName = "sequence", valueColumnName = "count",
         allocationSize = 1)
-public class PersistentUser implements Serializable {
+public class PersistentPrivilege implements Serializable {
 
     /**
      * Serialization id.
      */
-    @Transient
-    private static final long serialVersionUID = 4807136960800402795L;
-
-    /**
-     * User expired flag.
-     */
-    @Column(name = "credentials_expired", nullable = false)
-    private Boolean           credentialsExpired;
-
-    /**
-     * User email.
-     */
-    @Column(name = "email", nullable = false, length = 60)
-    private String            email;
-
-    /**
-     * User enabled flag.
-     */
-    @Column(name = "enabled", nullable = false)
-    private Boolean           enabled;
-
-    /**
-     * User expired flag.
-     */
-    @Column(name = "expired", nullable = false)
-    private Boolean           expired;
+    private static final long serialVersionUID = 8513041662486312372L;
 
     /**
      * Entity id.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_users_id")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_privileges_id")
     @Column(name = "id", nullable = false, unique = true)
     private Long              id;
 
     /**
-     * User locked flag.
-     */
-    @Column(name = "locked", nullable = false)
-    private Boolean           locked;
-
-    /**
-     * User name.
+     * Privilege name.
      */
     @Column(name = "name", nullable = false, unique = true, length = 60)
     private String            name;
-
-    /**
-     * User password.
-     */
-    @Column(name = "password", nullable = false, length = 60)
-    private String            password;
-
-    /**
-     * User name.
-     */
-    @Column(name = "username", nullable = false, unique = true, length = 60)
-    private String            username;
 
 }

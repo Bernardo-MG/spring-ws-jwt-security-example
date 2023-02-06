@@ -22,25 +22,33 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.mvc.error.model;
+package com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository;
+
+import java.util.Collection;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model.PersistentPrivilege;
 
 /**
- * Failure object. Containing a message to tell which error ocurred.
+ * Repository for privileges.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface Failure {
-
-    public static Failure of(final String code) {
-        return new ImmutableFailure(code);
-    }
+public interface PrivilegeRepository extends JpaRepository<PersistentPrivilege, Long> {
 
     /**
-     * Returns the error message.
+     * Returns all the privileges for a user. This requires a join from the user up to the privileges.
      *
-     * @return the error message.
+     * @param id
+     *            user id
+     * @return all the privileges for the user
      */
-    public String getMessage();
+    @Query(value = "SELECT p.* FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN user_roles ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id",
+            nativeQuery = true)
+    public Collection<PersistentPrivilege> findForUser(@Param("id") final Long id);
 
 }

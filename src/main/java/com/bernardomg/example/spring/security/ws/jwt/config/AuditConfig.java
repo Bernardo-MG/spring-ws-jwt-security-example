@@ -45,6 +45,12 @@ public class AuditConfig {
         super();
     }
 
+    /**
+     * Audit event repository, to store and read audit data. As this is just an example it will be an in-memory
+     * repository.
+     *
+     * @return audit event repository
+     */
     @Bean("auditEventRepository")
     public AuditEventRepository getAuditEventRepository() {
         return new InMemoryAuditEventRepository();

@@ -22,33 +22,32 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.user.repository;
-
-import java.util.Collection;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.user.model.PersistentPrivilege;
+package com.bernardomg.example.spring.security.ws.jwt.mvc.error.model;
 
 /**
- * Repository for privileges.
+ * Error object. Containing a message with the failure description.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface PrivilegeRepository extends JpaRepository<PersistentPrivilege, Long> {
+public interface Error {
 
     /**
-     * Returns all the privileges for a user. This requires a join from the user up to the privileges.
+     * Builds an error.
      *
-     * @param id
-     *            user id
-     * @return all the privileges for the user
+     * @param message
+     *            error message
+     * @return error with the message
      */
-    @Query(value = "SELECT p.* FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN user_roles ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id",
-            nativeQuery = true)
-    public Collection<PersistentPrivilege> findForUser(@Param("id") final Long id);
+    public static Error of(final String message) {
+        return new ImmutableError(message);
+    }
+
+    /**
+     * Returns the error message.
+     *
+     * @return the error message.
+     */
+    public String getMessage();
 
 }

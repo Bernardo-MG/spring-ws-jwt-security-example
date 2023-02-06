@@ -26,7 +26,7 @@ package com.bernardomg.example.spring.security.ws.jwt.mvc.response.model;
 
 import java.util.Collection;
 
-import com.bernardomg.example.spring.security.ws.jwt.mvc.error.model.Failure;
+import com.bernardomg.example.spring.security.ws.jwt.mvc.error.model.Error;
 
 /**
  * Error response to the frontend.
@@ -35,6 +35,11 @@ import com.bernardomg.example.spring.security.ws.jwt.mvc.error.model.Failure;
  */
 public interface ErrorResponse {
 
-    public Collection<? extends Failure> getErrors();
+    /**
+     * Returns all the errors caused by the request.
+     *
+     * @return request errors
+     */
+    public Collection<? extends Error> getErrors();
 
 }

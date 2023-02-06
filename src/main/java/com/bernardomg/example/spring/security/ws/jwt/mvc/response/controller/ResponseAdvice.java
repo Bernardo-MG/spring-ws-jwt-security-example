@@ -38,10 +38,22 @@ import com.bernardomg.example.spring.security.ws.jwt.mvc.response.model.Response
 
 import lombok.extern.slf4j.Slf4j;
 
-@ControllerAdvice("com.bernardomg.example.ws")
+/**
+ * Advice to wrap all the responses into the response object.
+ * <p>
+ * Unless the response is already an instance of {@link Response}, or the Spring {@link ResponseEntity}, it will be
+ * wrapped into a {@code Response}.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+@ControllerAdvice("com.bernardomg.example.spring.security.ws")
 @Slf4j
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
+    /**
+     * Default constructor.
+     */
     public ResponseAdvice() {
         super();
     }
