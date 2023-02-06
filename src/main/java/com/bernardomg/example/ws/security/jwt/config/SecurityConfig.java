@@ -28,6 +28,7 @@ import java.nio.charset.Charset;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -55,6 +56,7 @@ import io.jsonwebtoken.security.Keys;
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {
 
     public SecurityConfig() {
