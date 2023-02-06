@@ -9,7 +9,7 @@
 			"name": "Token",
 			"item": [
 				{
-					"name": "Token generation",
+					"name": "Token generation for default",
 					"event": [
 						{
 							"listen": "test",
@@ -31,6 +31,34 @@
 							"path": [
 								"token",
 								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token generation for no privileges",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Unauthorized request\",()=>{\r",
+									"    pm.expect(pm.response.code).to.eql(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/token/noroles",
+							"path": [
+								"token",
+								"noroles"
 							]
 						}
 					},
@@ -214,6 +242,75 @@
 					{
 						"key": "token",
 						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY3NTY2ODkzNCwiZXhwIjoxNjc1Njg2OTM0fQ._oR6pAYlrhpdQq23gTJdGwGncoxAoaAE-GDKdWHQC_TRLcVxdAZDaO02pSfx8JlmAIH2usOnld-NtStjvzNQyw",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Authorized without privileges",
+			"item": [
+				{
+					"name": "Get data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Unauthorized request\", () => {\r",
+									"  pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response contains the error properties\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.errors).to.have.lengthOf(1);\r",
+									"    pm.expect(responseJson.errors[0].message).to.eql('Unauthorized');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/rest/entity",
+							"path": [
+								"rest",
+								"entity"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJub3JvbGVzIiwiaWF0IjoxNjc1NjcwOTIyLCJleHAiOjE2NzU2ODg5MjJ9.4YVSar5Es6ceokRrc3HiSKw3HxTuC4Ax2fAw7u9g3cS17mA9PqojrpiBsErhm5mDdQ3XlLewy9e_cr_xZgqLIA",
 						"type": "string"
 					}
 				]
