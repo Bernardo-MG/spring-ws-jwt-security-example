@@ -80,23 +80,7 @@ public class WebSecurityConfig {
         final Customizer<LogoutConfigurer<HttpSecurity>>                                                    logoutCustomizer;
 
         // Authorization
-        authorizeRequestsCustomizer = c -> {
-            try {
-                c.antMatchers("/actuator/**", "/login/**", "/token/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(authenticationEntryPoint)
-                    .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            } catch (final Exception e) {
-                // TODO Handle exception
-                throw new RuntimeException(e);
-            }
-        };
+        authorizeRequestsCustomizer = getAuthorizeRequestsCustomizer();
         // Login form
         formLoginCustomizer = c -> c.disable();
         // Logout
@@ -116,6 +100,27 @@ public class WebSecurityConfig {
         http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator));
 
         return http.build();
+    }
+
+    private final Customizer<ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry>
+            getAuthorizeRequestsCustomizer() {
+        return c -> {
+            try {
+                c.antMatchers("/actuator/**", "/login/**", "/token/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            } catch (final Exception e) {
+                // TODO Handle exception
+                throw new RuntimeException(e);
+            }
+        };
     }
 
 }

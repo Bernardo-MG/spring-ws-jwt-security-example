@@ -59,6 +59,9 @@ import io.jsonwebtoken.security.Keys;
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {
 
+    /**
+     * Default constructor.
+     */
     public SecurityConfig() {
         super();
     }
