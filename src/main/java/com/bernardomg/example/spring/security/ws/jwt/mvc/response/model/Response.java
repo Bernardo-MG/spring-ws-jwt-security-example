@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2021-2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public interface Response<T> {
      *            failures which caused the error
      * @return an error response
      */
-    public static ErrorResponse error(final Collection<? extends Error> failures) {
+    public static ErrorResponse error(final Collection<Error> failures) {
         return new ImmutableErrorResponse(failures);
     }
 

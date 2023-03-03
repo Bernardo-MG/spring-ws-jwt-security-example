@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2021-2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public class ImmutableErrorResponse implements ErrorResponse {
     /**
      * Response errors.
      */
-    private final Collection<? extends Error> errors;
+    private final Collection<Error> errors;
 
     /**
      * Constructs a response with the specified errors.
@@ -51,7 +51,7 @@ public class ImmutableErrorResponse implements ErrorResponse {
      * @param errs
      *            errors
      */
-    public ImmutableErrorResponse(@NonNull final Collection<? extends Error> errs) {
+    public ImmutableErrorResponse(@NonNull final Collection<Error> errs) {
         super();
 
         errors = Collections.unmodifiableCollection(errs);
