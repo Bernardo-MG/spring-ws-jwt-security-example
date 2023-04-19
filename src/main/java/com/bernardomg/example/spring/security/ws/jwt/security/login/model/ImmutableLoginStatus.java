@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.login.model;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
 
 import lombok.Data;
 import lombok.NonNull;

@@ -26,4 +26,4 @@
  * Login controller.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.login.controller;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;

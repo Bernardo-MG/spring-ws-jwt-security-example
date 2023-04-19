@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.login.service;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
-import com.bernardomg.example.spring.security.ws.jwt.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
 
 /**
  * Login service. Takes the user credentials and returns a token.

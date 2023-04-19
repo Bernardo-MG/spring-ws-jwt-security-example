@@ -26,4 +26,4 @@
  * Login services.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.login.service;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.service;

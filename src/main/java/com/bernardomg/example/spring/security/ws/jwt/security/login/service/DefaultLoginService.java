@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.login.service;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
 import java.util.Optional;
 
@@ -32,8 +32,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bernardomg.example.spring.security.ws.jwt.login.model.ImmutableLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableLoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
 
 import lombok.AllArgsConstructor;

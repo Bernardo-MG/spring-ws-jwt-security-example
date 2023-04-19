@@ -22,16 +22,16 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.login.controller;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.example.spring.security.ws.jwt.login.model.LoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.login.model.UserForm;
-import com.bernardomg.example.spring.security.ws.jwt.login.service.LoginService;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.UserForm;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
 
 import lombok.AllArgsConstructor;
 

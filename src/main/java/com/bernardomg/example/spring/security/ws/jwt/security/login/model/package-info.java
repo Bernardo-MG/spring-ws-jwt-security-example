@@ -26,4 +26,4 @@
  * Login model.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.login.model;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
