@@ -36,10 +36,19 @@ import lombok.NonNull;
 @Data
 public final class ImmutableLoginStatus implements LoginStatus {
 
+    /**
+     * Logged in flag.
+     */
     private final Boolean logged;
 
+    /**
+     * Authentication token.
+     */
     private final String  token;
 
+    /**
+     * Logged in user username.
+     */
     private final String  username;
 
     public ImmutableLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {

@@ -6,6 +6,9 @@ import lombok.Data;
 @Data
 public final class ImmutableToken implements Token {
 
+    /**
+     * Token value.
+     */
     private final String token;
 
     public ImmutableToken(final String tk) {
