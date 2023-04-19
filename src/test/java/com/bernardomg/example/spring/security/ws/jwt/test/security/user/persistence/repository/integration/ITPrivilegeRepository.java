@@ -4,6 +4,7 @@ package com.bernardomg.example.spring.security.ws.jwt.test.security.user.persist
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model.PersistentPrivilege;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.IntegrationTest;
-
-import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
 @IntegrationTest
 @DisplayName("Privilege repository")

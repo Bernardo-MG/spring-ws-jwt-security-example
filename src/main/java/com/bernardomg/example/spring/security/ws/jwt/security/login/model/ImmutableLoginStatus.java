@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +22,41 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.service;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
 
-import org.springframework.stereotype.Service;
+import lombok.Data;
+import lombok.NonNull;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.model.ImmutableToken;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.model.Token;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+/**
+ * Immutable implementation of {@link LoginStatus}.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+@Data
+public final class ImmutableLoginStatus implements LoginStatus {
 
-import lombok.AllArgsConstructor;
+    /**
+     * Logged in flag.
+     */
+    private final Boolean logged;
 
-@Service
-@AllArgsConstructor
-public final class DefaultTokenService implements TokenService {
+    /**
+     * Authentication token.
+     */
+    private final String  token;
 
-    private final TokenProvider tokenProvider;
+    /**
+     * Logged in user username.
+     */
+    private final String  username;
 
-    @Override
-    public final Token getToken(final String user) {
-        final String token;
+    public ImmutableLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
+        super();
 
-        token = tokenProvider.generateToken(user);
-
-        return new ImmutableToken(token);
+        username = usnm;
+        logged = lgd;
+        token = tkn;
     }
 
 }

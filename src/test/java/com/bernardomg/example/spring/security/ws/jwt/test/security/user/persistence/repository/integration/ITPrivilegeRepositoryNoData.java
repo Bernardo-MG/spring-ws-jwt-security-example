@@ -1,6 +1,7 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.test.security.user.persistence.repository.integration;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model.PersistentPrivilege;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.IntegrationTest;
-
-import liquibase.repackaged.org.apache.commons.collections4.IterableUtils;
 
 @IntegrationTest
 @DisplayName("Privilege repository - no data")

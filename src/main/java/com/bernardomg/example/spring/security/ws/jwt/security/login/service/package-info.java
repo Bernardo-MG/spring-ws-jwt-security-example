@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,39 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.mvc.response.model;
-
-import java.util.Collection;
-import java.util.Collections;
-
-import com.bernardomg.example.spring.security.ws.jwt.mvc.error.model.Error;
-
-import lombok.Data;
-import lombok.NonNull;
-
 /**
- * Immutable implementation of the error response.
- *
- * @author Bernardo Mart&iacute;nez Garrido
+ * Login services.
  */
-@Data
-public class ImmutableErrorResponse implements ErrorResponse {
 
-    /**
-     * Response errors.
-     */
-    private final Collection<Error> errors;
-
-    /**
-     * Constructs a response with the specified errors.
-     *
-     * @param errs
-     *            errors
-     */
-    public ImmutableErrorResponse(@NonNull final Collection<Error> errs) {
-        super();
-
-        errors = Collections.unmodifiableCollection(errs);
-    }
-
-}
+package com.bernardomg.example.spring.security.ws.jwt.security.login.service;

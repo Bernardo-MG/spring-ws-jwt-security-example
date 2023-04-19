@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,39 +22,45 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.mvc.response.model;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;
 
-import java.util.Collection;
-import java.util.Collections;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.example.spring.security.ws.jwt.mvc.error.model.Error;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.UserForm;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.AllArgsConstructor;
 
 /**
- * Immutable implementation of the error response.
+ * Login controller. Allows a user to log into the application.
  *
  * @author Bernardo Mart&iacute;nez Garrido
+ *
  */
-@Data
-public class ImmutableErrorResponse implements ErrorResponse {
+@RestController
+@RequestMapping("/login")
+@AllArgsConstructor
+public class LoginController {
 
     /**
-     * Response errors.
+     * Login service.
      */
-    private final Collection<Error> errors;
+    private final LoginService service;
 
     /**
-     * Constructs a response with the specified errors.
+     * Logs in a user.
      *
-     * @param errs
-     *            errors
+     * @param user
+     *            user details
+     * @return the login status after the login attempt
      */
-    public ImmutableErrorResponse(@NonNull final Collection<Error> errs) {
-        super();
-
-        errors = Collections.unmodifiableCollection(errs);
+    @PostMapping
+    public LoginStatus login(@RequestBody final UserForm user) {
+        return service.login(user.getUsername(), user.getPassword());
     }
 
 }

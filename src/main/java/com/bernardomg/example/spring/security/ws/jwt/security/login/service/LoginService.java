@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,39 +22,27 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.mvc.response.model;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import com.bernardomg.example.spring.security.ws.jwt.mvc.error.model.Error;
-
-import lombok.Data;
-import lombok.NonNull;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
 
 /**
- * Immutable implementation of the error response.
+ * Login service. Takes the user credentials and returns a token.
  *
  * @author Bernardo Mart&iacute;nez Garrido
+ *
  */
-@Data
-public class ImmutableErrorResponse implements ErrorResponse {
+public interface LoginService {
 
     /**
-     * Response errors.
-     */
-    private final Collection<Error> errors;
-
-    /**
-     * Constructs a response with the specified errors.
+     * Receives credentials and returns the login status. If it was valid then it contains a token.
      *
-     * @param errs
-     *            errors
+     * @param username
+     *            username to authenticate
+     * @param password
+     *            password to authenticate
+     * @return login status
      */
-    public ImmutableErrorResponse(@NonNull final Collection<Error> errs) {
-        super();
-
-        errors = Collections.unmodifiableCollection(errs);
-    }
+    public LoginStatus login(final String username, final String password);
 
 }

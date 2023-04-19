@@ -1,70 +1,30 @@
 {
 	"info": {
-		"_postman_id": "56002a57-4092-4e05-85a9-044df3887d95",
+		"_postman_id": "bb457a8a-2b17-49d5-8214-8c3af9d45764",
 		"name": "JWT auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Token",
+			"name": "Login",
 			"item": [
 				{
-					"name": "Token generation for default",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Unauthorized request\",()=>{\r",
-									"    pm.expect(pm.response.code).to.eql(401);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "/token/admin",
-							"path": [
-								"token",
-								"admin"
-							]
-						}
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
 					},
-					"response": []
-				},
-				{
-					"name": "Token generation for no privileges",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Unauthorized request\",()=>{\r",
-									"    pm.expect(pm.response.code).to.eql(401);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "/token/noroles",
-							"path": [
-								"token",
-								"noroles"
-							]
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"\r\n}"
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "Login requests. They are required, as this is the way to acquire the JWT token."
 		},
 		{
 			"name": "Unauthorized",
@@ -104,6 +64,7 @@
 					"response": []
 				}
 			],
+			"description": "Unauthorized requests. These are using no authentication.",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -163,6 +124,7 @@
 					"response": []
 				}
 			],
+			"description": "Requests using the wrong authentication scheme. To make sure the server doesn't support them.",
 			"auth": {
 				"type": "basic",
 				"basic": [
@@ -236,6 +198,7 @@
 					"response": []
 				}
 			],
+			"description": "Authorized requests. These check the server handles the authorization scheme.",
 			"auth": {
 				"type": "bearer",
 				"bearer": [
@@ -305,6 +268,7 @@
 					"response": []
 				}
 			],
+			"description": "Authorized without privileges. In this case these requests cause an authorization error, as the user is authenticated but lacks permissions.",
 			"auth": {
 				"type": "bearer",
 				"bearer": [

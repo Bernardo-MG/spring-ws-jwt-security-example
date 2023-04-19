@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.controller;
-
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.token.model.Token;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.service.TokenService;
-
-import lombok.AllArgsConstructor;
-
 /**
- * Rest controller for the example entities.
- *
- * @author Bernardo Mart&iacute;nez Garrido
+ * Login model.
  */
-@RestController
-@RequestMapping("/token")
-@AllArgsConstructor
-public class TokenController {
 
-    private final TokenService tokenService;
-
-    @GetMapping(path = "/{user}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Token delete(@PathVariable("user") final String user) {
-        return tokenService.getToken(user);
-    }
-
-}
+package com.bernardomg.example.spring.security.ws.jwt.security.login.model;

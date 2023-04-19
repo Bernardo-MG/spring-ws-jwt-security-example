@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,35 @@
  * SOFTWARE.
  */
 
-/**
- * Services.
- * <p>
- * While in the MVC architecture all the logic seems to be contained inside the controllers, using an additional layer
- * of services helps to isolate all the important logic in the application.
- */
+package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.service;
+/**
+ * Status after a login attempt.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface LoginStatus {
+
+    /**
+     * Returns if the logging attempt was successful.
+     *
+     * @return {@code true} if the login was successful, {@code false} otherwise
+     */
+    public Boolean getLogged();
+
+    /**
+     * Returns the security token.
+     *
+     * @return the security token
+     */
+    public String getToken();
+
+    /**
+     * Returns the username of the user who attempted login.
+     *
+     * @return the username
+     */
+    public String getUsername();
+
+}
