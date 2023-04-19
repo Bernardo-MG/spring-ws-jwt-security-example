@@ -36,7 +36,7 @@ import com.bernardomg.example.spring.security.ws.jwt.security.token.service.Toke
 import lombok.AllArgsConstructor;
 
 /**
- * Rest controller for the example entities.
+ * Rest controller for token generation. This is only for testing purposes.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  */
