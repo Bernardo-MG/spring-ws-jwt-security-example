@@ -35,6 +35,13 @@ import java.util.Date;
 public interface JwtTokenData {
 
     /**
+     * Returns the audience.
+     *
+     * @return the audience
+     */
+    public String getAudience();
+
+    /**
      * Returns the expiration date.
      *
      * @return the expiration date
@@ -42,11 +49,32 @@ public interface JwtTokenData {
     public Date getExpiration();
 
     /**
+     * Returns the id.
+     *
+     * @return the id
+     */
+    public String getId();
+
+    /**
      * Returns the issued at date.
      *
      * @return the issued at date
      */
     public Date getIssuedAt();
+
+    /**
+     * Returns the issuer.
+     *
+     * @return the issuer
+     */
+    public String getIssuer();
+
+    /**
+     * Returns the not before date.
+     *
+     * @return the not before date
+     */
+    public Date getNotBefore();
 
     /**
      * Returns the subject.

@@ -40,14 +40,34 @@ import lombok.Value;
 public class ImmutableJwtTokenData implements JwtTokenData {
 
     /**
+     * Audience.
+     */
+    private final String audience;
+
+    /**
      * Expiration date.
      */
     private final Date   expiration;
 
     /**
+     * Id.
+     */
+    private final String id;
+
+    /**
      * Issued at date.
      */
     private final Date   issuedAt;
+
+    /**
+     * Issuer.
+     */
+    private final String issuer;
+
+    /**
+     * Not before date.
+     */
+    private final Date   notBefore;
 
     /**
      * Subject.

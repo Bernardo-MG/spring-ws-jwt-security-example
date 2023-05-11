@@ -65,9 +65,13 @@ public final class JwtTokenDataEncoder implements TokenEncoder<JwtTokenData> {
         final String token;
 
         token = Jwts.builder()
+            .setId(data.getId())
+            .setIssuer(data.getIssuer())
             .setSubject(data.getSubject())
             .setIssuedAt(data.getIssuedAt())
             .setExpiration(data.getExpiration())
+            .setNotBefore(data.getNotBefore())
+            .setAudience(data.getAudience())
             .signWith(key, SignatureAlgorithm.HS512)
             .compact();
 

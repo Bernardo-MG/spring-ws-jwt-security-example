@@ -109,6 +109,7 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
         data = ImmutableJwtTokenData.builder()
             .withSubject(subject)
             .withIssuedAt(issuedAt)
+            .withNotBefore(issuedAt)
             .withExpiration(expiration)
             .build();
 
