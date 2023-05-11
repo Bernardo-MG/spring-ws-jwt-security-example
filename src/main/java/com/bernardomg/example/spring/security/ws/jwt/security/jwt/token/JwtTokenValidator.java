@@ -58,18 +58,6 @@ public final class JwtTokenValidator implements TokenValidator {
     }
 
     @Override
-    public final String getSubject(final String token) {
-        final String subject;
-
-        subject = tokenDataDecoder.decode(token)
-            .getSubject();
-
-        log.debug("Found subject {}", subject);
-
-        return subject;
-    }
-
-    @Override
     public final Boolean hasExpired(final String token) {
         final Date expiration;
         final Date current;

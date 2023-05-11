@@ -38,6 +38,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.TokenValidator;
 
 import jakarta.servlet.FilterChain;
@@ -55,20 +57,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class JwtTokenFilter extends OncePerRequestFilter {
 
+    private final TokenDecoder<JwtTokenData> tokenDataDecoder;
+
     /**
      * Token header identifier. This is added before the token to tell which kind of token it is.
      */
-    private final String             tokenHeaderIdentifier = "Bearer";
+    private final String                     tokenHeaderIdentifier = "Bearer";
 
     /**
      * Token validator.
      */
-    private final TokenValidator     tokenValidator;
+    private final TokenValidator             tokenValidator;
 
     /**
      * User details service. Gives access to the user, to validate the token against it.
      */
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsService         userDetailsService;
 
     /**
      * Constructs a filter with the received arguments.
@@ -77,12 +81,16 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
      *            user details service
      * @param validator
      *            token validator
+     * @param decoder
+     *            token decoder
      */
-    public JwtTokenFilter(final UserDetailsService userDetService, final TokenValidator validator) {
+    public JwtTokenFilter(final UserDetailsService userDetService, final TokenValidator validator,
+            final TokenDecoder<JwtTokenData> decoder) {
         super();
 
         userDetailsService = Objects.requireNonNull(userDetService);
         tokenValidator = Objects.requireNonNull(validator);
+        tokenDataDecoder = Objects.requireNonNull(decoder);
 
         // TODO: Test this class
     }
@@ -116,7 +124,8 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
      * @return the subject from the token if found, or an empty {@code Optional} otherwise
      */
     private final Optional<String> getSubject(final String token) {
-        return Optional.ofNullable(tokenValidator.getSubject(token));
+        return Optional.ofNullable(tokenDataDecoder.decode(token)
+            .getSubject());
     }
 
     /**

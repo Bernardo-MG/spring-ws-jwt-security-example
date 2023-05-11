@@ -37,8 +37,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.UserRepository;
@@ -85,6 +88,20 @@ public class SecurityConfig {
     @Bean("passwordEncoder")
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Returns the token decoder.
+     *
+     * @param key
+     *            secret key for hashing
+     * @param properties
+     *            JWT configuration properties
+     * @return the token encoder
+     */
+    @Bean("tokenDecode")
+    public TokenDecoder<JwtTokenData> getTokenDecoder(final SecretKey key) {
+        return new JwtTokenDataDecoder(key);
     }
 
     /**

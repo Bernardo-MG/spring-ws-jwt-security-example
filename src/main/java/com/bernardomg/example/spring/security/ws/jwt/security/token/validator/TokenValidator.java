@@ -33,15 +33,6 @@ package com.bernardomg.example.spring.security.ws.jwt.security.token.validator;
 public interface TokenValidator {
 
     /**
-     * Returns the subject from the received token.
-     *
-     * @param token
-     *            to parse and extract the subject
-     * @return subject from the token
-     */
-    public String getSubject(final String token);
-
-    /**
      * Check if the token has expired.
      *
      * @param token

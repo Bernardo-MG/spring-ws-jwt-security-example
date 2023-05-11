@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,9 +23,9 @@ import io.jsonwebtoken.security.Keys;
 @DisplayName("JwtSubjectTokenEncoder - get subject")
 public class TestJwtSubjectTokenEncoderGetSubject {
 
-    private final TokenEncoder<String> provider;
+    private final TokenDecoder<JwtTokenData> decoder;
 
-    private final JwtTokenValidator    validator;
+    private final TokenEncoder<String>       provider;
 
     public TestJwtSubjectTokenEncoderGetSubject() {
         super();
@@ -35,7 +37,7 @@ public class TestJwtSubjectTokenEncoderGetSubject {
                 .getBytes(Charset.forName("UTF-8")));
 
         provider = new JwtSubjectTokenEncoder(key, 1);
-        validator = new JwtTokenValidator(key);
+        decoder = new JwtTokenDataDecoder(key);
     }
 
     @Test
@@ -45,7 +47,8 @@ public class TestJwtSubjectTokenEncoderGetSubject {
         final String subject;
 
         token = provider.generateToken("subject");
-        subject = validator.getSubject(token);
+        subject = decoder.decode(token)
+            .getSubject();
 
         Assertions.assertEquals("subject", subject);
     }
@@ -61,7 +64,7 @@ public class TestJwtSubjectTokenEncoderGetSubject {
         TimeUnit.SECONDS.sleep(Double.valueOf(2)
             .longValue());
 
-        executable = () -> validator.getSubject(token);
+        executable = () -> decoder.decode(token);
 
         Assertions.assertThrows(ExpiredJwtException.class, executable);
     }
