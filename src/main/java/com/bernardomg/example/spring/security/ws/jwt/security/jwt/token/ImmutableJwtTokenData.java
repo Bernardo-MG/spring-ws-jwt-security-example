@@ -54,9 +54,4 @@ public class ImmutableJwtTokenData implements JwtTokenData {
      */
     private final String subject;
 
-    /**
-     * Validity date.
-     */
-    private final Date   validity;
-
 }

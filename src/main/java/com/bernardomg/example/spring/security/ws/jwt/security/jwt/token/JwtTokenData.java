@@ -55,11 +55,4 @@ public interface JwtTokenData {
      */
     public String getSubject();
 
-    /**
-     * Returns the validity date.
-     *
-     * @return the validity date
-     */
-    public Date getValidity();
-
 }

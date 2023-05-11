@@ -110,7 +110,6 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
             .withSubject(subject)
             .withIssuedAt(issuedAt)
             .withExpiration(expiration)
-            .withValidity(issuedAt)
             .build();
 
         token = tokenDataEncoder.generateToken(data);
