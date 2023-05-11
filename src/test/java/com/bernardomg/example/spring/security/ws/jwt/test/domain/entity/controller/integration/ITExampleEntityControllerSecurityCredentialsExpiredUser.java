@@ -67,7 +67,7 @@ public final class ITExampleEntityControllerSecurityCredentialsExpiredUser {
     private final RequestBuilder getRequestAuthorized() {
         final String token;
 
-        token = tokenEncoder.generateToken("admin");
+        token = tokenEncoder.encode("admin");
 
         return MockMvcRequestBuilders.get("/rest/entity")
             .header("Authorization", "Bearer " + token);

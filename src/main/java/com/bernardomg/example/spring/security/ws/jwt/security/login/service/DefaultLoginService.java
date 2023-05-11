@@ -96,7 +96,7 @@ public final class DefaultLoginService implements LoginService {
         if (logged) {
             // Valid user
             // Generate token
-            token = tokenEncoder.generateToken(username);
+            token = tokenEncoder.encode(username);
         } else {
             token = "";
         }

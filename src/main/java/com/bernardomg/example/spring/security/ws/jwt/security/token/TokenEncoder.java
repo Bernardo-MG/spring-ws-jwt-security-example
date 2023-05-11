@@ -41,6 +41,6 @@ public interface TokenEncoder<T> {
      *            data to encode into the token
      * @return token from the data
      */
-    public String generateToken(final T data);
+    public String encode(final T data);
 
 }

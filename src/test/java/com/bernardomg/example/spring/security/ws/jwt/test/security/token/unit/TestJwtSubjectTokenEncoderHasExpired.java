@@ -19,7 +19,7 @@ import io.jsonwebtoken.security.Keys;
 @DisplayName("JwtSubjectTokenEncoder - has expired")
 public class TestJwtSubjectTokenEncoderHasExpired {
 
-    private final TokenEncoder<String> provider;
+    private final TokenEncoder<String> encoder;
 
     private final JwtTokenValidator    validator;
 
@@ -32,7 +32,7 @@ public class TestJwtSubjectTokenEncoderHasExpired {
             "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 .getBytes(Charset.forName("UTF-8")));
 
-        provider = new JwtSubjectTokenEncoder(key, 5);
+        encoder = new JwtSubjectTokenEncoder(key, 5);
         validator = new JwtTokenValidator(key);
     }
 
@@ -42,7 +42,7 @@ public class TestJwtSubjectTokenEncoderHasExpired {
         final String  token;
         final Boolean expired;
 
-        token = provider.generateToken("subject");
+        token = encoder.encode("subject");
         expired = validator.hasExpired(token);
 
         Assertions.assertFalse(expired);
@@ -54,7 +54,7 @@ public class TestJwtSubjectTokenEncoderHasExpired {
         final String  token;
         final Boolean expired;
 
-        token = provider.generateToken("subject");
+        token = encoder.encode("subject");
 
         TimeUnit.SECONDS.sleep(Double.valueOf(6)
             .longValue());

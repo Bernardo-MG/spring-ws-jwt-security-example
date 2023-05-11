@@ -25,7 +25,7 @@ public class TestJwtSubjectTokenEncoderGetSubject {
 
     private final TokenDecoder<JwtTokenData> decoder;
 
-    private final TokenEncoder<String>       provider;
+    private final TokenEncoder<String>       encoder;
 
     public TestJwtSubjectTokenEncoderGetSubject() {
         super();
@@ -36,7 +36,7 @@ public class TestJwtSubjectTokenEncoderGetSubject {
             "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 .getBytes(Charset.forName("UTF-8")));
 
-        provider = new JwtSubjectTokenEncoder(key, 1);
+        encoder = new JwtSubjectTokenEncoder(key, 1);
         decoder = new JwtTokenDataDecoder(key);
     }
 
@@ -46,7 +46,7 @@ public class TestJwtSubjectTokenEncoderGetSubject {
         final String token;
         final String subject;
 
-        token = provider.generateToken("subject");
+        token = encoder.encode("subject");
         subject = decoder.decode(token)
             .getSubject();
 
@@ -59,7 +59,7 @@ public class TestJwtSubjectTokenEncoderGetSubject {
         final String     token;
         final Executable executable;
 
-        token = provider.generateToken("subject");
+        token = encoder.encode("subject");
 
         TimeUnit.SECONDS.sleep(Double.valueOf(2)
             .longValue());

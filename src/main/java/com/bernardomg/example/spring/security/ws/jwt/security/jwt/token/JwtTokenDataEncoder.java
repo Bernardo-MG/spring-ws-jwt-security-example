@@ -61,7 +61,7 @@ public final class JwtTokenDataEncoder implements TokenEncoder<JwtTokenData> {
     }
 
     @Override
-    public final String generateToken(final JwtTokenData data) {
+    public final String encode(final JwtTokenData data) {
         final String token;
 
         token = Jwts.builder()

@@ -94,7 +94,7 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
     }
 
     @Override
-    public final String generateToken(final String subject) {
+    public final String encode(final String subject) {
         final Date         expiration;
         final Date         issuedAt;
         final String       token;
@@ -112,7 +112,7 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
             .withExpiration(expiration)
             .build();
 
-        token = tokenDataEncoder.generateToken(data);
+        token = tokenDataEncoder.encode(data);
 
         log.debug("Created token for subject {} with expiration date {}", subject, expiration);
 

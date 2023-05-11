@@ -35,7 +35,7 @@ package com.bernardomg.example.spring.security.ws.jwt.security.token;
 public interface TokenDecoder<T> {
 
     /**
-     * Returns an object encoding the data.
+     * Returns an object decoded from the token.
      *
      * @param token
      *            token to decode as the object

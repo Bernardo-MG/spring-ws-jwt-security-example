@@ -25,6 +25,18 @@ public final class JwtTokenDataDecoder implements TokenDecoder<JwtTokenData> {
     private final JwtParser parser;
 
     /**
+     * Builds a decoder with the received parser.
+     *
+     * @param prsr
+     *            JWT parser
+     */
+    public JwtTokenDataDecoder(final JwtParser prsr) {
+        super();
+
+        parser = Objects.requireNonNull(prsr);
+    }
+
+    /**
      * Builds a decoder with the received key.
      *
      * @param key
