@@ -95,8 +95,6 @@ public class SecurityConfig {
      *
      * @param key
      *            secret key for hashing
-     * @param properties
-     *            JWT configuration properties
      * @return the token encoder
      */
     @Bean("tokenDecode")
