@@ -58,14 +58,14 @@ import lombok.extern.slf4j.Slf4j;
 public final class JwtTokenFilter extends OncePerRequestFilter {
 
     /**
+     * Token header identifier. This is added before the token to tell which kind of token it is.
+     */
+    private static final String              TOKEN_HEADER_IDENTIFIER = "Bearer";
+
+    /**
      * Token decoder. Required to acquire the subject.
      */
     private final TokenDecoder<JwtTokenData> tokenDataDecoder;
-
-    /**
-     * Token header identifier. This is added before the token to tell which kind of token it is.
-     */
-    private final String                     tokenHeaderIdentifier = "Bearer";
 
     /**
      * Token validator.
@@ -149,10 +149,10 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
             token = Optional.empty();
             log.warn("Missing authorization header, can't return token", header);
         } else if ((!Strings.isEmpty(header)) && (header.trim()
-            .startsWith(tokenHeaderIdentifier + " "))) {
+            .startsWith(TOKEN_HEADER_IDENTIFIER + " "))) {
             // Token received
             // Take it by removing the identifier
-            token = Optional.of(header.substring(tokenHeaderIdentifier.length())
+            token = Optional.of(header.substring(TOKEN_HEADER_IDENTIFIER.length())
                 .trim());
         } else {
             // Invalid token received

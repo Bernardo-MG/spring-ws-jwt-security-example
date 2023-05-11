@@ -24,7 +24,7 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
 
@@ -77,7 +77,7 @@ public class SecurityConfig {
     @Bean("jwtSecretKey")
     public SecretKey getJwtSecretKey(final JwtProperties properties) {
         return Keys.hmacShaKeyFor(properties.getSecret()
-            .getBytes(Charset.forName("UTF-8")));
+            .getBytes(StandardCharsets.UTF_8));
     }
 
     /**

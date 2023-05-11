@@ -24,7 +24,6 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -54,24 +53,6 @@ import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidat
 public class WebSecurityConfig {
 
     /**
-     * Token decoder.
-     */
-    @Autowired
-    private TokenDecoder<JwtTokenData> decoder;
-
-    /**
-     * JWT token validator.
-     */
-    @Autowired
-    private TokenValidator             tokenValidator;
-
-    /**
-     * User details service.
-     */
-    @Autowired
-    private UserDetailsService         userDetailsService;
-
-    /**
      * Default constructor.
      */
     public WebSecurityConfig() {
@@ -83,12 +64,20 @@ public class WebSecurityConfig {
      *
      * @param http
      *            HTTP security component
+     * @param decoder
+     *            token decoder
+     * @param tokenValidator
+     *            token validator
+     * @param userDetailsService
+     *            user details service
      * @return web security filter chain with all authentication requirements
      * @throws Exception
      *             if the setup fails
      */
     @Bean("webSecurityFilterChain")
-    public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
+            final TokenDecoder<JwtTokenData> decoder, final TokenValidator tokenValidator,
+            final UserDetailsService userDetailsService) throws Exception {
         final Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizeRequestsCustomizer;
         final Customizer<FormLoginConfigurer<HttpSecurity>>                                                        formLoginCustomizer;
         final Customizer<LogoutConfigurer<HttpSecurity>>                                                           logoutCustomizer;
