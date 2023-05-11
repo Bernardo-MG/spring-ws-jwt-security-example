@@ -41,7 +41,7 @@ import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorRe
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtSecurityConfigurer;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
 /**
  * Web security configuration.

@@ -40,7 +40,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

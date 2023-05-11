@@ -29,7 +29,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
