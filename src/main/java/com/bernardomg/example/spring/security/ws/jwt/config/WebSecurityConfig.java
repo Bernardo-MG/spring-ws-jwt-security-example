@@ -63,6 +63,9 @@ public class WebSecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /**
+     * Default constructor.
+     */
     public WebSecurityConfig() {
         super();
     }

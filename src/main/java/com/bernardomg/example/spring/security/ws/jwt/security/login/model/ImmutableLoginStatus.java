@@ -51,6 +51,12 @@ public final class ImmutableLoginStatus implements LoginStatus {
      */
     private final String  username;
 
+    /**
+     * Constructs an immutable login status.
+     * @param usnm username
+     * @param lgd logged in flag
+     * @param tkn authentication token
+     */
     public ImmutableLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
         super();
 
