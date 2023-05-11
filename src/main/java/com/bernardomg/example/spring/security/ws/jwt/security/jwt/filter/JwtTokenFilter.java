@@ -57,6 +57,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class JwtTokenFilter extends OncePerRequestFilter {
 
+    /**
+     * Token decoder. Required to acquire the subject.
+     */
     private final TokenDecoder<JwtTokenData> tokenDataDecoder;
 
     /**

@@ -43,6 +43,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class JwtTokenValidator implements TokenValidator {
 
+    /**
+     * Token decoder. Without this the token claims can't be validated.
+     */
     private final TokenDecoder<JwtTokenData> tokenDataDecoder;
 
     /**
