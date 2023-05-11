@@ -16,14 +16,14 @@ import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.Tok
 
 import io.jsonwebtoken.security.Keys;
 
-@DisplayName("JWT token encoder - has expired")
-public class TestJwtTokenEncoderHasExpired {
+@DisplayName("JwtSubjectTokenEncoder - has expired")
+public class TestJwtSubjectTokenEncoderHasExpired {
 
     private final TokenEncoder<String> provider;
 
     private final JwtTokenValidator    validator;
 
-    public TestJwtTokenEncoderHasExpired() {
+    public TestJwtSubjectTokenEncoderHasExpired() {
         super();
 
         final SecretKey key;

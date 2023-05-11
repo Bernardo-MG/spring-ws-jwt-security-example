@@ -14,12 +14,12 @@ import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.Tok
 
 import io.jsonwebtoken.security.Keys;
 
-@DisplayName("JWT token encoder - generate token")
-public class TestJwtTokenEncoderGenerateToken {
+@DisplayName("JwtSubjectTokenEncoder - generate token")
+public class TestJwtSubjectTokenEncoderGenerateToken {
 
     private final TokenEncoder<String> provider;
 
-    public TestJwtTokenEncoderGenerateToken() {
+    public TestJwtSubjectTokenEncoderGenerateToken() {
         super();
 
         final SecretKey key;
