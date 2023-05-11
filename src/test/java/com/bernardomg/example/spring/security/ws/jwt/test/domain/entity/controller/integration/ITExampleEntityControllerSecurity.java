@@ -52,19 +52,6 @@ public final class ITExampleEntityControllerSecurity {
         super();
     }
 
-    private final RequestBuilder getRequest() {
-        return MockMvcRequestBuilders.get("/rest/entity");
-    }
-
-    private final RequestBuilder getRequestAuthorized() {
-        final String token;
-
-        token = tokenEncoder.generateToken("admin");
-
-        return MockMvcRequestBuilders.get("/rest/entity")
-            .header("Authorization", "Bearer " + token);
-    }
-
     @Test
     @DisplayName("An authenticated request is authorized")
     public final void testGet_authorized() throws Exception {
@@ -87,6 +74,19 @@ public final class ITExampleEntityControllerSecurity {
         // The operation was accepted
         result.andExpect(MockMvcResultMatchers.status()
             .isUnauthorized());
+    }
+
+    private final RequestBuilder getRequest() {
+        return MockMvcRequestBuilders.get("/rest/entity");
+    }
+
+    private final RequestBuilder getRequestAuthorized() {
+        final String token;
+
+        token = tokenEncoder.generateToken("admin");
+
+        return MockMvcRequestBuilders.get("/rest/entity")
+            .header("Authorization", "Bearer " + token);
     }
 
 }

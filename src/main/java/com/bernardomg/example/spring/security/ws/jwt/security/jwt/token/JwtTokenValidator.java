@@ -25,17 +25,13 @@
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
 import java.util.Date;
-import java.util.Objects;
-import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.TokenValidator;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -47,10 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class JwtTokenValidator implements TokenValidator {
 
-    /**
-     * JWT parser for reading tokens.
-     */
-    private final JwtParser parser;
+    private final TokenDecoder<JwtTokenData> tokenDataDecoder;
 
     /**
      * Constructs a validator with the received arguments.
@@ -61,48 +54,15 @@ public final class JwtTokenValidator implements TokenValidator {
     public JwtTokenValidator(final SecretKey key) {
         super();
 
-        Objects.requireNonNull(key);
-
-        parser = Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build();
-    }
-
-    /**
-     * Returns all claims from the token.
-     *
-     * @param token
-     *            token to parse
-     * @return all the claims from the token
-     */
-    private final Claims getAllClaims(final String token) {
-        return parser.parseClaimsJws(token)
-            .getBody();
-    }
-
-    /**
-     * Returns a claim from the token, defined through the claim resolver.
-     *
-     * @param <T>
-     *            type of the claim
-     * @param token
-     *            token to parse
-     * @param resolver
-     *            claim resolver to pick the wanted claim
-     * @return the claim from the token and resolver
-     */
-    private final <T> T getClaim(final String token, final Function<Claims, T> resolver) {
-        final Claims claims;
-
-        claims = getAllClaims(token);
-        return resolver.apply(claims);
+        tokenDataDecoder = new JwtTokenDataDecoder(key);
     }
 
     @Override
     public final String getSubject(final String token) {
         final String subject;
 
-        subject = getClaim(token, Claims::getSubject);
+        subject = tokenDataDecoder.decode(token)
+            .getSubject();
 
         log.debug("Found subject {}", subject);
 
@@ -117,7 +77,8 @@ public final class JwtTokenValidator implements TokenValidator {
 
         try {
             // Acquire expiration claim
-            expiration = getClaim(token, Claims::getExpiration);
+            expiration = tokenDataDecoder.decode(token)
+                .getExpiration();
 
             // Compare expiration to current date
             current = new Date();

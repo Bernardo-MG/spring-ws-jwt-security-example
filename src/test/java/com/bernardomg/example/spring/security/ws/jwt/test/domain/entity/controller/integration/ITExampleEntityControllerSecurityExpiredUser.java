@@ -52,15 +52,6 @@ public final class ITExampleEntityControllerSecurityExpiredUser {
         super();
     }
 
-    private final RequestBuilder getRequestAuthorized() {
-        final String token;
-
-        token = tokenEncoder.generateToken("admin");
-
-        return MockMvcRequestBuilders.get("/rest/entity")
-            .header("Authorization", "Bearer " + token);
-    }
-
     @Test
     @DisplayName("An authenticated request is not authorized")
     public final void testGet_authenticated_notAuthorized() throws Exception {
@@ -71,6 +62,15 @@ public final class ITExampleEntityControllerSecurityExpiredUser {
         // The operation was accepted
         result.andExpect(MockMvcResultMatchers.status()
             .isUnauthorized());
+    }
+
+    private final RequestBuilder getRequestAuthorized() {
+        final String token;
+
+        token = tokenEncoder.generateToken("admin");
+
+        return MockMvcRequestBuilders.get("/rest/entity")
+            .header("Authorization", "Bearer " + token);
     }
 
 }

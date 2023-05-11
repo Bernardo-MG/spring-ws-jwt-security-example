@@ -76,6 +76,18 @@ public final class DefaultExampleEntityService implements ExampleEntityService {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public final ExampleEntity update(final Long id, final ExampleEntity data) {
+        final PersistentExampleEntity entity;
+        final PersistentExampleEntity saved;
+
+        entity = toEntity(data);
+
+        saved = entityRepository.save(entity);
+
+        return toDto(saved);
+    }
+
     private final ExampleEntity toDto(final PersistentExampleEntity data) {
         final DtoExampleEntity dto;
 
@@ -94,18 +106,6 @@ public final class DefaultExampleEntityService implements ExampleEntityService {
         entity.setName(data.getName());
 
         return entity;
-    }
-
-    @Override
-    public final ExampleEntity update(final Long id, final ExampleEntity data) {
-        final PersistentExampleEntity entity;
-        final PersistentExampleEntity saved;
-
-        entity = toEntity(data);
-
-        saved = entityRepository.save(entity);
-
-        return toDto(saved);
     }
 
 }

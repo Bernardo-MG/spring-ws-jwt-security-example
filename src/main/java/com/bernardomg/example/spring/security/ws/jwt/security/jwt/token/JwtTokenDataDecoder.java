@@ -11,6 +11,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 
+/**
+ * JWT data token decoder. Builds a {@code JwtTokenData} from a JWT token.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 public final class JwtTokenDataDecoder implements TokenDecoder<JwtTokenData> {
 
     /**
@@ -18,6 +24,12 @@ public final class JwtTokenDataDecoder implements TokenDecoder<JwtTokenData> {
      */
     private final JwtParser parser;
 
+    /**
+     * Builds a decoder with the received key.
+     *
+     * @param key
+     *            secret key for the token
+     */
     public JwtTokenDataDecoder(final SecretKey key) {
         super();
 
