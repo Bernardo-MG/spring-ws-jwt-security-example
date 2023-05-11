@@ -22,8 +22,23 @@
  * SOFTWARE.
  */
 
-/**
- * Token model.
- */
+package com.bernardomg.example.spring.security.ws.jwt.security.token;
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.model;
+/**
+ * Token validator.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface TokenValidator {
+
+    /**
+     * Check if the token has expired.
+     *
+     * @param token
+     *            token to validate
+     * @return {@code true} if the token has expired, {@code false} otherwise
+     */
+    public Boolean hasExpired(final String token);
+
+}

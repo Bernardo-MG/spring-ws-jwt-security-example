@@ -22,8 +22,25 @@
  * SOFTWARE.
  */
 
-/**
- * Token provider.
- */
+package com.bernardomg.example.spring.security.ws.jwt.security.token;
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.provider;
+/**
+ * Creates an object from the provided token.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ * @param <T>
+ *            type to decode
+ */
+public interface TokenDecoder<T> {
+
+    /**
+     * Returns an object decoded from the token.
+     *
+     * @param token
+     *            token to decode as the object
+     * @return object from the token
+     */
+    public T decode(final String token);
+
+}

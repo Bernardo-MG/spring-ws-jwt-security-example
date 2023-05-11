@@ -26,6 +26,12 @@ package com.bernardomg.example.spring.security.ws.jwt.domain.entity.model;
 
 import lombok.Data;
 
+/**
+ * Entity used just so the example has some data to work with.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 @Data
 public final class DtoExampleEntity implements ExampleEntity {
 

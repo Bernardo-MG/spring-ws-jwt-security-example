@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest
@@ -43,10 +43,10 @@ import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcI
 public final class ITExampleEntityControllerSecurityExpiredUser {
 
     @Autowired
-    private MockMvc       mockMvc;
+    private MockMvc              mockMvc;
 
     @Autowired
-    private TokenProvider tokenGenerator;
+    private TokenEncoder<String> tokenEncoder;
 
     public ITExampleEntityControllerSecurityExpiredUser() {
         super();
@@ -67,7 +67,7 @@ public final class ITExampleEntityControllerSecurityExpiredUser {
     private final RequestBuilder getRequestAuthorized() {
         final String token;
 
-        token = tokenGenerator.generateToken("admin");
+        token = tokenEncoder.encode("admin");
 
         return MockMvcRequestBuilders.get("/rest/entity")
             .header("Authorization", "Bearer " + token);

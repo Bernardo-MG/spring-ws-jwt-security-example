@@ -24,65 +24,60 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
-import java.util.Date;
+import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JWT token validator.
+ * JWT data token encoder.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-public final class JwtTokenValidator implements TokenValidator {
+public final class JwtTokenDataEncoder implements TokenEncoder<JwtTokenData> {
 
     /**
-     * Token decoder. Without this the token claims can't be validated.
+     * Secret key for generating tokens. Created from the secret received when constructing the provider.
      */
-    private final TokenDecoder<JwtTokenData> tokenDataDecoder;
+    private final SecretKey key;
 
     /**
-     * Constructs a validator with the received arguments.
+     * Constructs an encoder with the received arguments.
      *
-     * @param key
+     * @param secretKey
      *            key used when generating tokens
      */
-    public JwtTokenValidator(final SecretKey key) {
+    public JwtTokenDataEncoder(final SecretKey secretKey) {
         super();
 
-        tokenDataDecoder = new JwtTokenDataDecoder(key);
+        key = Objects.requireNonNull(secretKey);
     }
 
     @Override
-    public final Boolean hasExpired(final String token) {
-        final Date expiration;
-        final Date current;
-        Boolean    expired;
+    public final String encode(final JwtTokenData data) {
+        final String token;
 
-        try {
-            // Acquire expiration claim
-            expiration = tokenDataDecoder.decode(token)
-                .getExpiration();
+        token = Jwts.builder()
+            .setId(data.getId())
+            .setIssuer(data.getIssuer())
+            .setSubject(data.getSubject())
+            .setIssuedAt(data.getIssuedAt())
+            .setExpiration(data.getExpiration())
+            .setNotBefore(data.getNotBefore())
+            .setAudience(data.getAudience())
+            .signWith(key, SignatureAlgorithm.HS512)
+            .compact();
 
-            // Compare expiration to current date
-            current = new Date();
-            expired = expiration.before(current);
+        log.debug("Created token from {}", data);
 
-            log.debug("Token expires on {}, and the current date is {}. Expired: {}", expiration, current, expired);
-        } catch (final ExpiredJwtException e) {
-            // Token parsing failed due to expiration date
-            log.debug(e.getLocalizedMessage());
-            expired = true;
-        }
-
-        return expired;
+        return token;
     }
 
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,65 @@
  * SOFTWARE.
  */
 
-/**
- * Token validator.
- */
+package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.validator;
+import java.util.Date;
+
+/**
+ * Represents the commons JWT token claims.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface JwtTokenData {
+
+    /**
+     * Returns the audience.
+     *
+     * @return the audience
+     */
+    public String getAudience();
+
+    /**
+     * Returns the expiration date.
+     *
+     * @return the expiration date
+     */
+    public Date getExpiration();
+
+    /**
+     * Returns the id.
+     *
+     * @return the id
+     */
+    public String getId();
+
+    /**
+     * Returns the issued at date.
+     *
+     * @return the issued at date
+     */
+    public Date getIssuedAt();
+
+    /**
+     * Returns the issuer.
+     *
+     * @return the issuer
+     */
+    public String getIssuer();
+
+    /**
+     * Returns the not before date.
+     *
+     * @return the not before date
+     */
+    public Date getNotBefore();
+
+    /**
+     * Returns the subject.
+     *
+     * @return the subject
+     */
+    public String getSubject();
+
+}

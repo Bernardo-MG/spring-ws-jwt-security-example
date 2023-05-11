@@ -39,7 +39,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtSecurityConfigurer;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
 /**
  * Web security configuration.
@@ -52,17 +54,26 @@ import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.To
 public class WebSecurityConfig {
 
     /**
+     * Token decoder.
+     */
+    @Autowired
+    private TokenDecoder<JwtTokenData> decoder;
+
+    /**
      * JWT token validator.
      */
     @Autowired
-    private TokenValidator     tokenValidator;
+    private TokenValidator             tokenValidator;
 
     /**
      * User details service.
      */
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService         userDetailsService;
 
+    /**
+     * Default constructor.
+     */
     public WebSecurityConfig() {
         super();
     }
@@ -104,7 +115,7 @@ public class WebSecurityConfig {
         http.userDetailsService(userDetailsService);
 
         // Applies JWT configuration
-        http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator));
+        http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator, decoder));
 
         return http.build();
     }
