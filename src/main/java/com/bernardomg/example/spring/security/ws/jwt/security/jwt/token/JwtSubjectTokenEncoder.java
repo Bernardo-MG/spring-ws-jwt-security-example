@@ -35,10 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Encodes a token from the subject name.
- * <p>
  * <h2>Claims</h2>
- * <p>
- * <table>
+ * <table caption="Claims values">
  * <tr>
  * <th>Claim</th>
  * <th>Value</th>
