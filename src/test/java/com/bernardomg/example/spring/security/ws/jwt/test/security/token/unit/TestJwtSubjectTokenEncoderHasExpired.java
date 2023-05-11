@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import io.jsonwebtoken.security.Keys;
 

@@ -23,7 +23,7 @@
  */
 
 /**
- * token encoder.
+ * Components for encoding and decoding tokens.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.provider;
+package com.bernardomg.example.spring.security.ws.jwt.security.token;

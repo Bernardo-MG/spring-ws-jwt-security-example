@@ -28,7 +28,7 @@ import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -29,7 +29,7 @@ import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import lombok.extern.slf4j.Slf4j;
 

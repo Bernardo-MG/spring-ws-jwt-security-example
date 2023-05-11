@@ -22,8 +22,23 @@
  * SOFTWARE.
  */
 
-/**
- * Token model.
- */
+package com.bernardomg.example.spring.security.ws.jwt.security.token;
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.model;
+/**
+ * Creates a token from the provided object.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+public interface TokenEncoder<T> {
+
+    /**
+     * Returns a token encoding the data.
+     *
+     * @param data
+     *            data to encode into the token
+     * @return token from the data
+     */
+    public String generateToken(final T data);
+
+}

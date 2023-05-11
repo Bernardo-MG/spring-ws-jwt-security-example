@@ -22,41 +22,30 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
+package com.bernardomg.example.spring.security.ws.jwt.security.token;
 
-import java.util.Date;
+import java.util.Objects;
 
-import lombok.Builder;
 import lombok.Value;
 
 /**
- * Immutable implementation of the JWT token data.
+ * Immutable implementation of {@code Token}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Value
-@Builder(setterPrefix = "with")
-public class ImmutableJwtTokenData implements JwtTokenData {
+public final class ImmutableToken implements Token {
 
     /**
-     * Expiration date.
+     * Token value.
      */
-    private final Date   expiration;
+    private final String token;
 
-    /**
-     * Issued at date.
-     */
-    private final Date   issuedAt;
+    public ImmutableToken(final String tk) {
+        super();
 
-    /**
-     * Subject.
-     */
-    private final String subject;
-
-    /**
-     * Validity date.
-     */
-    private final Date   validity;
+        token = Objects.requireNonNull(tk);
+    }
 
 }

@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest

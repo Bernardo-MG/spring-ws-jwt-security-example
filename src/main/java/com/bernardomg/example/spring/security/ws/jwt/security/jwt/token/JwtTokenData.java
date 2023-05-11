@@ -28,7 +28,7 @@ import java.util.Date;
 
 /**
  * Represents the commons JWT token claims.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -36,24 +36,28 @@ public interface JwtTokenData {
 
     /**
      * Returns the expiration date.
+     *
      * @return the expiration date
      */
     public Date getExpiration();
 
     /**
      * Returns the issued at date.
+     *
      * @return the issued at date
      */
     public Date getIssuedAt();
 
     /**
      * Returns the subject.
+     *
      * @return the subject
      */
     public String getSubject();
 
     /**
      * Returns the validity date.
+     *
      * @return the validity date
      */
     public Date getValidity();

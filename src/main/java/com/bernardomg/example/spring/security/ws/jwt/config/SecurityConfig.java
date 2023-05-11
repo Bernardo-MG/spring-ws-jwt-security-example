@@ -39,7 +39,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.UserRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.userdetails.PersistentUserDetailsService;

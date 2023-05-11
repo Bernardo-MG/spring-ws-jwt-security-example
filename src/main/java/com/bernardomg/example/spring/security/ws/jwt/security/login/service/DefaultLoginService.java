@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableLoginStatus;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
