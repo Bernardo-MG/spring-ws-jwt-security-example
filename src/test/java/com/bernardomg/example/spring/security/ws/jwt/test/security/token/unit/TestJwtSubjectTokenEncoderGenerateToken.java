@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenProvider;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import io.jsonwebtoken.security.Keys;
 
-@DisplayName("JWT token processor - generate token")
-public class TestJwtTokenProcessorGenerateToken {
+@DisplayName("JwtSubjectTokenEncoder - generate token")
+public class TestJwtSubjectTokenEncoderGenerateToken {
 
-    private final TokenProvider provider;
+    private final TokenEncoder<String> encoder;
 
-    public TestJwtTokenProcessorGenerateToken() {
+    public TestJwtSubjectTokenEncoderGenerateToken() {
         super();
 
         final SecretKey key;
@@ -28,15 +28,15 @@ public class TestJwtTokenProcessorGenerateToken {
             "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 .getBytes(Charset.forName("UTF-8")));
 
-        provider = new JwtTokenProvider(key, 1);
+        encoder = new JwtSubjectTokenEncoder(key, 1);
     }
 
     @Test
-    @DisplayName("Generates a token")
+    @DisplayName("Encodes a token")
     public void testGenerateToken() {
         final String token;
 
-        token = provider.generateToken("subject");
+        token = encoder.encode("subject");
 
         Assertions.assertFalse(token.isEmpty());
     }

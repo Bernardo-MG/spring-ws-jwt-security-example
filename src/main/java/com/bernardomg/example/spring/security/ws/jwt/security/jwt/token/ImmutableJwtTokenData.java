@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,56 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token.provider;
+package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
+
+import java.util.Date;
+
+import lombok.Builder;
+import lombok.Value;
 
 /**
- * Token provider.
+ * Immutable implementation of the JWT token data.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface TokenProvider {
+@Value
+@Builder(setterPrefix = "with")
+public class ImmutableJwtTokenData implements JwtTokenData {
 
     /**
-     * Returns a token for the subject.
-     *
-     * @param subject
-     *            subject of the token
-     * @return token for the subject
+     * Audience.
      */
-    public String generateToken(final String subject);
+    private final String audience;
+
+    /**
+     * Expiration date.
+     */
+    private final Date   expiration;
+
+    /**
+     * Id.
+     */
+    private final String id;
+
+    /**
+     * Issued at date.
+     */
+    private final Date   issuedAt;
+
+    /**
+     * Issuer.
+     */
+    private final String issuer;
+
+    /**
+     * Not before date.
+     */
+    private final Date   notBefore;
+
+    /**
+     * Subject.
+     */
+    private final String subject;
 
 }

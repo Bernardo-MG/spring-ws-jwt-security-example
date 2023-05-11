@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022 the original author or authors.
+ * Copyright (c) 2022-2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,51 +22,25 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
-
-import lombok.Data;
-import lombok.NonNull;
+package com.bernardomg.example.spring.security.ws.jwt.security.token;
 
 /**
- * Immutable implementation of {@link LoginStatus}.
+ * Creates a token from the provided object.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
+ * @param <T>
+ *            type to encode
  */
-@Data
-public final class ImmutableLoginStatus implements LoginStatus {
+public interface TokenEncoder<T> {
 
     /**
-     * Logged in flag.
-     */
-    private final Boolean logged;
-
-    /**
-     * Authentication token.
-     */
-    private final String  token;
-
-    /**
-     * Logged in user username.
-     */
-    private final String  username;
-
-    /**
-     * Constructs an immutable login status.
+     * Returns a token encoding the data.
      *
-     * @param usnm
-     *            username
-     * @param lgd
-     *            logged in flag
-     * @param tkn
-     *            authentication token
+     * @param data
+     *            data to encode into the token
+     * @return token from the data
      */
-    public ImmutableLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
-        super();
-
-        username = usnm;
-        logged = lgd;
-        token = tkn;
-    }
+    public String encode(final T data);
 
 }

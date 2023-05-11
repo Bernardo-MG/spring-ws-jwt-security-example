@@ -31,7 +31,9 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.filter.JwtTokenFilter;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.validator.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
 /**
  * JWT security configurar. Applies JWT configuration to the Spring web configuration.
@@ -53,11 +55,14 @@ public final class JwtSecurityConfigurer extends SecurityConfigurerAdapter<Defau
      *            user details service to use
      * @param tokenValidator
      *            token validator to use
+     * @param decoder
+     *            token decoder to use
      */
-    public JwtSecurityConfigurer(final UserDetailsService userDetService, final TokenValidator tokenValidator) {
+    public JwtSecurityConfigurer(final UserDetailsService userDetService, final TokenValidator tokenValidator,
+            final TokenDecoder<JwtTokenData> decoder) {
         super();
 
-        tokenFilter = new JwtTokenFilter(userDetService, tokenValidator);
+        tokenFilter = new JwtTokenFilter(userDetService, tokenValidator, decoder);
     }
 
     @Override

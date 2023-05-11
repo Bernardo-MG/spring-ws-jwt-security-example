@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableLoginStatus;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,17 +53,17 @@ public final class DefaultLoginService implements LoginService {
     /**
      * Password encoder, for validating passwords.
      */
-    private final PasswordEncoder    passwordEncoder;
+    private final PasswordEncoder      passwordEncoder;
 
     /**
      * Token generator, creates authentication tokens.
      */
-    private final TokenProvider      tokenGenerator;
+    private final TokenEncoder<String> tokenEncoder;
 
     /**
      * User details service, to find and validate users.
      */
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsService   userDetailsService;
 
     @Override
     public final LoginStatus login(final String username, final String password) {
@@ -96,7 +96,7 @@ public final class DefaultLoginService implements LoginService {
         if (logged) {
             // Valid user
             // Generate token
-            token = tokenGenerator.generateToken(username);
+            token = tokenEncoder.encode(username);
         } else {
             token = "";
         }
