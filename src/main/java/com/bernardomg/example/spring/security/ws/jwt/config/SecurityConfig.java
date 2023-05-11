@@ -36,10 +36,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.UserRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.userdetails.PersistentUserDetailsService;
@@ -88,17 +88,17 @@ public class SecurityConfig {
     }
 
     /**
-     * Returns the token provider.
+     * Returns the token encoder.
      *
      * @param key
      *            secret key for hashing
      * @param properties
      *            JWT configuration properties
-     * @return the token provider
+     * @return the token encoder
      */
-    @Bean("tokenProvider")
-    public TokenProvider getTokenProvider(final SecretKey key, final JwtProperties properties) {
-        return new JwtTokenProvider(key, properties.getValidity());
+    @Bean("tokenEncoder")
+    public TokenEncoder<String> getTokenEncoder(final SecretKey key, final JwtProperties properties) {
+        return new JwtSubjectTokenEncoder(key, properties.getValidity());
     }
 
     /**

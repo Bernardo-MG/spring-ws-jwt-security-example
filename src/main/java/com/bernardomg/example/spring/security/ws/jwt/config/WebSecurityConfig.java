@@ -68,6 +68,34 @@ public class WebSecurityConfig {
     }
 
     /**
+     * Returns the request authorisation configuration.
+     *
+     * @return the request authorisation configuration
+     */
+    private final Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
+            getAuthorizeRequestsCustomizer() {
+        return c -> {
+            try {
+                c.requestMatchers("/actuator/**", "/token/**", "/login/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    // Authentication error handling
+                    .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint())
+                    // Stateless
+                    .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            } catch (final Exception e) {
+                // TODO Handle exception
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    /**
      * Web security filter chain. Sets up all the authentication requirements for requests.
      *
      * @param http
@@ -107,34 +135,6 @@ public class WebSecurityConfig {
         http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator));
 
         return http.build();
-    }
-
-    /**
-     * Returns the request authorisation configuration.
-     *
-     * @return the request authorisation configuration
-     */
-    private final Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
-            getAuthorizeRequestsCustomizer() {
-        return c -> {
-            try {
-                c.requestMatchers("/actuator/**", "/token/**", "/login/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    // Authentication error handling
-                    .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint())
-                    // Stateless
-                    .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            } catch (final Exception e) {
-                // TODO Handle exception
-                throw new RuntimeException(e);
-            }
-        };
     }
 
 }

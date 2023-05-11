@@ -29,30 +29,55 @@ import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JWT token provider.
+ * Encodes a token from the subject name.
+ * <p>
+ * <h2>Claims</h2>
+ * <p>
+ * <table>
+ * <tr>
+ * <th>Claim</th>
+ * <th>Value</th>
+ * </tr>
+ * <tr>
+ * <td>Subject</td>
+ * <td>Received when encoding</td>
+ * </tr>
+ * <tr>
+ * <td>Issued at</td>
+ * <td>Current date</td>
+ * </tr>
+ * <tr>
+ * <td>Validity time</td>
+ * <td>Current date</td>
+ * </tr>
+ * <tr>
+ * <td>Expiration</td>
+ * <td>Current date + validity time</td>
+ * </tr>
+ * </table>
+ * <p>
+ * The validity time is received in the constructor, and measures the number of seconds a token will stay valid.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-public final class JwtTokenProvider implements TokenProvider {
+public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
 
     /**
-     * Secret key for generating tokens. Created from the secret received when constructing the provider.
+     * Wrapped encoder based on a token data structure.
      */
-    private final SecretKey key;
+    private final JwtTokenDataEncoder tokenDataEncoder;
 
     /**
      * Token validity time in seconds.
      */
-    private final Integer   validity;
+    private final Integer             validity;
 
     /**
      * Constructs a provider with the received arguments.
@@ -62,30 +87,34 @@ public final class JwtTokenProvider implements TokenProvider {
      * @param validityTime
      *            token validity time in seconds
      */
-    public JwtTokenProvider(final SecretKey secretKey, final Integer validityTime) {
+    public JwtSubjectTokenEncoder(final SecretKey secretKey, final Integer validityTime) {
         super();
 
-        key = Objects.requireNonNull(secretKey);
+        tokenDataEncoder = new JwtTokenDataEncoder(secretKey);
         validity = Objects.requireNonNull(validityTime);
     }
 
     @Override
     public final String generateToken(final String subject) {
-        final Date   expiration;
-        final Date   issuedAt;
-        final String token;
+        final Date         expiration;
+        final Date         issuedAt;
+        final String       token;
+        final JwtTokenData data;
 
         // Issued right now
         issuedAt = new Date();
         // Expires in a number of seconds equal to validity
         expiration = new Date(System.currentTimeMillis() + (validity * 1000L));
 
-        token = Jwts.builder()
-            .setSubject(subject)
-            .setIssuedAt(issuedAt)
-            .setExpiration(expiration)
-            .signWith(key, SignatureAlgorithm.HS512)
-            .compact();
+        // Build token data for the wrapped encoder
+        data = ImmutableJwtTokenData.builder()
+            .withSubject(subject)
+            .withIssuedAt(issuedAt)
+            .withExpiration(expiration)
+            .withValidity(issuedAt)
+            .build();
+
+        token = tokenDataEncoder.generateToken(data);
 
         log.debug("Created token for subject {} with expiration date {}", subject, expiration);
 

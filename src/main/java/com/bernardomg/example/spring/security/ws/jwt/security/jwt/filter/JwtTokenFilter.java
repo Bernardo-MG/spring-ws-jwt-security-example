@@ -87,6 +87,52 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
         // TODO: Test this class
     }
 
+    @Override
+    protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+            final FilterChain chain) throws ServletException, IOException {
+        final Optional<String> token;
+        final Optional<String> subject;
+        final UserDetails      userDetails;
+        final Authentication   authentication;
+
+        token = getToken(request);
+
+        if (token.isEmpty()) {
+            // Missing header
+            log.debug("Missing authorization token");
+        } else if (!tokenValidator.hasExpired(token.get())) {
+            // Token not expired
+            // Will load a new authentication from the token
+
+            // Takes subject from the token
+            subject = getSubject(token.get());
+
+            if (subject.isEmpty()) {
+                log.debug("Could not find subject in token {}", token.get());
+            } else {
+                // Found subject
+                // Searchs for user
+                userDetails = userDetailsService.loadUserByUsername(subject.get());
+
+                if (isValid(userDetails)) {
+                    // User valid
+                    log.debug("Authenticated {}", subject.get());
+
+                    // Create and register authentication
+                    authentication = getAuthentication(userDetails, request, token.get());
+                    SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
+                } else {
+                    log.debug("Invalid user {}", subject.get());
+                }
+            }
+        } else {
+            log.debug("Invalid token {}", token.get());
+        }
+
+        chain.doFilter(request, response);
+    }
+
     /**
      * Returns an authentication object created from the user and request.
      *
@@ -161,52 +207,6 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
     private final Boolean isValid(final UserDetails userDetails) {
         return userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked()
                 && userDetails.isCredentialsNonExpired() && userDetails.isEnabled();
-    }
-
-    @Override
-    protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
-            final FilterChain chain) throws ServletException, IOException {
-        final Optional<String> token;
-        final Optional<String> subject;
-        final UserDetails      userDetails;
-        final Authentication   authentication;
-
-        token = getToken(request);
-
-        if (token.isEmpty()) {
-            // Missing header
-            log.debug("Missing authorization token");
-        } else if (!tokenValidator.hasExpired(token.get())) {
-            // Token not expired
-            // Will load a new authentication from the token
-
-            // Takes subject from the token
-            subject = getSubject(token.get());
-
-            if (subject.isEmpty()) {
-                log.debug("Could not find subject in token {}", token.get());
-            } else {
-                // Found subject
-                // Searchs for user
-                userDetails = userDetailsService.loadUserByUsername(subject.get());
-
-                if (isValid(userDetails)) {
-                    // User valid
-                    log.debug("Authenticated {}", subject.get());
-
-                    // Create and register authentication
-                    authentication = getAuthentication(userDetails, request, token.get());
-                    SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
-                } else {
-                    log.debug("Invalid user {}", subject.get());
-                }
-            }
-        } else {
-            log.debug("Invalid token {}", token.get());
-        }
-
-        chain.doFilter(request, response);
     }
 
 }

@@ -68,6 +68,36 @@ public final class JwtTokenValidator implements TokenValidator {
             .build();
     }
 
+    /**
+     * Returns all claims from the token.
+     *
+     * @param token
+     *            token to parse
+     * @return all the claims from the token
+     */
+    private final Claims getAllClaims(final String token) {
+        return parser.parseClaimsJws(token)
+            .getBody();
+    }
+
+    /**
+     * Returns a claim from the token, defined through the claim resolver.
+     *
+     * @param <T>
+     *            type of the claim
+     * @param token
+     *            token to parse
+     * @param resolver
+     *            claim resolver to pick the wanted claim
+     * @return the claim from the token and resolver
+     */
+    private final <T> T getClaim(final String token, final Function<Claims, T> resolver) {
+        final Claims claims;
+
+        claims = getAllClaims(token);
+        return resolver.apply(claims);
+    }
+
     @Override
     public final String getSubject(final String token) {
         final String subject;
@@ -101,36 +131,6 @@ public final class JwtTokenValidator implements TokenValidator {
         }
 
         return expired;
-    }
-
-    /**
-     * Returns all claims from the token.
-     *
-     * @param token
-     *            token to parse
-     * @return all the claims from the token
-     */
-    private final Claims getAllClaims(final String token) {
-        return parser.parseClaimsJws(token)
-            .getBody();
-    }
-
-    /**
-     * Returns a claim from the token, defined through the claim resolver.
-     *
-     * @param <T>
-     *            type of the claim
-     * @param token
-     *            token to parse
-     * @param resolver
-     *            claim resolver to pick the wanted claim
-     * @return the claim from the token and resolver
-     */
-    private final <T> T getClaim(final String token, final Function<Claims, T> resolver) {
-        final Claims claims;
-
-        claims = getAllClaims(token);
-        return resolver.apply(claims);
     }
 
 }

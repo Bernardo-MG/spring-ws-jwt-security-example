@@ -10,20 +10,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
 
 import io.jsonwebtoken.security.Keys;
 
-@DisplayName("JWT token processor - has expired")
-public class TestJwtTokenProcessorHasExpired {
+@DisplayName("JWT token encoder - has expired")
+public class TestJwtTokenEncoderHasExpired {
 
-    private final TokenProvider     provider;
+    private final TokenEncoder<String> provider;
 
-    private final JwtTokenValidator validator;
+    private final JwtTokenValidator    validator;
 
-    public TestJwtTokenProcessorHasExpired() {
+    public TestJwtTokenEncoderHasExpired() {
         super();
 
         final SecretKey key;
@@ -32,7 +32,7 @@ public class TestJwtTokenProcessorHasExpired {
             "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 .getBytes(Charset.forName("UTF-8")));
 
-        provider = new JwtTokenProvider(key, 5);
+        provider = new JwtSubjectTokenEncoder(key, 5);
         validator = new JwtTokenValidator(key);
     }
 

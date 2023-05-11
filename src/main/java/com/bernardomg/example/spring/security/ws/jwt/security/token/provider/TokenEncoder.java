@@ -25,20 +25,20 @@
 package com.bernardomg.example.spring.security.ws.jwt.security.token.provider;
 
 /**
- * Token provider.
+ * Creates a token from the provided object.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface TokenProvider {
+public interface TokenEncoder<T> {
 
     /**
-     * Returns a token for the subject.
+     * Returns a token encoding the data.
      *
-     * @param subject
-     *            subject of the token
-     * @return token for the subject
+     * @param data
+     *            data to encode into the token
+     * @return token from the data
      */
-    public String generateToken(final String subject);
+    public String generateToken(final T data);
 
 }

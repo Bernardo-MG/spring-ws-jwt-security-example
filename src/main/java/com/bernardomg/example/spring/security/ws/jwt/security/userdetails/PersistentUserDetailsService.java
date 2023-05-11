@@ -99,6 +99,22 @@ public final class PersistentUserDetailsService implements UserDetailsService {
         privilegeRepo = Objects.requireNonNull(privilegeRepository, "Received a null pointer as repository");
     }
 
+    /**
+     * Returns all the authorities for the user.
+     *
+     * @param id
+     *            id of the user
+     * @return all the authorities for the user
+     */
+    private final Collection<GrantedAuthority> getAuthorities(final Long id) {
+        return privilegeRepo.findForUser(id)
+            .stream()
+            .map(PersistentPrivilege::getName)
+            .distinct()
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
+    }
+
     @Override
     public final UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final Optional<PersistentUser>               user;
@@ -129,22 +145,6 @@ public final class PersistentUserDetailsService implements UserDetailsService {
             details.isCredentialsNonExpired());
 
         return details;
-    }
-
-    /**
-     * Returns all the authorities for the user.
-     *
-     * @param id
-     *            id of the user
-     * @return all the authorities for the user
-     */
-    private final Collection<GrantedAuthority> getAuthorities(final Long id) {
-        return privilegeRepo.findForUser(id)
-            .stream()
-            .map(PersistentPrivilege::getName)
-            .distinct()
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
     }
 
     /**

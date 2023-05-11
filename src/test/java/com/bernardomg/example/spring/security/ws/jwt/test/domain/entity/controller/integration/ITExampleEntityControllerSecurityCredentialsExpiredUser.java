@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenProvider;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.provider.TokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
 
 @MvcIntegrationTest
@@ -43,13 +43,22 @@ import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcI
 public final class ITExampleEntityControllerSecurityCredentialsExpiredUser {
 
     @Autowired
-    private MockMvc       mockMvc;
+    private MockMvc              mockMvc;
 
     @Autowired
-    private TokenProvider tokenGenerator;
+    private TokenEncoder<String> tokenEncoder;
 
     public ITExampleEntityControllerSecurityCredentialsExpiredUser() {
         super();
+    }
+
+    private final RequestBuilder getRequestAuthorized() {
+        final String token;
+
+        token = tokenEncoder.generateToken("admin");
+
+        return MockMvcRequestBuilders.get("/rest/entity")
+            .header("Authorization", "Bearer " + token);
     }
 
     @Test
@@ -62,15 +71,6 @@ public final class ITExampleEntityControllerSecurityCredentialsExpiredUser {
         // The operation was accepted
         result.andExpect(MockMvcResultMatchers.status()
             .isUnauthorized());
-    }
-
-    private final RequestBuilder getRequestAuthorized() {
-        final String token;
-
-        token = tokenGenerator.generateToken("admin");
-
-        return MockMvcRequestBuilders.get("/rest/entity")
-            .header("Authorization", "Bearer " + token);
     }
 
 }

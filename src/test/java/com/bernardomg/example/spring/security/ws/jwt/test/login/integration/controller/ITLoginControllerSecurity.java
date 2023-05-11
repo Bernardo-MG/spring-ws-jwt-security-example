@@ -49,6 +49,12 @@ public final class ITLoginControllerSecurity {
         super();
     }
 
+    private final RequestBuilder getRequest() {
+        return MockMvcRequestBuilders.post("/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{ \"username\":\"admin\", \"password\":\"1234\" }");
+    }
+
     @Test
     @DisplayName("Accepts unauthenticated requests")
     public final void testGet_unauthorized() throws Exception {
@@ -59,12 +65,6 @@ public final class ITLoginControllerSecurity {
         // The operation was accepted
         result.andExpect(MockMvcResultMatchers.status()
             .isOk());
-    }
-
-    private final RequestBuilder getRequest() {
-        return MockMvcRequestBuilders.post("/login")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{ \"username\":\"admin\", \"password\":\"1234\" }");
     }
 
 }
