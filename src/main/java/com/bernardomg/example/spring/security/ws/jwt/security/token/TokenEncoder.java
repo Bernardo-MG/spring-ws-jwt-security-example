@@ -29,7 +29,8 @@ package com.bernardomg.example.spring.security.ws.jwt.security.token;
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
- * @param <T> type to encode
+ * @param <T>
+ *            type to encode
  */
 public interface TokenEncoder<T> {
 
