@@ -26,6 +26,7 @@ package com.bernardomg.example.spring.security.ws.jwt.security.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -39,8 +40,14 @@ import lombok.Data;
 public final class JwtProperties {
 
     /**
+     * JWT token id.
+     */
+    private String  id;
+
+    /**
      * Secret seed for generating JWT tokens.
      */
+    @NotNull
     private String  secret;
 
     /**
