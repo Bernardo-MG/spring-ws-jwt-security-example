@@ -25,8 +25,7 @@
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
 import java.util.Date;
-
-import javax.crypto.SecretKey;
+import java.util.Objects;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
@@ -51,13 +50,13 @@ public final class JwtTokenValidator implements TokenValidator {
     /**
      * Constructs a validator with the received arguments.
      *
-     * @param key
-     *            key used when generating tokens
+     * @param decoder
+     *            token decoder for reading the token claims
      */
-    public JwtTokenValidator(final SecretKey key) {
+    public JwtTokenValidator(final TokenDecoder<JwtTokenData> decoder) {
         super();
 
-        tokenDataDecoder = new JwtTokenDataDecoder(key);
+        tokenDataDecoder = Objects.requireNonNull(decoder);
     }
 
     @Override

@@ -11,7 +11,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import io.jsonwebtoken.security.Keys;
@@ -26,14 +29,16 @@ public class TestJwtSubjectTokenEncoderHasExpired {
     public TestJwtSubjectTokenEncoderHasExpired() {
         super();
 
-        final SecretKey key;
+        final SecretKey                  key;
+        final TokenDecoder<JwtTokenData> decoder;
 
         key = Keys.hmacShaKeyFor(
             "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 .getBytes(Charset.forName("UTF-8")));
 
         encoder = new JwtSubjectTokenEncoder(key, 5);
-        validator = new JwtTokenValidator(key);
+        decoder = new JwtTokenDataDecoder(key);
+        validator = new JwtTokenValidator(decoder);
     }
 
     @Test

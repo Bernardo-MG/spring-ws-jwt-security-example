@@ -62,43 +62,36 @@ public class JwtConfig {
     }
 
     /**
-     * Returns the JWT secret key for hashing.
+     * Returns the token decoder.
      *
      * @param properties
      *            JWT configuration properties
-     * @return the JWT secret key for hashing
-     */
-    @Bean("jwtSecretKey")
-    public SecretKey getJwtSecretKey(final JwtProperties properties) {
-        return Keys.hmacShaKeyFor(properties.getSecret()
-            .getBytes(StandardCharsets.UTF_8));
-    }
-
-    /**
-     * Returns the token decoder.
-     *
-     * @param key
-     *            secret key for hashing
      * @return the token encoder
      */
     @Bean("tokenDecoder")
-    public TokenDecoder<JwtTokenData> getTokenDecoder(final SecretKey key) {
+    public TokenDecoder<JwtTokenData> getTokenDecoder(final JwtProperties properties) {
+        final SecretKey key;
+
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
         return new JwtTokenDataDecoder(key);
     }
 
     /**
      * Returns the token encoder.
      *
-     * @param key
-     *            secret key for hashing
      * @param properties
      *            JWT configuration properties
      * @return the token encoder
      */
     @Bean("tokenEncoder")
-    public TokenEncoder<String> getTokenEncoder(final SecretKey key, final JwtProperties properties) {
+    public TokenEncoder<String> getTokenEncoder(final JwtProperties properties) {
         final JwtSubjectTokenEncoder encoder;
         final Integer                validity;
+        final SecretKey              key;
+
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
 
         if (properties.getValidity() != null) {
             validity = properties.getValidity();
@@ -121,13 +114,13 @@ public class JwtConfig {
     /**
      * Returns the token validator.
      *
-     * @param key
-     *            secret key for hashing
+     * @param decoder
+     *            token decoder
      * @return the token validator
      */
     @Bean("tokenValidator")
-    public JwtTokenValidator getTokenValidator(final SecretKey key) {
-        return new JwtTokenValidator(key);
+    public JwtTokenValidator getTokenValidator(final TokenDecoder<JwtTokenData> decoder) {
+        return new JwtTokenValidator(decoder);
     }
 
 }
