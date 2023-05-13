@@ -101,7 +101,7 @@ public class JwtConfig {
             log.info("No validity defined for tokens. Using default of {} seconds of validity", validity);
         }
 
-        encoder = new JwtSubjectTokenEncoder(key, properties.getValidity());
+        encoder = new JwtSubjectTokenEncoder(key, validity);
 
         if (properties.getId() != null) {
             log.info("Tokens will use id {}", properties.getId());
