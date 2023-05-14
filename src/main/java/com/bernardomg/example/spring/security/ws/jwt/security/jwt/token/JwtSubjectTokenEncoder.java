@@ -117,6 +117,7 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
             .withIssuedAt(issuedAt)
             .withNotBefore(issuedAt)
             .withExpiration(expiration)
+            .withId(id.orElse(null))
             .build();
 
         token = tokenDataEncoder.encode(data);
@@ -126,6 +127,12 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
         return token;
     }
 
+    /**
+     * Sets the JWT id.
+     * 
+     * @param identifier
+     *            JWT id
+     */
     public final void setId(final String identifier) {
         id = Optional.of(identifier);
     }
