@@ -124,9 +124,8 @@
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
       <jjwt.version>0.11.5</jjwt.version>
-      <spring.boot.version>3.0.5</spring.boot.version>
-      <spring.version>6.0.8</spring.version>
-      <micrometer.version>1.10.6</micrometer.version>
+      <spring.boot.version>3.1.0</spring.boot.version>
+      <spring.version>6.0.9</spring.version>
       <!-- ============================================== -->
       <!-- ============== PLUGINS VERSIONS ============== -->
       <!-- ============================================== -->
@@ -435,21 +434,6 @@
          <!-- Jackson annotations -->
          <groupId>com.fasterxml.jackson.core</groupId>
          <artifactId>jackson-annotations</artifactId>
-      </dependency>
-      <!-- ============================================== -->
-      <!-- ========== DEPENDENCY CONVERGENCE ============ -->
-      <!-- ============================================== -->
-      <dependency>
-         <!-- Micrometer Commons -->
-         <groupId>io.micrometer</groupId>
-         <artifactId>micrometer-commons</artifactId>
-         <version>${micrometer.version}</version>
-      </dependency>
-      <dependency>
-         <!-- Micrometer Observation -->
-         <groupId>io.micrometer</groupId>
-         <artifactId>micrometer-observation</artifactId>
-         <version>${micrometer.version}</version>
       </dependency>
       <!-- ============================================== -->
       <!-- ======= TEST ENVIRONMENT DEPENDENCIES ======== -->
