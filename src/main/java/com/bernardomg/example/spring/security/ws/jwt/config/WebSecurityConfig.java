@@ -78,12 +78,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
             final TokenDecoder<JwtTokenData> decoder, final TokenValidator tokenValidator,
             final UserDetailsService userDetailsService) throws Exception {
-        final Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizeRequestsCustomizer;
-        final Customizer<FormLoginConfigurer<HttpSecurity>>                                                        formLoginCustomizer;
-        final Customizer<LogoutConfigurer<HttpSecurity>>                                                           logoutCustomizer;
-
-        // Request authorisations
-        authorizeRequestsCustomizer = getAuthorizeRequestsCustomizer();
+        final Customizer<FormLoginConfigurer<HttpSecurity>> formLoginCustomizer;
+        final Customizer<LogoutConfigurer<HttpSecurity>>    logoutCustomizer;
 
         // Login form
         // Disabled
@@ -93,15 +89,16 @@ public class WebSecurityConfig {
         // Disabled
         logoutCustomizer = c -> c.disable();
 
-        http.csrf()
-            .disable()
-            .cors()
-            .and()
-            .authorizeHttpRequests(authorizeRequestsCustomizer)
+        http.authorizeHttpRequests(getAuthorizeRequestsCustomizer())
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> {})
+            // Authentication error handling
+            .exceptionHandling(handler -> handler.authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint()))
+            // Stateless
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .formLogin(formLoginCustomizer)
-            .logout(logoutCustomizer);
-
-        http.userDetailsService(userDetailsService);
+            .logout(logoutCustomizer)
+            .userDetailsService(userDetailsService);
 
         // Applies JWT configuration
         http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator, decoder));
@@ -116,25 +113,10 @@ public class WebSecurityConfig {
      */
     private final Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
             getAuthorizeRequestsCustomizer() {
-        return c -> {
-            try {
-                c.requestMatchers("/actuator/**", "/token/**", "/login/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    // Authentication error handling
-                    .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint())
-                    // Stateless
-                    .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            } catch (final Exception e) {
-                // TODO Handle exception
-                throw new RuntimeException(e);
-            }
-        };
+        return c -> c.requestMatchers("/actuator/**", "/token/**", "/login/**")
+            .permitAll()
+            .anyRequest()
+            .authenticated();
     }
 
 }

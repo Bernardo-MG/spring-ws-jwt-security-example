@@ -129,7 +129,7 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
 
     /**
      * Sets the JWT id.
-     * 
+     *
      * @param identifier
      *            JWT id
      */
