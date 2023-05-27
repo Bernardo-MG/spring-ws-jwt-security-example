@@ -21,7 +21,7 @@
 
    <groupId>com.bernardomg.example</groupId>
    <artifactId>spring-ws-jwt-security-example</artifactId>
-   <version>1.2.3</version>
+   <version>1.2.4</version>
    <packaging>war</packaging>
 
    <name>Spring JWT Security Example</name>
@@ -124,9 +124,8 @@
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
       <jjwt.version>0.11.5</jjwt.version>
-      <spring.boot.version>3.0.5</spring.boot.version>
-      <spring.version>6.0.8</spring.version>
-      <micrometer.version>1.10.6</micrometer.version>
+      <spring.boot.version>3.1.0</spring.boot.version>
+      <spring.version>6.0.9</spring.version>
       <!-- ============================================== -->
       <!-- ============== PLUGINS VERSIONS ============== -->
       <!-- ============================================== -->
@@ -157,7 +156,7 @@
             <scope>import</scope>
          </dependency>
          <dependency>
-            <!-- Spring Boot BOM -->
+            <!-- Spring Boot Dependencies BOM -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-dependencies</artifactId>
             <version>${spring.boot.version}</version>
@@ -254,6 +253,21 @@
          <!-- Spring Boot Autoconfigure -->
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-autoconfigure</artifactId>
+      </dependency>
+      <dependency>
+         <!-- Spring Boot Starter: Validation -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-validation</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>ch.qos.logback</groupId>
+               <artifactId>logback-classic</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.apache.logging.log4j</groupId>
+               <artifactId>log4j-to-slf4j</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <!-- ============================================== -->
       <!-- =========== SPRING BOOT STARTER ============== -->
@@ -430,21 +444,6 @@
          <!-- Jackson annotations -->
          <groupId>com.fasterxml.jackson.core</groupId>
          <artifactId>jackson-annotations</artifactId>
-      </dependency>
-      <!-- ============================================== -->
-      <!-- ========== DEPENDENCY CONVERGENCE ============ -->
-      <!-- ============================================== -->
-      <dependency>
-         <!-- Micrometer Commons -->
-         <groupId>io.micrometer</groupId>
-         <artifactId>micrometer-commons</artifactId>
-         <version>${micrometer.version}</version>
-      </dependency>
-      <dependency>
-         <!-- Micrometer Observation -->
-         <groupId>io.micrometer</groupId>
-         <artifactId>micrometer-observation</artifactId>
-         <version>${micrometer.version}</version>
       </dependency>
       <!-- ============================================== -->
       <!-- ======= TEST ENVIRONMENT DEPENDENCIES ======== -->

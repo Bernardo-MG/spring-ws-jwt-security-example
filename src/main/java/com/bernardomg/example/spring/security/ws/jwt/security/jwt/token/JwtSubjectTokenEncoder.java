@@ -26,6 +26,7 @@ package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
@@ -67,6 +68,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
+
+    /**
+     * JWT id.
+     */
+    private Optional<String>          id = Optional.empty();
 
     /**
      * Wrapped encoder based on a token data structure.
@@ -111,6 +117,7 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
             .withIssuedAt(issuedAt)
             .withNotBefore(issuedAt)
             .withExpiration(expiration)
+            .withId(id.orElse(null))
             .build();
 
         token = tokenDataEncoder.encode(data);
@@ -118,6 +125,16 @@ public final class JwtSubjectTokenEncoder implements TokenEncoder<String> {
         log.debug("Created token for subject {} with expiration date {}", subject, expiration);
 
         return token;
+    }
+
+    /**
+     * Sets the JWT id.
+     *
+     * @param identifier
+     *            JWT id
+     */
+    public final void setId(final String identifier) {
+        id = Optional.of(identifier);
     }
 
 }

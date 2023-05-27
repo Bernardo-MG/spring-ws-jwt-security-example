@@ -63,7 +63,7 @@ public interface ExampleEntityService {
      * @return all the entities
      */
     @PreAuthorize("hasAuthority('READ_DATA')")
-    public Iterable<? extends ExampleEntity> getAll();
+    public Iterable<ExampleEntity> getAll();
 
     /**
      * Updates the entity for the received id.

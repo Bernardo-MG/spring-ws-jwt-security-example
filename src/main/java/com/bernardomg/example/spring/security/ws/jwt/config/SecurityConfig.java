@@ -24,11 +24,6 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import java.nio.charset.Charset;
-
-import javax.crypto.SecretKey;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -36,18 +31,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.UserRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.userdetails.PersistentUserDetailsService;
-
-import io.jsonwebtoken.security.Keys;
 
 /**
  * Security configuration.
@@ -57,7 +43,6 @@ import io.jsonwebtoken.security.Keys;
  */
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-@EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {
 
     /**
@@ -68,19 +53,6 @@ public class SecurityConfig {
     }
 
     /**
-     * Returns the JWT secret key for hashing.
-     *
-     * @param properties
-     *            JWT configuration properties
-     * @return the JWT secret key for hashing
-     */
-    @Bean("jwtSecretKey")
-    public SecretKey getJwtSecretKey(final JwtProperties properties) {
-        return Keys.hmacShaKeyFor(properties.getSecret()
-            .getBytes(Charset.forName("UTF-8")));
-    }
-
-    /**
      * Password encoder. Used to match the received password to the one securely stored in the DB.
      *
      * @return the password encoder
@@ -88,44 +60,6 @@ public class SecurityConfig {
     @Bean("passwordEncoder")
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    /**
-     * Returns the token decoder.
-     *
-     * @param key
-     *            secret key for hashing
-     * @return the token encoder
-     */
-    @Bean("tokenDecode")
-    public TokenDecoder<JwtTokenData> getTokenDecoder(final SecretKey key) {
-        return new JwtTokenDataDecoder(key);
-    }
-
-    /**
-     * Returns the token encoder.
-     *
-     * @param key
-     *            secret key for hashing
-     * @param properties
-     *            JWT configuration properties
-     * @return the token encoder
-     */
-    @Bean("tokenEncoder")
-    public TokenEncoder<String> getTokenEncoder(final SecretKey key, final JwtProperties properties) {
-        return new JwtSubjectTokenEncoder(key, properties.getValidity());
-    }
-
-    /**
-     * Returns the token validator.
-     *
-     * @param key
-     *            secret key for hashing
-     * @return the token validator
-     */
-    @Bean("tokenValidator")
-    public JwtTokenValidator getTokenValidator(final SecretKey key) {
-        return new JwtTokenValidator(key);
     }
 
     /**

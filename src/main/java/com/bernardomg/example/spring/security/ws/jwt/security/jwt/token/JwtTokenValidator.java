@@ -25,8 +25,7 @@
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
 import java.util.Date;
-
-import javax.crypto.SecretKey;
+import java.util.Objects;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
@@ -51,13 +50,13 @@ public final class JwtTokenValidator implements TokenValidator {
     /**
      * Constructs a validator with the received arguments.
      *
-     * @param key
-     *            key used when generating tokens
+     * @param decoder
+     *            token decoder for reading the token claims
      */
-    public JwtTokenValidator(final SecretKey key) {
+    public JwtTokenValidator(final TokenDecoder<JwtTokenData> decoder) {
         super();
 
-        tokenDataDecoder = new JwtTokenDataDecoder(key);
+        tokenDataDecoder = Objects.requireNonNull(decoder);
     }
 
     @Override
@@ -67,7 +66,7 @@ public final class JwtTokenValidator implements TokenValidator {
         Boolean    expired;
 
         try {
-            // Acquire expiration claim
+            // Acquire expiration date claim
             expiration = tokenDataDecoder.decode(token)
                 .getExpiration();
 
@@ -75,7 +74,7 @@ public final class JwtTokenValidator implements TokenValidator {
             current = new Date();
             expired = expiration.before(current);
 
-            log.debug("Token expires on {}, and the current date is {}. Expired: {}", expiration, current, expired);
+            log.debug("Expired {} as token expires on {}, and the current date is {}.", expired, expiration, current);
         } catch (final ExpiredJwtException e) {
             // Token parsing failed due to expiration date
             log.debug(e.getLocalizedMessage());
