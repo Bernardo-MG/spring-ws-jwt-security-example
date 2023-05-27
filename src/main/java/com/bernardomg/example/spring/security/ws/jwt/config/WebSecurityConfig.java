@@ -24,18 +24,17 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.bernardomg.example.spring.security.ws.jwt.security.configuration.WhitelistRequestCustomizer;
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtSecurityConfigurer;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
@@ -78,45 +77,24 @@ public class WebSecurityConfig {
     public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
             final TokenDecoder<JwtTokenData> decoder, final TokenValidator tokenValidator,
             final UserDetailsService userDetailsService) throws Exception {
-        final Customizer<FormLoginConfigurer<HttpSecurity>> formLoginCustomizer;
-        final Customizer<LogoutConfigurer<HttpSecurity>>    logoutCustomizer;
 
-        // Login form
-        // Disabled
-        formLoginCustomizer = c -> c.disable();
-
-        // Logout form
-        // Disabled
-        logoutCustomizer = c -> c.disable();
-
-        http.authorizeHttpRequests(getAuthorizeRequestsCustomizer())
+        http
+            // Whitelist access
+            .authorizeHttpRequests(new WhitelistRequestCustomizer(Arrays.asList("/actuator/**", "/login/**")))
             .csrf(csrf -> csrf.disable())
             .cors(cors -> {})
             // Authentication error handling
             .exceptionHandling(handler -> handler.authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint()))
             // Stateless
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .formLogin(formLoginCustomizer)
-            .logout(logoutCustomizer)
-            .userDetailsService(userDetailsService);
+            // Disable login and logout forms
+            .formLogin(c -> c.disable())
+            .logout(c -> c.disable());
 
-        // Applies JWT configuration
+        // JWT configuration
         http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator, decoder));
 
         return http.build();
-    }
-
-    /**
-     * Returns the request authorisation configuration.
-     *
-     * @return the request authorisation configuration
-     */
-    private final Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
-            getAuthorizeRequestsCustomizer() {
-        return c -> c.requestMatchers("/actuator/**", "/token/**", "/login/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated();
     }
 
 }
