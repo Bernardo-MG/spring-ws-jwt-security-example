@@ -21,7 +21,7 @@
 
    <groupId>com.bernardomg.example</groupId>
    <artifactId>spring-ws-jwt-security-example</artifactId>
-   <version>1.2.4</version>
+   <version>1.2.5</version>
    <packaging>war</packaging>
 
    <name>Spring JWT Security Example</name>
@@ -117,6 +117,10 @@
 
    <properties>
       <!-- ============================================== -->
+      <!-- ================ JAVA VERSION ================ -->
+      <!-- ============================================== -->
+      <java.version>17</java.version>
+      <!-- ============================================== -->
       <!-- =============== MANIFEST DATA ================ -->
       <!-- ============================================== -->
       <manifest.name>com/bernardomg/example/ws/security/jwt</manifest.name>
@@ -124,8 +128,8 @@
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
       <jjwt.version>0.11.5</jjwt.version>
-      <spring.boot.version>3.1.0</spring.boot.version>
-      <spring.version>6.0.9</spring.version>
+      <spring.boot.version>3.1.2</spring.boot.version>
+      <spring.version>6.0.11</spring.version>
       <!-- ============================================== -->
       <!-- ============== PLUGINS VERSIONS ============== -->
       <!-- ============================================== -->
