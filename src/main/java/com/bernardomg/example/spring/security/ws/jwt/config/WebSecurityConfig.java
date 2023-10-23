@@ -37,6 +37,8 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtSecurityConfigurer;
@@ -64,23 +66,28 @@ public class WebSecurityConfig {
     /**
      * Web security filter chain. Sets up all the authentication requirements for requests.
      *
+     * @param properties
+     *            JWT configuration properties
      * @param http
      *            HTTP security component
      * @param userDetailsService
      *            user details service
-     * @param properties
-     *            JWT configuration properties
+     * @param introspector
+     *            mapping introspector
      * @return web security filter chain with all authentication requirements
      * @throws Exception
      *             if the setup fails
      */
     @Bean("webSecurityFilterChain")
-    public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
-            final UserDetailsService userDetailsService, final JwtProperties properties) throws Exception {
+    public SecurityFilterChain getWebSecurityFilterChain(final JwtProperties properties, final HttpSecurity http,
+            final UserDetailsService userDetailsService, final HandlerMappingIntrospector introspector)
+            throws Exception {
+        final MvcRequestMatcher.Builder mvc;
 
+        mvc = new MvcRequestMatcher.Builder(introspector);
         http
             // Whitelist access
-            .authorizeHttpRequests(c -> c.requestMatchers("/actuator/**", "/login/**")
+            .authorizeHttpRequests(c -> c.requestMatchers(mvc.pattern("/actuator/**"), mvc.pattern("/login/**"))
                 .permitAll())
             // Authenticate all others
             .authorizeHttpRequests(c -> c.anyRequest()
