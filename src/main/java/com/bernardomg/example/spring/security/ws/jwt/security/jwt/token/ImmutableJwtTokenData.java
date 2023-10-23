@@ -24,7 +24,8 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 import lombok.Builder;
 import lombok.Value;
@@ -42,36 +43,36 @@ public class ImmutableJwtTokenData implements JwtTokenData {
     /**
      * Audience.
      */
-    private final String audience;
+    private final Collection<String> audience;
 
     /**
      * Expiration date.
      */
-    private final Date   expiration;
+    private final LocalDateTime      expiration;
 
     /**
      * Id.
      */
-    private final String id;
+    private final String             id;
 
     /**
      * Issued at date.
      */
-    private final Date   issuedAt;
+    private final LocalDateTime      issuedAt;
 
     /**
      * Issuer.
      */
-    private final String issuer;
+    private final String             issuer;
 
     /**
      * Not before date.
      */
-    private final Date   notBefore;
+    private final LocalDateTime      notBefore;
 
     /**
      * Subject.
      */
-    private final String subject;
+    private final String             subject;
 
 }

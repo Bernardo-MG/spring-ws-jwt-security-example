@@ -24,11 +24,11 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.crypto.SecretKey;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -41,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class JwtTokenDataEncoder implements TokenEncoder<JwtTokenData> {
+public final class JjwtTokenEncoder implements TokenEncoder {
 
     /**
      * Secret key for generating tokens. Created from the secret received when constructing the provider.
@@ -54,7 +54,7 @@ public final class JwtTokenDataEncoder implements TokenEncoder<JwtTokenData> {
      * @param secretKey
      *            key used when generating tokens
      */
-    public JwtTokenDataEncoder(final SecretKey secretKey) {
+    public JjwtTokenEncoder(final SecretKey secretKey) {
         super();
 
         key = Objects.requireNonNull(secretKey);
@@ -63,20 +63,40 @@ public final class JwtTokenDataEncoder implements TokenEncoder<JwtTokenData> {
     @Override
     public final String encode(final JwtTokenData data) {
         final String     token;
-        final JwtBuilder builder;
+        final Date       issuedAt;
+        final Date       expiration;
+        final Date       notBefore;
+        final JwtBuilder jwtBuilder;
 
-        builder = Jwts.builder()
+        jwtBuilder = Jwts.builder()
             .id(data.getId())
             .issuer(data.getIssuer())
-            .subject(data.getSubject())
-            .issuedAt(data.getIssuedAt())
-            .expiration(data.getExpiration())
-            .notBefore(data.getNotBefore());
+            .subject(data.getSubject());
 
-        builder.audience()
+        jwtBuilder.audience()
             .add(data.getAudience());
 
-        token = builder.signWith(key, Jwts.SIG.HS512)
+        // TODO: Use optional
+        if (data.getIssuedAt() != null) {
+            issuedAt = java.util.Date.from(data.getIssuedAt()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
+            jwtBuilder.issuedAt(issuedAt);
+        }
+        if (data.getExpiration() != null) {
+            expiration = java.util.Date.from(data.getExpiration()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
+            jwtBuilder.expiration(expiration);
+        }
+        if (data.getNotBefore() != null) {
+            notBefore = java.util.Date.from(data.getNotBefore()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
+            jwtBuilder.notBefore(notBefore);
+        }
+
+        token = jwtBuilder.signWith(key, Jwts.SIG.HS512)
             .compact();
 
         log.debug("Created token from {}", data);

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,10 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
-/**
- * Creates an object from the provided token.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
- * @param <T>
- *            type to decode
- */
-public interface TokenDecoder<T> {
+public interface LoginTokenEncoder {
 
-    /**
-     * Returns an object decoded from the token.
-     *
-     * @param token
-     *            token to decode as the object
-     * @return object from the token
-     */
-    public T decode(final String token);
+    public String encode(final String subject);
 
 }

@@ -24,10 +24,22 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import java.nio.charset.StandardCharsets;
 
+import javax.crypto.SecretKey;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.DefaultLoginService;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtPermissionLoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
+
+import io.jsonwebtoken.security.Keys;
 
 /**
  * JWT components configuration.
@@ -36,14 +48,27 @@ import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProper
  *
  */
 @Configuration
-@EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public class LoginConfig {
 
     /**
      * Default constructor.
      */
-    public JwtConfig() {
+    public LoginConfig() {
         super();
+    }
+
+    @Bean("loginService")
+    public LoginService getLoginService(final UserDetailsService userDetailsService,
+            final PasswordEncoder passwordEncoder, final JwtProperties jwtProperties) {
+        final LoginTokenEncoder loginTokenEncoder;
+        final SecretKey         key;
+
+        key = Keys.hmacShaKeyFor(jwtProperties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
+
+        loginTokenEncoder = new JwtPermissionLoginTokenEncoder(key, jwtProperties.getValidity());
+
+        return new DefaultLoginService(userDetailsService, passwordEncoder, loginTokenEncoder);
     }
 
 }

@@ -30,13 +30,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableLoginStatus;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -45,25 +42,32 @@ import lombok.extern.slf4j.Slf4j;
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Service
-@AllArgsConstructor
 @Slf4j
 public final class DefaultLoginService implements LoginService {
 
     /**
-     * Password encoder, for validating passwords.
-     */
-    private final PasswordEncoder      passwordEncoder;
-
-    /**
      * Token generator, creates authentication tokens.
      */
-    private final TokenEncoder<String> tokenEncoder;
+    private final LoginTokenEncoder  loginTokenEncoder;
+
+    /**
+     * Password encoder, for validating passwords.
+     */
+    private final PasswordEncoder    passwordEncoder;
 
     /**
      * User details service, to find and validate users.
      */
-    private final UserDetailsService   userDetailsService;
+    private final UserDetailsService userDetailsService;
+
+    public DefaultLoginService(final UserDetailsService userDetailsService, final PasswordEncoder passwordEncoder,
+            final LoginTokenEncoder loginTokenEncoder) {
+        super();
+
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.loginTokenEncoder = loginTokenEncoder;
+    }
 
     @Override
     public final LoginStatus login(final String username, final String password) {
@@ -96,7 +100,7 @@ public final class DefaultLoginService implements LoginService {
         if (logged) {
             // Valid user
             // Generate token
-            token = tokenEncoder.encode(username);
+            token = loginTokenEncoder.encode(username);
         } else {
             token = "";
         }

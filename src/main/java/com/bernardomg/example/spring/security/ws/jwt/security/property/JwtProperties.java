@@ -24,6 +24,8 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.property;
 
+import java.time.Duration;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import jakarta.validation.constraints.NotNull;
@@ -42,17 +44,18 @@ public final class JwtProperties {
     /**
      * JWT token id.
      */
-    private String  id;
+    private String   id;
 
     /**
      * Secret seed for generating JWT tokens.
      */
     @NotNull
-    private String  secret;
+    private String   secret;
 
     /**
      * Validity length, in seconds, for JWT tokens.
      */
-    private Integer validity;
+    @NotNull
+    private Duration validity = Duration.ofHours(1);
 
 }

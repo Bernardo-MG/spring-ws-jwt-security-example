@@ -24,11 +24,8 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +37,12 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class JwtTokenValidator implements TokenValidator {
+public final class JjwtTokenValidator implements TokenValidator {
 
     /**
      * Token decoder. Without this the token claims can't be validated.
      */
-    private final TokenDecoder<JwtTokenData> tokenDataDecoder;
+    private final TokenDecoder tokenDecoder;
 
     /**
      * Constructs a validator with the received arguments.
@@ -53,28 +50,35 @@ public final class JwtTokenValidator implements TokenValidator {
      * @param decoder
      *            token decoder for reading the token claims
      */
-    public JwtTokenValidator(final TokenDecoder<JwtTokenData> decoder) {
+    public JjwtTokenValidator(final TokenDecoder decoder) {
         super();
 
-        tokenDataDecoder = Objects.requireNonNull(decoder);
+        tokenDecoder = Objects.requireNonNull(decoder);
     }
 
     @Override
-    public final Boolean hasExpired(final String token) {
-        final Date expiration;
-        final Date current;
-        Boolean    expired;
+    public final boolean hasExpired(final String token) {
+        final LocalDateTime expiration;
+        final LocalDateTime current;
+        Boolean             expired;
 
         try {
             // Acquire expiration date claim
-            expiration = tokenDataDecoder.decode(token)
+            expiration = tokenDecoder.decode(token)
                 .getExpiration();
 
-            // Compare expiration to current date
-            current = new Date();
-            expired = expiration.before(current);
+            if (expiration != null) {
+                // Compare expiration to current date
+                current = LocalDateTime.now();
+                expired = expiration.isBefore(current);
+                log.debug("Expired '{}' as token expires on {}, and the current date is {}.", expired, expiration,
+                    current);
+            } else {
+                // No expiration
+                expired = false;
+                log.debug("The token has no expiration date");
+            }
 
-            log.debug("Expired {} as token expires on {}, and the current date is {}.", expired, expiration, current);
         } catch (final ExpiredJwtException e) {
             // Token parsing failed due to expiration date
             log.debug(e.getLocalizedMessage());

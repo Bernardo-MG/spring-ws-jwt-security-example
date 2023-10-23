@@ -22,23 +22,22 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.token;
+package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
 /**
- * Token validator.
+ * Creates a {@link JwtTokenData} from a JWT token.
  *
  * @author Bernardo Mart&iacute;nez Garrido
- *
  */
-public interface TokenValidator {
+public interface TokenDecoder {
 
     /**
-     * Check if the token has expired.
+     * Returns a {@code JwtTokenData} decoded from the JWT token.
      *
      * @param token
-     *            token to validate
-     * @return {@code true} if the token has expired, {@code false} otherwise
+     *            token to decode
+     * @return {@code JwtTokenData} decoded from the token
      */
-    public Boolean hasExpired(final String token);
+    public JwtTokenData decode(final String token);
 
 }

@@ -41,11 +41,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JjwtTokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JjwtTokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.TokenValidator;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -65,22 +64,22 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
     /**
      * Token header identifier. This is added before the token to tell which kind of token it is.
      */
-    private static final String              TOKEN_HEADER_IDENTIFIER = "Bearer";
+    private static final String      TOKEN_HEADER_IDENTIFIER = "Bearer";
 
     /**
      * Token decoder. Required to acquire the subject.
      */
-    private final TokenDecoder<JwtTokenData> tokenDataDecoder;
+    private final TokenDecoder       tokenDataDecoder;
 
     /**
      * Token validator.
      */
-    private final TokenValidator             tokenValidator;
+    private final TokenValidator     tokenValidator;
 
     /**
      * User details service. Gives access to the user, to validate the token against it.
      */
-    private final UserDetailsService         userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     /**
      * Constructs a filter with the received arguments.
@@ -93,8 +92,8 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
     public JwtTokenFilter(final UserDetailsService userDetService, final SecretKey key) {
         super();
 
-        tokenDataDecoder = new JwtTokenDataDecoder(key);
-        tokenValidator = new JwtTokenValidator(tokenDataDecoder);
+        tokenDataDecoder = new JjwtTokenDecoder(key);
+        tokenValidator = new JjwtTokenValidator(tokenDataDecoder);
 
         userDetailsService = Objects.requireNonNull(userDetService);
 

@@ -24,7 +24,8 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.token;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 /**
  * Represents the commons JWT token claims.
@@ -39,14 +40,14 @@ public interface JwtTokenData {
      *
      * @return the audience
      */
-    public String getAudience();
+    public Collection<String> getAudience();
 
     /**
      * Returns the expiration date.
      *
      * @return the expiration date
      */
-    public Date getExpiration();
+    public LocalDateTime getExpiration();
 
     /**
      * Returns the id.
@@ -60,7 +61,7 @@ public interface JwtTokenData {
      *
      * @return the issued at date
      */
-    public Date getIssuedAt();
+    public LocalDateTime getIssuedAt();
 
     /**
      * Returns the issuer.
@@ -74,7 +75,7 @@ public interface JwtTokenData {
      *
      * @return the not before date
      */
-    public Date getNotBefore();
+    public LocalDateTime getNotBefore();
 
     /**
      * Returns the subject.
