@@ -30,8 +30,8 @@ import javax.crypto.SecretKey;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -62,17 +62,21 @@ public final class JwtTokenDataEncoder implements TokenEncoder<JwtTokenData> {
 
     @Override
     public final String encode(final JwtTokenData data) {
-        final String token;
+        final String     token;
+        final JwtBuilder builder;
 
-        token = Jwts.builder()
-            .setId(data.getId())
-            .setIssuer(data.getIssuer())
-            .setSubject(data.getSubject())
-            .setIssuedAt(data.getIssuedAt())
-            .setExpiration(data.getExpiration())
-            .setNotBefore(data.getNotBefore())
-            .setAudience(data.getAudience())
-            .signWith(key, SignatureAlgorithm.HS512)
+        builder = Jwts.builder()
+            .id(data.getId())
+            .issuer(data.getIssuer())
+            .subject(data.getSubject())
+            .issuedAt(data.getIssuedAt())
+            .expiration(data.getExpiration())
+            .notBefore(data.getNotBefore());
+
+        builder.audience()
+            .add(data.getAudience());
+
+        token = builder.signWith(key, Jwts.SIG.HS512)
             .compact();
 
         log.debug("Created token from {}", data);

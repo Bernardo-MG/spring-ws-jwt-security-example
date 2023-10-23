@@ -47,8 +47,8 @@ public final class JwtTokenDataDecoder implements TokenDecoder<JwtTokenData> {
 
         Objects.requireNonNull(key);
 
-        parser = Jwts.parserBuilder()
-            .setSigningKey(key)
+        parser = Jwts.parser()
+            .verifyWith(key)
             .build();
     }
 
@@ -56,8 +56,8 @@ public final class JwtTokenDataDecoder implements TokenDecoder<JwtTokenData> {
     public final JwtTokenData decode(final String token) {
         final Claims claims;
 
-        claims = parser.parseClaimsJws(token)
-            .getBody();
+        claims = parser.parseSignedClaims(token)
+            .getPayload();
 
         return ImmutableJwtTokenData.builder()
             .withSubject(claims.getSubject())
