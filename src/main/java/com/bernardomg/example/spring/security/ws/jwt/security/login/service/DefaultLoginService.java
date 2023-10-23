@@ -71,9 +71,8 @@ public final class DefaultLoginService implements LoginService {
 
     @Override
     public final LoginStatus login(final String username, final String password) {
-        final LoginStatus     status;
         final String          token;
-        final Boolean         logged;
+        final boolean         logged;
         Optional<UserDetails> details;
 
         log.debug("Log in attempt for {}", username);
@@ -105,11 +104,9 @@ public final class DefaultLoginService implements LoginService {
             token = "";
         }
 
-        status = new ImmutableLoginStatus(username, logged, token);
+        log.debug("Finished log in attempt for {}. Logged in: {}", username, logged);
 
-        log.debug("Finished log in attempt for {}. Logged in: {}", username, status.getLogged());
-
-        return status;
+        return new ImmutableLoginStatus(username, logged, token);
     }
 
 }
