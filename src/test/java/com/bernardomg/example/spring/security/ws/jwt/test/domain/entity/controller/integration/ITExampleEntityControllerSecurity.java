@@ -27,6 +27,7 @@ package com.bernardomg.example.spring.security.ws.jwt.test.domain.entity.control
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -86,7 +87,7 @@ public final class ITExampleEntityControllerSecurity {
         token = tokenEncoder.encode("admin");
 
         return MockMvcRequestBuilders.get("/rest/entity")
-            .header("Authorization", "Bearer " + token);
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
     }
 
 }

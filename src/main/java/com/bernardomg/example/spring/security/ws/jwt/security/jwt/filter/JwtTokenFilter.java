@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -142,7 +143,7 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
         final String           header;
         final Optional<String> token;
 
-        header = request.getHeader("Authorization");
+        header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (header == null) {
             // No token received
