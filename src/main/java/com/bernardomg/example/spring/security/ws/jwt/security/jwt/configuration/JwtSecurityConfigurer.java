@@ -24,6 +24,8 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,9 +33,6 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.filter.JwtTokenFilter;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
 /**
  * JWT security configurar. Applies JWT configuration to the Spring web configuration.
@@ -52,17 +51,14 @@ public final class JwtSecurityConfigurer extends SecurityConfigurerAdapter<Defau
      * Default constructor.
      *
      * @param userDetService
-     *            user details service to use
-     * @param tokenValidator
-     *            token validator to use
-     * @param decoder
-     *            token decoder to use
+     *            user details service
+     * @param key
+     *            secret key for encoding JWT tokens
      */
-    public JwtSecurityConfigurer(final UserDetailsService userDetService, final TokenValidator tokenValidator,
-            final TokenDecoder<JwtTokenData> decoder) {
+    public JwtSecurityConfigurer(final UserDetailsService userDetService, final SecretKey key) {
         super();
 
-        tokenFilter = new JwtTokenFilter(userDetService, tokenValidator, decoder);
+        tokenFilter = new JwtTokenFilter(userDetService, key);
     }
 
     @Override

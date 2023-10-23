@@ -33,11 +33,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
 
 import io.jsonwebtoken.security.Keys;
@@ -59,22 +55,6 @@ public class JwtConfig {
      */
     public JwtConfig() {
         super();
-    }
-
-    /**
-     * Returns the token decoder.
-     *
-     * @param properties
-     *            JWT configuration properties
-     * @return the token encoder
-     */
-    @Bean("tokenDecoder")
-    public TokenDecoder<JwtTokenData> getTokenDecoder(final JwtProperties properties) {
-        final SecretKey key;
-
-        key = Keys.hmacShaKeyFor(properties.getSecret()
-            .getBytes(StandardCharsets.UTF_8));
-        return new JwtTokenDataDecoder(key);
     }
 
     /**
@@ -109,18 +89,6 @@ public class JwtConfig {
         }
 
         return encoder;
-    }
-
-    /**
-     * Returns the token validator.
-     *
-     * @param decoder
-     *            token decoder
-     * @return the token validator
-     */
-    @Bean("tokenValidator")
-    public JwtTokenValidator getTokenValidator(final TokenDecoder<JwtTokenData> decoder) {
-        return new JwtTokenValidator(decoder);
     }
 
 }

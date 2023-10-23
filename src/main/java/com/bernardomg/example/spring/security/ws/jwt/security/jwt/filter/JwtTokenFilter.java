@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.crypto.SecretKey;
+
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -40,6 +42,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
 
@@ -83,18 +87,16 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
      *
      * @param userDetService
      *            user details service
-     * @param validator
-     *            token validator
-     * @param decoder
-     *            token decoder
+     * @param key
+     *            secret key for encoding JWT tokens
      */
-    public JwtTokenFilter(final UserDetailsService userDetService, final TokenValidator validator,
-            final TokenDecoder<JwtTokenData> decoder) {
+    public JwtTokenFilter(final UserDetailsService userDetService, final SecretKey key) {
         super();
 
+        tokenDataDecoder = new JwtTokenDataDecoder(key);
+        tokenValidator = new JwtTokenValidator(tokenDataDecoder);
+
         userDetailsService = Objects.requireNonNull(userDetService);
-        tokenValidator = Objects.requireNonNull(validator);
-        tokenDataDecoder = Objects.requireNonNull(decoder);
 
         // TODO: Test this class
     }

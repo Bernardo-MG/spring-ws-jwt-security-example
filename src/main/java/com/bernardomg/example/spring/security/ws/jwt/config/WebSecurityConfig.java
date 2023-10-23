@@ -24,22 +24,25 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.configuration.WhitelistRequestCustomizer;
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtSecurityConfigurer;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
+
+import io.jsonwebtoken.security.Keys;
 
 /**
  * Web security configuration.
@@ -63,27 +66,28 @@ public class WebSecurityConfig {
      *
      * @param http
      *            HTTP security component
-     * @param decoder
-     *            token decoder
-     * @param tokenValidator
-     *            token validator
      * @param userDetailsService
      *            user details service
+     * @param properties
+     *            JWT configuration properties
      * @return web security filter chain with all authentication requirements
      * @throws Exception
      *             if the setup fails
      */
     @Bean("webSecurityFilterChain")
     public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
-            final TokenDecoder<JwtTokenData> decoder, final TokenValidator tokenValidator,
-            final UserDetailsService userDetailsService) throws Exception {
+            final UserDetailsService userDetailsService, final JwtProperties properties) throws Exception {
 
         http
             // Whitelist access
-            .authorizeHttpRequests(new WhitelistRequestCustomizer(Arrays.asList("/actuator/**", "/login/**")))
+            .authorizeHttpRequests(c -> c.requestMatchers("/actuator/**", "/login/**")
+                .permitAll())
+            // Authenticate all others
+            .authorizeHttpRequests(c -> c.anyRequest()
+                .authenticated())
             // CSRF and CORS
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
+            .csrf(CsrfConfigurer::disable)
+            .cors(Customizer.withDefaults())
             // Authentication error handling
             .exceptionHandling(handler -> handler.authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint()))
             // Stateless
@@ -93,7 +97,11 @@ public class WebSecurityConfig {
             .logout(c -> c.disable());
 
         // JWT configuration
-        http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator, decoder));
+        final SecretKey key;
+
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
+        http.apply(new JwtSecurityConfigurer(userDetailsService, key));
 
         return http.build();
     }
