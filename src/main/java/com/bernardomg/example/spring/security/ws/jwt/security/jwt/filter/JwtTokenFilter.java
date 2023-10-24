@@ -38,6 +38,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -114,9 +115,13 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
     private final Authentication getAuthentication(final UserDetails userDetails, final HttpServletRequest request,
             final String token) {
         final AbstractAuthenticationToken authenticationToken;
+        final WebAuthenticationDetails    details;
 
         authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        // Load web details
+        details = new WebAuthenticationDetailsSource().buildDetails(request);
+        authenticationToken.setDetails(details);
 
         return authenticationToken;
     }
