@@ -21,7 +21,7 @@
 
    <groupId>com.bernardomg.example</groupId>
    <artifactId>spring-ws-jwt-security-example</artifactId>
-   <version>1.2.5</version>
+   <version>2.0.0-SNAPSHOT</version>
    <packaging>war</packaging>
 
    <name>Spring JWT Security Example</name>
