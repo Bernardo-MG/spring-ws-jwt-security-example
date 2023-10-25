@@ -74,8 +74,7 @@ public class JwtPermissionLoginTokenEncoder implements LoginTokenEncoder {
         issuedAt = LocalDateTime.now();
         // Expires in a number of seconds equal to validity
         // TODO: handle validity in the encoder
-        expiration = issuedAt
-            .plus(validity);
+        expiration = issuedAt.plus(validity);
 
         // Build token data for the wrapped encoder
         data = ImmutableJwtTokenData.builder()

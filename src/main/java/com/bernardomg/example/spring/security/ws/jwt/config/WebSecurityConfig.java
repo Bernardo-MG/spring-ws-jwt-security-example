@@ -25,27 +25,31 @@
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAccessDeniedHandler;
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtSecurityConfigurer;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtHttpSecurityConfigurer;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
 
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Web security configuration.
@@ -55,6 +59,7 @@ import io.jsonwebtoken.security.Keys;
  */
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class WebSecurityConfig {
 
     /**
@@ -65,23 +70,42 @@ public class WebSecurityConfig {
     }
 
     /**
-     * Web security filter chain. Sets up all the authentication requirements for requests.
+     * JWT requests security.
      *
      * @param properties
-     *            JWT configuration properties
-     * @param http
-     *            HTTP security component
+     *            JWT properties
      * @param userDetailsService
      *            user details service
+     * @return JWT requests security
+     */
+    @Bean
+    public JwtHttpSecurityConfigurer getJwtSecurityConfigurer(final JwtProperties properties,
+            final UserDetailsService userDetailsService) {
+        final SecretKey key;
+
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
+
+        return new JwtHttpSecurityConfigurer(userDetailsService, key);
+    }
+
+    /**
+     * Web security filter chain. Sets up all the authentication requirements for requests.
+     *
+     * @param http
+     *            HTTP security component
      * @param introspector
      *            mapping introspector
+     * @param securityConfigurers
+     *            security configurers
      * @return web security filter chain with all authentication requirements
      * @throws Exception
      *             if the setup fails
      */
     @Bean("webSecurityFilterChain")
-    public SecurityFilterChain getWebSecurityFilterChain(final JwtProperties properties, final HttpSecurity http,
-            final UserDetailsService userDetailsService, final HandlerMappingIntrospector introspector)
+    public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
+            final HandlerMappingIntrospector introspector,
+            final Collection<SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>> securityConfigurers)
             throws Exception {
         final MvcRequestMatcher.Builder mvc;
 
@@ -105,12 +129,11 @@ public class WebSecurityConfig {
             .formLogin(c -> c.disable())
             .logout(c -> c.disable());
 
-        // JWT configuration
-        final SecretKey key;
-
-        key = Keys.hmacShaKeyFor(properties.getSecret()
-            .getBytes(StandardCharsets.UTF_8));
-        http.apply(new JwtSecurityConfigurer(userDetailsService, key));
+        // Security configurers
+        log.debug("Applying configurers: {}", securityConfigurers);
+        for (final SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> securityConfigurer : securityConfigurers) {
+            http.apply(securityConfigurer);
+        }
 
         return http.build();
     }
