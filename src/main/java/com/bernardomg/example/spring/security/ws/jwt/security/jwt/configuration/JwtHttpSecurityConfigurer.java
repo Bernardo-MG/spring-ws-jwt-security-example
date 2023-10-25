@@ -32,7 +32,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.filter.JwtTokenFilter;
+import com.bernardomg.example.spring.security.ws.jwt.security.jwt.filter.JwtTokenAuthenticationFilter;
 
 /**
  * JWT security configurer for HTTP requests. Applies JWT configuration to the Spring web configuration.
@@ -46,7 +46,7 @@ public final class JwtHttpSecurityConfigurer
     /**
      * JWT token filter. Uses the token to set up authentication.
      */
-    private final JwtTokenFilter tokenFilter;
+    private final JwtTokenAuthenticationFilter tokenFilter;
 
     /**
      * Default constructor.
@@ -59,12 +59,12 @@ public final class JwtHttpSecurityConfigurer
     public JwtHttpSecurityConfigurer(final UserDetailsService userDetService, final SecretKey key) {
         super();
 
-        tokenFilter = new JwtTokenFilter(userDetService, key);
+        tokenFilter = new JwtTokenAuthenticationFilter(userDetService, key);
     }
 
     @Override
     public void configure(final HttpSecurity http) {
-        // Add a filter to validate the tokens with every request
+        // Add a filter to authenticate based on the JWT token
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

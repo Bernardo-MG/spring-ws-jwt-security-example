@@ -54,7 +54,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JWT token filter. Takes the JWT token from the request, validates it and initializes the authentication.
+ * JWT token authentication filter. Takes the JWT token from the request, validates it and initialises the user
+ * authentication.
  * <h2>Header</h2>
  * <p>
  * The token should come in the Authorization header, which must follow a structure like this:
@@ -64,7 +65,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class JwtTokenFilter extends OncePerRequestFilter {
+public final class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
     /**
      * Token header identifier. This is added before the token to tell which kind of token it is. Used to make sure the
@@ -95,7 +96,7 @@ public final class JwtTokenFilter extends OncePerRequestFilter {
      * @param key
      *            secret key for encoding JWT tokens
      */
-    public JwtTokenFilter(final UserDetailsService userDetService, final SecretKey key) {
+    public JwtTokenAuthenticationFilter(final UserDetailsService userDetService, final SecretKey key) {
         super();
 
         tokenDecoder = new JjwtTokenDecoder(key);
