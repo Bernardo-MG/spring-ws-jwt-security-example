@@ -30,10 +30,10 @@ import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.ImmutableJwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JjwtTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.ImmutableJwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenEncoder;
 
 import lombok.extern.slf4j.Slf4j;
 

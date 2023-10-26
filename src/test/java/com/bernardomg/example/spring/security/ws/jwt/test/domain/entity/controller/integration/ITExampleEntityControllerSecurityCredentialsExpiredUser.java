@@ -40,7 +40,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtPermissionLoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.jwt.token.config.TokenConstants;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
 
 @MvcIntegrationTest
 @DisplayName("Example entity controller - security - credentials expired user")

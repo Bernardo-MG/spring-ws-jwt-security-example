@@ -43,9 +43,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
+import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.configuration.JwtHttpSecurityConfigurer;
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAccessDeniedHandler;
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtHttpSecurityConfigurer;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
 
 import io.jsonwebtoken.security.Keys;
