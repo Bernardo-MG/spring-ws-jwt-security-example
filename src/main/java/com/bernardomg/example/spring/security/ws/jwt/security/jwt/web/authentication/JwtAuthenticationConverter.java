@@ -6,13 +6,13 @@ import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -70,8 +70,8 @@ public final class JwtAuthenticationConverter implements AuthenticationConverter
     public final Authentication convert(final HttpServletRequest request) {
         final Optional<String> token;
         final String           subject;
-        final UserDetails      userDetails;
         final Authentication   authentication;
+        UserDetails            userDetails;
 
         log.debug("Authenticating {} request to {}", request.getMethod(), request.getServletPath());
 
@@ -88,9 +88,16 @@ public final class JwtAuthenticationConverter implements AuthenticationConverter
             // Takes subject from the token
             subject = tokenDecoder.decode(token.get())
                 .getSubject();
-            userDetails = userDetailsService.loadUserByUsername(subject);
+            try {
+                userDetails = userDetailsService.loadUserByUsername(subject);
+            } catch (final UsernameNotFoundException e) {
+                userDetails = null;
+            }
 
-            if (isValid(userDetails)) {
+            if (userDetails == null) {
+                log.debug("User {} not found", subject);
+                authentication = null;
+            } else if (isValid(userDetails)) {
                 // Valid user
                 log.debug("Valid user {}. Preparing authentication", subject);
                 authentication = getAuthentication(userDetails, request, token.get());
@@ -149,8 +156,8 @@ public final class JwtAuthenticationConverter implements AuthenticationConverter
             // No token received
             token = Optional.empty();
             log.warn("Missing authorization header, can't return token", header);
-        } else if ((!Strings.isEmpty(header)) && (header.trim()
-            .startsWith(TOKEN_HEADER_IDENTIFIER + " "))) {
+        } else if (header.trim()
+            .startsWith(TOKEN_HEADER_IDENTIFIER + " ")) {
             // Token received
             // Take it by removing the identifier
             // TODO: Should be case insensitive
