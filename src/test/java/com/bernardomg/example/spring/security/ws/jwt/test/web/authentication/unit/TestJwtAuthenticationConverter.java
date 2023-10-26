@@ -3,6 +3,7 @@ package com.bernardomg.example.spring.security.ws.jwt.test.web.authentication.un
 
 import static org.mockito.BDDMockito.given;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -48,6 +49,18 @@ class TestJwtAuthenticationConverter {
         converter = new JwtAuthenticationConverter(userDetService, TokenConstants.KEY);
     }
 
+    private final String generateExpiredToken() {
+        final JwtTokenData data;
+
+        data = ImmutableJwtTokenData.builder()
+            .withSubject(TokenConstants.SUBJECT)
+            .withExpiration(LocalDateTime.now()
+                .minusDays(1))
+            .build();
+
+        return encoder.encode(data);
+    }
+
     private final String generateToken() {
         final JwtTokenData data;
 
@@ -56,6 +69,20 @@ class TestJwtAuthenticationConverter {
             .build();
 
         return encoder.encode(data);
+    }
+
+    @Test
+    @DisplayName("With an expired token no authentication is generated")
+    void testConvert_Expired() {
+        final Authentication auth;
+
+        request = Mockito.mock(HttpServletRequest.class);
+        given(request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn("Bearer " + generateExpiredToken());
+
+        auth = converter.convert(request);
+
+        Assertions.assertThat(auth)
+            .isNull();
     }
 
     @Test
