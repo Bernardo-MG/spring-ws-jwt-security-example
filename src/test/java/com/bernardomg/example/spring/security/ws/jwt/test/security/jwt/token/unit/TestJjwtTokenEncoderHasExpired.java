@@ -20,7 +20,7 @@ import com.bernardomg.example.spring.security.ws.jwt.test.security.jwt.token.con
 @DisplayName("JjwtTokenEncoder - has expired")
 class TestJjwtTokenEncoderHasExpired {
 
-    private final TokenEncoder       encoder;
+    private final TokenEncoder       encoder = new JjwtTokenEncoder(TokenConstants.KEY);
 
     private final JjwtTokenValidator validator;
 
@@ -29,7 +29,6 @@ class TestJjwtTokenEncoderHasExpired {
 
         final TokenDecoder decoder;
 
-        encoder = new JjwtTokenEncoder(TokenConstants.KEY);
         decoder = new JjwtTokenDecoder(TokenConstants.KEY);
         validator = new JjwtTokenValidator(decoder);
     }

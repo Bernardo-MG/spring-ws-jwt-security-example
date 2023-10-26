@@ -26,4 +26,4 @@
  * JWT request filters.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.jwt.filter;
+package com.bernardomg.example.spring.security.ws.jwt.security.jwt.web.authentication;

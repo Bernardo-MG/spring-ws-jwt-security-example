@@ -14,13 +14,7 @@ import com.bernardomg.example.spring.security.ws.jwt.test.security.jwt.token.con
 @DisplayName("JjwtTokenEncoder - generate token")
 class TestJjwtTokenEncoderGenerateToken {
 
-    private final TokenEncoder encoder;
-
-    public TestJjwtTokenEncoderGenerateToken() {
-        super();
-
-        encoder = new JjwtTokenEncoder(TokenConstants.KEY);
-    }
+    private final TokenEncoder encoder = new JjwtTokenEncoder(TokenConstants.KEY);
 
     @Test
     @DisplayName("Encodes a token")

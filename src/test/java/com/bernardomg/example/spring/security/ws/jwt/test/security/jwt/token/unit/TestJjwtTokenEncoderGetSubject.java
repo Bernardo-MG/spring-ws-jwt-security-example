@@ -21,16 +21,9 @@ import io.jsonwebtoken.ExpiredJwtException;
 @DisplayName("JjwtTokenEncoder - get subject")
 class TestJjwtTokenEncoderGetSubject {
 
-    private final TokenDecoder decoder;
+    private final TokenDecoder decoder = new JjwtTokenDecoder(TokenConstants.KEY);
 
-    private final TokenEncoder encoder;
-
-    public TestJjwtTokenEncoderGetSubject() {
-        super();
-
-        encoder = new JjwtTokenEncoder(TokenConstants.KEY);
-        decoder = new JjwtTokenDecoder(TokenConstants.KEY);
-    }
+    private final TokenEncoder encoder = new JjwtTokenEncoder(TokenConstants.KEY);
 
     @Test
     @DisplayName("Recovers the subject from a token")
@@ -40,7 +33,7 @@ class TestJjwtTokenEncoderGetSubject {
         final JwtTokenData data;
 
         data = ImmutableJwtTokenData.builder()
-            .withSubject("subject")
+            .withSubject(TokenConstants.SUBJECT)
             .build();
 
         token = encoder.encode(data);
@@ -48,7 +41,7 @@ class TestJjwtTokenEncoderGetSubject {
             .getSubject();
 
         Assertions.assertThat(subject)
-            .isEqualTo("subject");
+            .isEqualTo(TokenConstants.SUBJECT);
     }
 
     @Test
@@ -59,7 +52,7 @@ class TestJjwtTokenEncoderGetSubject {
         final JwtTokenData     data;
 
         data = ImmutableJwtTokenData.builder()
-            .withSubject("subject")
+            .withSubject(TokenConstants.SUBJECT)
             .withExpiration(LocalDateTime.now()
                 .plusSeconds(-1))
             .build();

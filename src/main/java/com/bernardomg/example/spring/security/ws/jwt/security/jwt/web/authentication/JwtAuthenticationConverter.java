@@ -1,30 +1,6 @@
-/**
- * The MIT License (MIT)
- * <p>
- * Copyright (c) 2022-2023 the original author or authors.
- * <p>
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * <p>
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * <p>
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.jwt.filter;
+package com.bernardomg.example.spring.security.ws.jwt.security.jwt.web.authentication;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,37 +11,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JjwtTokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JjwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.TokenValidator;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * JWT token authentication filter. Takes the JWT token from the request, validates it and initialises the user
- * authentication.
- * <h2>Header</h2>
- * <p>
- * The token should come in the Authorization header, which must follow a structure like this:
- * {@code Authorization: Bearer [token]}. This is case insensitive.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
- */
 @Slf4j
-public final class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
+public final class JwtAuthenticationConverter implements AuthenticationConverter {
 
     /**
      * Token header identifier. This is added before the token to tell which kind of token it is. Used to make sure the
@@ -89,20 +50,60 @@ public final class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     /**
-     * Constructs a filter with the received arguments.
+     * Constructs an authentication converter with the received arguments.
      *
      * @param userDetService
      *            user details service
      * @param key
      *            secret key for encoding JWT tokens
      */
-    public JwtTokenAuthenticationFilter(final UserDetailsService userDetService, final SecretKey key) {
+    public JwtAuthenticationConverter(final UserDetailsService userDetService, final SecretKey key) {
         super();
 
         tokenDecoder = new JjwtTokenDecoder(key);
         tokenValidator = new JjwtTokenValidator(tokenDecoder);
 
         userDetailsService = Objects.requireNonNull(userDetService);
+    }
+
+    @Override
+    public final Authentication convert(final HttpServletRequest request) {
+        final Optional<String> token;
+        final String           subject;
+        final UserDetails      userDetails;
+        final Authentication   authentication;
+
+        log.debug("Authenticating {} request to {}", request.getMethod(), request.getServletPath());
+
+        token = getToken(request);
+
+        if (token.isEmpty()) {
+            // Missing header
+            log.debug("Missing authorization token");
+            authentication = null;
+        } else if (!tokenValidator.hasExpired(token.get())) {
+            // Token not expired
+            // Will load a new authentication from the token
+
+            // Takes subject from the token
+            subject = tokenDecoder.decode(token.get())
+                .getSubject();
+            userDetails = userDetailsService.loadUserByUsername(subject);
+
+            if (isValid(userDetails)) {
+                // Valid user
+                log.debug("Valid user {}. Preparing authentication", subject);
+                authentication = getAuthentication(userDetails, request, token.get());
+            } else {
+                log.debug("Invalid user {}", subject);
+                authentication = null;
+            }
+        } else {
+            log.debug("Expired token {}", token.get());
+            authentication = null;
+        }
+
+        return authentication;
     }
 
     /**
@@ -175,48 +176,4 @@ public final class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         return userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked()
                 && userDetails.isCredentialsNonExpired() && userDetails.isEnabled();
     }
-
-    @Override
-    protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
-            final FilterChain chain) throws ServletException, IOException {
-        final Optional<String> token;
-        final String           subject;
-        final UserDetails      userDetails;
-        final Authentication   authentication;
-
-        log.debug("Authenticating {} request to {}", request.getMethod(), request.getServletPath());
-
-        token = getToken(request);
-
-        if (token.isEmpty()) {
-            // Missing header
-            log.debug("Missing authorization token");
-        } else if (!tokenValidator.hasExpired(token.get())) {
-            // Token not expired
-            // Will load a new authentication from the token
-
-            // Takes subject from the token
-            subject = tokenDecoder.decode(token.get())
-                .getSubject();
-            userDetails = userDetailsService.loadUserByUsername(subject);
-
-            if (isValid(userDetails)) {
-                // Create and register authentication
-                authentication = getAuthentication(userDetails, request, token.get());
-                SecurityContextHolder.getContext()
-                    .setAuthentication(authentication);
-
-                // User valid
-                log.debug("Authenticated {} request for {} to {}", request.getMethod(), subject,
-                    request.getServletPath());
-            } else {
-                log.debug("Invalid user {}", subject);
-            }
-        } else {
-            log.debug("Invalid token {}", token.get());
-        }
-
-        chain.doFilter(request, response);
-    }
-
 }
