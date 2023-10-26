@@ -34,7 +34,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.DefaultLoginService;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtPermissionLoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtLoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
@@ -66,7 +66,7 @@ public class LoginConfig {
         key = Keys.hmacShaKeyFor(jwtProperties.getSecret()
             .getBytes(StandardCharsets.UTF_8));
 
-        loginTokenEncoder = new JwtPermissionLoginTokenEncoder(key, jwtProperties.getValidity());
+        loginTokenEncoder = new JwtLoginTokenEncoder(key, jwtProperties.getValidity());
 
         return new DefaultLoginService(userDetailsService, passwordEncoder, loginTokenEncoder);
     }

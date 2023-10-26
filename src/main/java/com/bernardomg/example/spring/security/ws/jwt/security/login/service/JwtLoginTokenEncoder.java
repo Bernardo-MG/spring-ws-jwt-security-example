@@ -38,13 +38,13 @@ import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Encodes a JWT token.
+ * Encodes a JWT token for the login.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-public class JwtPermissionLoginTokenEncoder implements LoginTokenEncoder {
+public class JwtLoginTokenEncoder implements LoginTokenEncoder {
 
     /**
      * Token encoder for creating authentication tokens.
@@ -56,7 +56,15 @@ public class JwtPermissionLoginTokenEncoder implements LoginTokenEncoder {
      */
     private final Duration     validity;
 
-    public JwtPermissionLoginTokenEncoder(final SecretKey secretKey, final Duration vldt) {
+    /**
+     * Constructs a JWT token encoder for the login.
+     *
+     * @param secretKey
+     *            secret key
+     * @param vldt
+     *            validity range
+     */
+    public JwtLoginTokenEncoder(final SecretKey secretKey, final Duration vldt) {
         super();
 
         tokenEncoder = new JjwtTokenEncoder(secretKey);

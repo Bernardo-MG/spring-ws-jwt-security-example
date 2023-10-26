@@ -77,18 +77,23 @@ public final class JjwtTokenEncoder implements TokenEncoder {
             .add(data.getAudience());
 
         // TODO: Use optional
+        // Issued at
         if (data.getIssuedAt() != null) {
             issuedAt = java.util.Date.from(data.getIssuedAt()
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
             jwtBuilder.issuedAt(issuedAt);
         }
+
+        // Expiration
         if (data.getExpiration() != null) {
             expiration = java.util.Date.from(data.getExpiration()
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
             jwtBuilder.expiration(expiration);
         }
+
+        // Not before
         if (data.getNotBefore() != null) {
             notBefore = java.util.Date.from(data.getNotBefore()
                 .atZone(ZoneId.systemDefault())

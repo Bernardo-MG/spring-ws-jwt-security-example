@@ -37,7 +37,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtPermissionLoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtLoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
@@ -50,8 +50,7 @@ public final class ITExampleEntityControllerSecurityLockedUser {
     @Autowired
     private MockMvc                 mockMvc;
 
-    private final LoginTokenEncoder tokenEncoder = new JwtPermissionLoginTokenEncoder(TokenConstants.KEY,
-        Duration.ofHours(1));
+    private final LoginTokenEncoder tokenEncoder = new JwtLoginTokenEncoder(TokenConstants.KEY, Duration.ofHours(1));
 
     public ITExampleEntityControllerSecurityLockedUser() {
         super();

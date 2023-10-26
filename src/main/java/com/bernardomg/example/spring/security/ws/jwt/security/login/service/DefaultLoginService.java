@@ -24,6 +24,7 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,13 +61,23 @@ public final class DefaultLoginService implements LoginService {
      */
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Constructs a login service.
+     *
+     * @param userDetailsService
+     *            user details service
+     * @param passwordEncoder
+     *            password encoder
+     * @param loginTokenEncoder
+     *            login token encoder
+     */
     public DefaultLoginService(final UserDetailsService userDetailsService, final PasswordEncoder passwordEncoder,
             final LoginTokenEncoder loginTokenEncoder) {
         super();
 
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.loginTokenEncoder = loginTokenEncoder;
+        this.userDetailsService = Objects.requireNonNull(userDetailsService);
+        this.passwordEncoder = Objects.requireNonNull(passwordEncoder);
+        this.loginTokenEncoder = Objects.requireNonNull(loginTokenEncoder);
     }
 
     @Override

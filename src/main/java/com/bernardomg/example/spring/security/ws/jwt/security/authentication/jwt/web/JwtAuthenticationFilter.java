@@ -54,6 +54,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    /**
+     * Authentication converter, which creates the authentication object from the request.
+     */
     private final AuthenticationConverter authenticationConverter;
 
     /**
