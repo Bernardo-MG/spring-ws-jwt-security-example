@@ -30,7 +30,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
@@ -41,10 +40,11 @@ import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtL
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.DisabledUser;
 
 @MvcIntegrationTest
 @DisplayName("Example entity controller - security - disabled user")
-@Sql({ "/db/queries/user/disabled.sql", "/db/queries/security/default_role.sql" })
+@DisabledUser
 public final class ITExampleEntityControllerSecurityDisabledUser {
 
     @Autowired
