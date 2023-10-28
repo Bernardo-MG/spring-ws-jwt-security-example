@@ -4,8 +4,7 @@ package com.bernardomg.example.spring.security.ws.jwt.test.security.user.persist
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections4.IterableUtils;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,8 @@ public class ITPrivilegeRepository {
 
         result = repository.findForUser(1L);
 
-        Assertions.assertEquals(4, IterableUtils.size(result));
+        Assertions.assertThat(result)
+            .hasSize(4);
     }
 
     @Test
@@ -48,10 +48,8 @@ public class ITPrivilegeRepository {
             .map(PersistentPrivilege::getName)
             .collect(Collectors.toList());
 
-        Assertions.assertTrue(privileges.contains("CREATE_DATA"));
-        Assertions.assertTrue(privileges.contains("READ_DATA"));
-        Assertions.assertTrue(privileges.contains("UPDATE_DATA"));
-        Assertions.assertTrue(privileges.contains("DELETE_DATA"));
+        Assertions.assertThat(privileges)
+            .contains("CREATE_DATA", "READ_DATA", "UPDATE_DATA", "DELETE_DATA");
     }
 
     @Test
@@ -61,7 +59,8 @@ public class ITPrivilegeRepository {
 
         result = repository.findForUser(-1L);
 
-        Assertions.assertEquals(0, IterableUtils.size(result));
+        Assertions.assertThat(result)
+            .isEmpty();
     }
 
 }
