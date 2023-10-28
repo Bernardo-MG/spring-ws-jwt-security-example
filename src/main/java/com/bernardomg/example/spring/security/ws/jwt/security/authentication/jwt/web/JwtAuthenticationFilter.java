@@ -63,7 +63,7 @@ public final class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthenticationConverter authenticationConverter;
 
     /**
-     * Authentication maanger, which acquires the actual authentication object.
+     * Authentication manager, which acquires the actual authentication object.
      */
     private final AuthenticationManager   authenticationManager;
 
