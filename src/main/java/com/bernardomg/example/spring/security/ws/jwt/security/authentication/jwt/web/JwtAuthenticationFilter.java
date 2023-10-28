@@ -26,11 +26,13 @@ package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jw
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -85,8 +87,9 @@ public final class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
-        final Authentication authRequest;
-        final Authentication authentication;
+        final Authentication     authRequest;
+        final Authentication     authentication;
+        Optional<Authentication> authOptional;
 
         log.debug("Authenticating {} request to {}", request.getMethod(), request.getServletPath());
 
@@ -97,14 +100,28 @@ public final class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext()
                 .setAuthentication(null);
         } else {
-            authentication = authenticationManager.authenticate(authRequest);
+            try {
+                authOptional = Optional.of(authenticationManager.authenticate(authRequest));
+            } catch (final AuthenticationException e) {
+                log.debug("Failed authentication", e);
+                authOptional = Optional.empty();
+            }
 
-            SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
+            if (authOptional.isPresent()) {
+                authentication = authOptional.get();
+                SecurityContextHolder.getContext()
+                    .setAuthentication(authentication);
 
-            // Valid user
-            log.debug("Authenticated {} request for {} to {}", request.getMethod(), authentication.getName(),
-                request.getServletPath());
+                // Valid user
+                log.debug("Authenticated {} request for {} to {}", request.getMethod(), authentication.getName(),
+                    request.getServletPath());
+            } else {
+                // Invalid user
+                log.debug("Couldn't authenticate request {} request to {}", request.getMethod(),
+                    request.getServletPath());
+                SecurityContextHolder.getContext()
+                    .setAuthentication(null);
+            }
         }
 
         chain.doFilter(request, response);

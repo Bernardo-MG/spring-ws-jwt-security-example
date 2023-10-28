@@ -29,6 +29,7 @@ import java.util.Objects;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -38,7 +39,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  * Authentication manager which delegates into a {@link UserDetailsService}.
- * 
+ *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
@@ -69,7 +70,7 @@ public final class UserDetailsAuthenticationManager implements AuthenticationMan
             throw new DisabledException(String.format("User %s is disabled", authentication.getName()));
         }
         if (!userDetails.isAccountNonLocked()) {
-            throw new DisabledException(String.format("User %s is locked", authentication.getName()));
+            throw new LockedException(String.format("User %s is locked", authentication.getName()));
         }
         if (!userDetails.isCredentialsNonExpired()) {
             throw new BadCredentialsException(

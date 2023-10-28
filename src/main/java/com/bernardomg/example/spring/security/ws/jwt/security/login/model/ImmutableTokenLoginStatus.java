@@ -61,7 +61,8 @@ public final class ImmutableTokenLoginStatus implements TokenLoginStatus {
      * @param tkn
      *            authentication token
      */
-    public ImmutableTokenLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
+    public ImmutableTokenLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd,
+            @NonNull final String tkn) {
         super();
 
         username = usnm;
