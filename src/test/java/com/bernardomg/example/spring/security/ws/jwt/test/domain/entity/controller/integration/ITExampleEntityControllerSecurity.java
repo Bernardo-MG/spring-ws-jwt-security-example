@@ -40,12 +40,14 @@ import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtL
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.CredentialsExpiredUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.DisabledUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.LockedUser;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.ValidUser;
 
 @MvcIntegrationTest
 @DisplayName("Example entity controller - security")
-@ValidUser
-public final class ITExampleEntityControllerSecurity {
+class ITExampleEntityControllerSecurity {
 
     @Autowired
     private MockMvc                 mockMvc;
@@ -54,30 +56,6 @@ public final class ITExampleEntityControllerSecurity {
 
     public ITExampleEntityControllerSecurity() {
         super();
-    }
-
-    @Test
-    @DisplayName("An authenticated request is authorized")
-    public final void testGet_authorized() throws Exception {
-        final ResultActions result;
-
-        result = mockMvc.perform(getRequestAuthorized());
-
-        // The operation was accepted
-        result.andExpect(MockMvcResultMatchers.status()
-            .isOk());
-    }
-
-    @Test
-    @DisplayName("A not authenticated request is not authorized")
-    public final void testGet_unauthorized() throws Exception {
-        final ResultActions result;
-
-        result = mockMvc.perform(getRequest());
-
-        // The operation was accepted
-        result.andExpect(MockMvcResultMatchers.status()
-            .isUnauthorized());
     }
 
     private final RequestBuilder getRequest() {
@@ -91,6 +69,84 @@ public final class ITExampleEntityControllerSecurity {
 
         return MockMvcRequestBuilders.get("/rest/entity")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+    }
+
+    @Test
+    @DisplayName("An authenticated request is authorized")
+    @ValidUser
+    void testGet_authorized() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isOk());
+    }
+
+    @Test
+    @DisplayName("A locked user is not authorized")
+    @CredentialsExpiredUser
+    void testGet_credentialsExpired() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("An expired user is not authorized")
+    @DisabledUser
+    void testGet_expired() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("A locked user is not authorized")
+    @LockedUser
+    void testGet_locked() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("A disabled user is not authorized")
+    @DisabledUser
+    void testGet_notAuthorized() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("A not authenticated request is not authorized")
+    @ValidUser
+    void testGet_unauthorized() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequest());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
     }
 
 }

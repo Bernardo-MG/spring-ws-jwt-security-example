@@ -29,6 +29,7 @@ import java.util.Optional;
 import javax.crypto.SecretKey;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationConverter;
@@ -136,10 +137,16 @@ public final class JwtAuthenticationConverter implements AuthenticationConverter
             // TODO: Should be case insensitive
             token = Optional.of(header.substring(TOKEN_HEADER_IDENTIFIER.length())
                 .trim());
+        } else if (header.trim()
+            .startsWith(TOKEN_HEADER_IDENTIFIER)) {
+            // Missing token
+            // Bearer field
+            log.error("Authorization header {} is missing the token", header);
+            throw new BadCredentialsException("Empty JWT authentication token");
         } else {
             // Invalid token received
-            token = Optional.empty();
-            log.warn("Authorization header {} has an invalid structure, can't return token", header);
+            log.error("Authorization header {} has an invalid structure, can't return token", header);
+            throw new BadCredentialsException("Invalid authentication scheme");
         }
 
         return token;

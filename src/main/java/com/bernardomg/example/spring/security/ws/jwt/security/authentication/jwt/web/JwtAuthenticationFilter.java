@@ -94,6 +94,8 @@ public final class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authRequest == null) {
             // Invalid user
             log.debug("Couldn't authenticate request {} request to {}", request.getMethod(), request.getServletPath());
+            SecurityContextHolder.getContext()
+                .setAuthentication(null);
         } else {
             authentication = authenticationManager.authenticate(authRequest);
 

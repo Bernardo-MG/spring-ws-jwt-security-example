@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import java.time.LocalDateTime;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.ImmutableJwtTokenData;
@@ -80,15 +82,15 @@ class TestJwtAuthenticationConverter {
     @Test
     @DisplayName("With another authorization scheme no authentication is generated")
     void testConvert_IncorrectScheme() {
-        final Authentication auth;
+        final ThrowingCallable execution;
 
         request = Mockito.mock(HttpServletRequest.class);
         given(request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn("abc");
 
-        auth = converter.convert(request);
+        execution = () -> converter.convert(request);
 
-        Assertions.assertThat(auth)
-            .isNull();
+        Assertions.assertThatThrownBy(execution)
+            .isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
@@ -106,15 +108,15 @@ class TestJwtAuthenticationConverter {
     @Test
     @DisplayName("With bearer missing a token no authentication is generated")
     void testConvert_NoToken() {
-        final Authentication auth;
+        final ThrowingCallable execution;
 
         request = Mockito.mock(HttpServletRequest.class);
         given(request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn("Bearer");
 
-        auth = converter.convert(request);
+        execution = () -> converter.convert(request);
 
-        Assertions.assertThat(auth)
-            .isNull();
+        Assertions.assertThatThrownBy(execution)
+            .isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
