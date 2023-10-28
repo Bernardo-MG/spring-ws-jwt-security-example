@@ -104,6 +104,20 @@ class TestJwtAuthenticationConverter {
     }
 
     @Test
+    @DisplayName("With bearer missing a token no authentication is generated")
+    void testConvert_NoToken() {
+        final Authentication auth;
+
+        request = Mockito.mock(HttpServletRequest.class);
+        given(request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn("Bearer");
+
+        auth = converter.convert(request);
+
+        Assertions.assertThat(auth)
+            .isNull();
+    }
+
+    @Test
     @DisplayName("With a valid token an authentication object is generated")
     void testConvert_Valid() {
         final Authentication auth;
