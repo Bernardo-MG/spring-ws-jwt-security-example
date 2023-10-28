@@ -25,12 +25,13 @@
 package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.web;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -59,33 +60,42 @@ public final class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private final AuthenticationConverter authenticationConverter;
 
+    private final AuthenticationManager   authenticationManager;
+
     /**
      * Constructs a filter with the received arguments.
      *
-     * @param userDetService
-     *            user details service
+     * @param authManager
+     *            authentication manager
      * @param key
      *            secret key for encoding JWT tokens
      */
-    public JwtAuthenticationFilter(final UserDetailsService userDetService, final SecretKey key) {
+    public JwtAuthenticationFilter(final AuthenticationManager authManager, final SecretKey key) {
         super();
 
-        authenticationConverter = new JwtAuthenticationConverter(userDetService, key);
+        authenticationManager = Objects.requireNonNull(authManager);
+        authenticationConverter = new JwtAuthenticationConverter(key);
     }
 
     @Override
     protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
+        final Authentication authRequest;
         final Authentication authentication;
 
         log.debug("Authenticating {} request to {}", request.getMethod(), request.getServletPath());
 
-        authentication = authenticationConverter.convert(request);
-        if (authentication != null) {
+        authRequest = authenticationConverter.convert(request);
+        if (authRequest == null) {
+            // Invalid user
+            log.debug("Couldn't authenticate request {} request to {}", request.getMethod(), request.getServletPath());
+        } else {
+            authentication = authenticationManager.authenticate(authRequest);
+
             SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
 
-            // User valid
+            // Valid user
             log.debug("Authenticated {} request for {} to {}", request.getMethod(), authentication.getName(),
                 request.getServletPath());
         }

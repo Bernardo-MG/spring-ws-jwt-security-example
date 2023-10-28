@@ -26,9 +26,9 @@ package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jw
 
 import javax.crypto.SecretKey;
 
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -51,15 +51,15 @@ public final class JwtHttpSecurityConfigurer
     /**
      * Default constructor.
      *
-     * @param userDetService
-     *            user details service
+     * @param authManager
+     *            authentication manager
      * @param key
      *            secret key for encoding JWT tokens
      */
-    public JwtHttpSecurityConfigurer(final UserDetailsService userDetService, final SecretKey key) {
+    public JwtHttpSecurityConfigurer(final AuthenticationManager authManager, final SecretKey key) {
         super();
 
-        tokenFilter = new JwtAuthenticationFilter(userDetService, key);
+        tokenFilter = new JwtAuthenticationFilter(authManager, key);
     }
 
     @Override

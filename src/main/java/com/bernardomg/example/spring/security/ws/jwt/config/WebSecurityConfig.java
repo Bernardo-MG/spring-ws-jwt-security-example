@@ -31,13 +31,13 @@ import javax.crypto.SecretKey;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -72,21 +72,21 @@ public class WebSecurityConfig {
     /**
      * JWT requests security.
      *
+     * @param authManager
+     *            authentication manager
      * @param properties
      *            JWT properties
-     * @param userDetailsService
-     *            user details service
      * @return JWT requests security
      */
     @Bean
-    public JwtHttpSecurityConfigurer getJwtSecurityConfigurer(final JwtProperties properties,
-            final UserDetailsService userDetailsService) {
+    public JwtHttpSecurityConfigurer getJwtSecurityConfigurer(final AuthenticationManager authManager,
+            final JwtProperties properties) {
         final SecretKey key;
 
         key = Keys.hmacShaKeyFor(properties.getSecret()
             .getBytes(StandardCharsets.UTF_8));
 
-        return new JwtHttpSecurityConfigurer(userDetailsService, key);
+        return new JwtHttpSecurityConfigurer(authManager, key);
     }
 
     /**

@@ -4,7 +4,6 @@ package com.bernardomg.example.spring.security.ws.jwt.test.security.authenticati
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +15,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.ImmutableJwtTokenData;
 import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenEncoder;
@@ -41,12 +36,9 @@ class TestJwtAuthenticationConverter {
     @Mock
     private HttpServletRequest         request;
 
-    @Mock
-    private UserDetailsService         userDetService;
-
     @BeforeEach
     public void initializeConverter() {
-        converter = new JwtAuthenticationConverter(userDetService, TokenConstants.KEY);
+        converter = new JwtAuthenticationConverter(TokenConstants.KEY);
     }
 
     private final String generateExpiredToken() {
@@ -100,22 +92,6 @@ class TestJwtAuthenticationConverter {
     }
 
     @Test
-    @DisplayName("With no username for the token no authentication is generated")
-    void testConvert_InvalidToken() {
-        final Authentication auth;
-
-        request = Mockito.mock(HttpServletRequest.class);
-        given(request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn("Bearer " + generateToken());
-
-        given(userDetService.loadUserByUsername(TokenConstants.SUBJECT)).willThrow(UsernameNotFoundException.class);
-
-        auth = converter.convert(request);
-
-        Assertions.assertThat(auth)
-            .isNull();
-    }
-
-    @Test
     @DisplayName("With no header no authentication is generated")
     void testConvert_NoHeader() {
         final Authentication auth;
@@ -128,20 +104,12 @@ class TestJwtAuthenticationConverter {
     }
 
     @Test
-    @DisplayName("With a valid token and user an authentication object is generated")
+    @DisplayName("With a valid token an authentication object is generated")
     void testConvert_Valid() {
         final Authentication auth;
-        final UserDetails    userDetails;
 
         request = Mockito.mock(HttpServletRequest.class);
         given(request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn("Bearer " + generateToken());
-
-        userDetails = User.builder()
-            .username(TokenConstants.SUBJECT)
-            .password("")
-            .authorities(List.of())
-            .build();
-        given(userDetService.loadUserByUsername(TokenConstants.SUBJECT)).willReturn(userDetails);
 
         auth = converter.convert(request);
 
