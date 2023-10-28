@@ -24,7 +24,7 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
 
 /**
  * Login service. Takes the user credentials and returns a token.
@@ -43,6 +43,6 @@ public interface LoginService {
      *            password to authenticate
      * @return login status
      */
-    public LoginStatus login(final String username, final String password);
+    public TokenLoginStatus login(final String username, final String password);
 
 }

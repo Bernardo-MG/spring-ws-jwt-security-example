@@ -32,8 +32,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableTokenLoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,7 +81,7 @@ public final class DefaultLoginService implements LoginService {
     }
 
     @Override
-    public final LoginStatus login(final String username, final String password) {
+    public final TokenLoginStatus login(final String username, final String password) {
         final String          token;
         final boolean         logged;
         Optional<UserDetails> details;
@@ -117,7 +117,7 @@ public final class DefaultLoginService implements LoginService {
 
         log.debug("Finished log in attempt for {}. Logged in: {}", username, logged);
 
-        return new ImmutableLoginStatus(username, logged, token);
+        return new ImmutableTokenLoginStatus(username, logged, token);
     }
 
 }

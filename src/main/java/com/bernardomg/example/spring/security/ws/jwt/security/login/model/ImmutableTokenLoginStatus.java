@@ -24,33 +24,49 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
 
+import lombok.Data;
+import lombok.NonNull;
+
 /**
- * Status after a login attempt.
+ * Immutable implementation of {@link TokenLoginStatus}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface LoginStatus {
+@Data
+public final class ImmutableTokenLoginStatus implements TokenLoginStatus {
 
     /**
-     * Returns if the logging attempt was successful.
-     *
-     * @return {@code true} if the login was successful, {@code false} otherwise
+     * Logged in flag.
      */
-    public Boolean getLogged();
+    private final Boolean logged;
 
     /**
-     * Returns the security token.
-     *
-     * @return the security token
+     * Authentication token.
      */
-    public String getToken();
+    private final String  token;
 
     /**
-     * Returns the username of the user who attempted login.
-     *
-     * @return the username
+     * Logged in user username.
      */
-    public String getUsername();
+    private final String  username;
+
+    /**
+     * Constructs an immutable login status.
+     *
+     * @param usnm
+     *            username
+     * @param lgd
+     *            logged in flag
+     * @param tkn
+     *            authentication token
+     */
+    public ImmutableTokenLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd, @NonNull final String tkn) {
+        super();
+
+        username = usnm;
+        logged = lgd;
+        token = tkn;
+    }
 
 }

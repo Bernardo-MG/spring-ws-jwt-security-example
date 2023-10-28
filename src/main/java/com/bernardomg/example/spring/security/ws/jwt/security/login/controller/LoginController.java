@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.model.UserForm;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
 
@@ -59,7 +59,7 @@ public class LoginController {
      * @return the login status after the login attempt
      */
     @PostMapping
-    public LoginStatus login(@RequestBody final UserForm user) {
+    public TokenLoginStatus login(@RequestBody final UserForm user) {
         return service.login(user.getUsername(), user.getPassword());
     }
 
