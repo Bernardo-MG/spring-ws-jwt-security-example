@@ -112,7 +112,9 @@ public class WebSecurityConfig {
         mvc = new MvcRequestMatcher.Builder(introspector);
         http
             // Whitelist access
-            .authorizeHttpRequests(c -> c.requestMatchers(mvc.pattern("/actuator/**"), mvc.pattern("/login/**"))
+            .authorizeHttpRequests(c -> c
+                .requestMatchers(mvc.pattern("/actuator/**"), mvc.pattern("/login/**"), mvc.pattern("/favicon.ico"),
+                    mvc.pattern("/error/**"))
                 .permitAll())
             // Authenticate all others
             .authorizeHttpRequests(c -> c.anyRequest()

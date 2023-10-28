@@ -129,7 +129,7 @@ public final class JwtAuthenticationConverter implements AuthenticationConverter
         if (header == null) {
             // No token received
             token = Optional.empty();
-            log.warn("Missing authorization header, can't return token", header);
+            log.warn("Missing authorization header, can't return token");
         } else if (header.trim()
             .startsWith(TOKEN_HEADER_IDENTIFIER + " ")) {
             // Token received
