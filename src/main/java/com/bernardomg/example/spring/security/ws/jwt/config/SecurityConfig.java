@@ -32,7 +32,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.DefaultAuthenticationManager;
+import com.bernardomg.example.spring.security.ws.jwt.security.authentication.UserDetailsAuthenticationManager;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.UserRepository;
 import com.bernardomg.example.spring.security.ws.jwt.security.userdetails.PersistentUserDetailsService;
@@ -56,7 +56,7 @@ public class SecurityConfig {
 
     @Bean("authenticationManager")
     public AuthenticationManager getAuthenticationManager(final UserDetailsService userDetailsService) {
-        return new DefaultAuthenticationManager(userDetailsService);
+        return new UserDetailsAuthenticationManager(userDetailsService);
     }
 
     /**
