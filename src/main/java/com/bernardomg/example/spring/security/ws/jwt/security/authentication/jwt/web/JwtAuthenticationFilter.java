@@ -48,6 +48,8 @@ import lombok.extern.slf4j.Slf4j;
  * <p>
  * The token should come in the Authorization header, which must follow a structure like this:
  * {@code Authorization: Bearer [token]}. This is case insensitive.
+ * <p>
+ * Acquiring the token is delegated to {@link JwtAuthenticationConverter}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -60,6 +62,9 @@ public final class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private final AuthenticationConverter authenticationConverter;
 
+    /**
+     * Authentication maanger, which acquires the actual authentication object.
+     */
     private final AuthenticationManager   authenticationManager;
 
     /**
