@@ -37,6 +37,8 @@ import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
@@ -128,8 +130,8 @@ public class WebSecurityConfig {
             // Stateless
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Disable login and logout forms
-            .formLogin(c -> c.disable())
-            .logout(c -> c.disable());
+            .formLogin(FormLoginConfigurer::disable)
+            .logout(LogoutConfigurer::disable);
 
         // Security configurers
         log.debug("Applying configurers: {}", securityConfigurers);
