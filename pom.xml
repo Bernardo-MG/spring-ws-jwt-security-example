@@ -321,6 +321,12 @@
             </exclusion>
          </exclusions>
       </dependency>
+      <dependency>
+         <!-- Spring Boot Configuration Processor -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-configuration-processor</artifactId>
+         <optional>true</optional>
+      </dependency>
       <!-- ============================================== -->
       <!-- =============== JSON Web Token =============== -->
       <!-- ============================================== -->
