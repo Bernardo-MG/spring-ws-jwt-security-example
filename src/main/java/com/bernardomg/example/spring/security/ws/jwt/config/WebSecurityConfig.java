@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -107,7 +107,7 @@ public class WebSecurityConfig {
     @Bean("webSecurityFilterChain")
     public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
             final HandlerMappingIntrospector introspector,
-            final Collection<SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>> securityConfigurers)
+            final Collection<SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity>> securityConfigurers)
             throws Exception {
         final MvcRequestMatcher.Builder mvc;
 
@@ -135,7 +135,7 @@ public class WebSecurityConfig {
 
         // Security configurers
         log.debug("Applying configurers: {}", securityConfigurers);
-        for (final SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> securityConfigurer : securityConfigurers) {
+        for (final SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity> securityConfigurer : securityConfigurers) {
             http.apply(securityConfigurer);
         }
 
