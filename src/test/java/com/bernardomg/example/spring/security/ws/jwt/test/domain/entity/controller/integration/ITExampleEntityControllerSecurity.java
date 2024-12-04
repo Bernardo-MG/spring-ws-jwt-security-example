@@ -30,55 +30,32 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtPermissionLoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtLoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.jwt.token.config.TokenConstants;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.CredentialsExpiredUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.DisabledUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.LockedUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.ValidUser;
 
 @MvcIntegrationTest
 @DisplayName("Example entity controller - security")
-@Sql({ "/db/queries/user/single.sql", "/db/queries/security/default_role.sql" })
-public final class ITExampleEntityControllerSecurity {
+class ITExampleEntityControllerSecurity {
 
     @Autowired
     private MockMvc                 mockMvc;
 
-    private final LoginTokenEncoder tokenEncoder = new JwtPermissionLoginTokenEncoder(TokenConstants.KEY,
-        Duration.ofHours(1));
+    private final LoginTokenEncoder tokenEncoder = new JwtLoginTokenEncoder(TokenConstants.KEY, Duration.ofHours(1));
 
     public ITExampleEntityControllerSecurity() {
         super();
-    }
-
-    @Test
-    @DisplayName("An authenticated request is authorized")
-    public final void testGet_authorized() throws Exception {
-        final ResultActions result;
-
-        result = mockMvc.perform(getRequestAuthorized());
-
-        // The operation was accepted
-        result.andExpect(MockMvcResultMatchers.status()
-            .isOk());
-    }
-
-    @Test
-    @DisplayName("A not authenticated request is not authorized")
-    public final void testGet_unauthorized() throws Exception {
-        final ResultActions result;
-
-        result = mockMvc.perform(getRequest());
-
-        // The operation was accepted
-        result.andExpect(MockMvcResultMatchers.status()
-            .isUnauthorized());
     }
 
     private final RequestBuilder getRequest() {
@@ -92,6 +69,84 @@ public final class ITExampleEntityControllerSecurity {
 
         return MockMvcRequestBuilders.get("/rest/entity")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+    }
+
+    @Test
+    @DisplayName("An authenticated request is authorized")
+    @ValidUser
+    void testGet_authorized() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isOk());
+    }
+
+    @Test
+    @DisplayName("A locked user is not authorized")
+    @CredentialsExpiredUser
+    void testGet_credentialsExpired() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("An expired user is not authorized")
+    @DisabledUser
+    void testGet_expired() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("A locked user is not authorized")
+    @LockedUser
+    void testGet_locked() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("A disabled user is not authorized")
+    @DisabledUser
+    void testGet_notAuthorized() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequestAuthorized());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("A not authenticated request is not authorized")
+    @ValidUser
+    void testGet_unauthorized() throws Exception {
+        final ResultActions result;
+
+        result = mockMvc.perform(getRequest());
+
+        // The operation was accepted
+        result.andExpect(MockMvcResultMatchers.status()
+            .isUnauthorized());
     }
 
 }

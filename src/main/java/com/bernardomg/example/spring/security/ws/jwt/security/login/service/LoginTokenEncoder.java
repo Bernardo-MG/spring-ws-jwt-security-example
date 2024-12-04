@@ -24,8 +24,21 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
+/**
+ * Encodes a JWT token for the login.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
 public interface LoginTokenEncoder {
 
+    /**
+     * Encodes a token with the received subject.
+     *
+     * @param subject
+     *            subject for the token
+     * @return a token for the subject
+     */
     public String encode(final String subject);
 
 }

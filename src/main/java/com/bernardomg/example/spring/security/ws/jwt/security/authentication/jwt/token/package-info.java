@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022 the original author or authors.
+ * Copyright (c) 2022-2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
-
 /**
- * Login service. Takes the user credentials and returns a token.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
+ * JWT token components.
  */
-public interface LoginService {
 
-    /**
-     * Receives credentials and returns the login status. If it was valid then it contains a token.
-     *
-     * @param username
-     *            username to authenticate
-     * @param password
-     *            password to authenticate
-     * @return login status
-     */
-    public TokenLoginStatus login(final String username, final String password);
-
-}
+package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;

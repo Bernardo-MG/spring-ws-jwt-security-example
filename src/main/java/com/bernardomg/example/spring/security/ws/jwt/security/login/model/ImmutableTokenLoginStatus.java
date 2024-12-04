@@ -22,45 +22,52 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.UserForm;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
-
-import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
 
 /**
- * Login controller. Allows a user to log into the application.
+ * Immutable implementation of {@link TokenLoginStatus}.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@RestController
-@RequestMapping("/login")
-@AllArgsConstructor
-public class LoginController {
+@Data
+public final class ImmutableTokenLoginStatus implements TokenLoginStatus {
 
     /**
-     * Login service.
+     * Logged in flag.
      */
-    private final LoginService service;
+    private final Boolean logged;
 
     /**
-     * Logs in a user.
+     * Authentication token.
+     */
+    private final String  token;
+
+    /**
+     * Logged in user username.
+     */
+    private final String  username;
+
+    /**
+     * Constructs an immutable login status.
      *
-     * @param user
-     *            user details
-     * @return the login status after the login attempt
+     * @param usnm
+     *            username
+     * @param lgd
+     *            logged in flag
+     * @param tkn
+     *            authentication token
      */
-    @PostMapping
-    public TokenLoginStatus login(@RequestBody final UserForm user) {
-        return service.login(user.getUsername(), user.getPassword());
+    public ImmutableTokenLoginStatus(@NonNull final String usnm, @NonNull final Boolean lgd,
+            @NonNull final String tkn) {
+        super();
+
+        username = usnm;
+        logged = lgd;
+        token = tkn;
     }
 
 }

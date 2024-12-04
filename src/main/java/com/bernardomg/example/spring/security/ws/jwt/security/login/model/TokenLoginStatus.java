@@ -22,45 +22,35 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.UserForm;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
-
-import lombok.AllArgsConstructor;
+package com.bernardomg.example.spring.security.ws.jwt.security.login.model;
 
 /**
- * Login controller. Allows a user to log into the application.
+ * Status after a login attempt.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@RestController
-@RequestMapping("/login")
-@AllArgsConstructor
-public class LoginController {
+public interface TokenLoginStatus {
 
     /**
-     * Login service.
-     */
-    private final LoginService service;
-
-    /**
-     * Logs in a user.
+     * Returns if the logging attempt was successful.
      *
-     * @param user
-     *            user details
-     * @return the login status after the login attempt
+     * @return {@code true} if the login was successful, {@code false} otherwise
      */
-    @PostMapping
-    public TokenLoginStatus login(@RequestBody final UserForm user) {
-        return service.login(user.getUsername(), user.getPassword());
-    }
+    public Boolean getLogged();
+
+    /**
+     * Returns the security token.
+     *
+     * @return the security token
+     */
+    public String getToken();
+
+    /**
+     * Returns the username of the user who attempted login.
+     *
+     * @return the username
+     */
+    public String getUsername();
 
 }

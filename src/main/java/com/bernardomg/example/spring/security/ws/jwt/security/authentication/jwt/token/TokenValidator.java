@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022 the original author or authors.
+ * Copyright (c) 2022-2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,23 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.UserForm;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
-
-import lombok.AllArgsConstructor;
+package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
 
 /**
- * Login controller. Allows a user to log into the application.
+ * Validates a JWT token.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@RestController
-@RequestMapping("/login")
-@AllArgsConstructor
-public class LoginController {
+public interface TokenValidator {
 
     /**
-     * Login service.
-     */
-    private final LoginService service;
-
-    /**
-     * Logs in a user.
+     * Check if the token has expired.
      *
-     * @param user
-     *            user details
-     * @return the login status after the login attempt
+     * @param token
+     *            token to validate
+     * @return {@code true} if the token has expired, {@code false} otherwise
      */
-    @PostMapping
-    public TokenLoginStatus login(@RequestBody final UserForm user) {
-        return service.login(user.getUsername(), user.getPassword());
-    }
+    public boolean hasExpired(final String token);
 
 }

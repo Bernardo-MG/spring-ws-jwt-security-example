@@ -31,21 +31,23 @@ import javax.crypto.SecretKey;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
+import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.configuration.JwtHttpSecurityConfigurer;
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAccessDeniedHandler;
 import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtHttpSecurityConfigurer;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
 
 import io.jsonwebtoken.security.Keys;
@@ -72,21 +74,21 @@ public class WebSecurityConfig {
     /**
      * JWT requests security.
      *
+     * @param authManager
+     *            authentication manager
      * @param properties
      *            JWT properties
-     * @param userDetailsService
-     *            user details service
      * @return JWT requests security
      */
     @Bean
-    public JwtHttpSecurityConfigurer getJwtSecurityConfigurer(final JwtProperties properties,
-            final UserDetailsService userDetailsService) {
+    public JwtHttpSecurityConfigurer getJwtSecurityConfigurer(final AuthenticationManager authManager,
+            final JwtProperties properties) {
         final SecretKey key;
 
         key = Keys.hmacShaKeyFor(properties.getSecret()
             .getBytes(StandardCharsets.UTF_8));
 
-        return new JwtHttpSecurityConfigurer(userDetailsService, key);
+        return new JwtHttpSecurityConfigurer(authManager, key);
     }
 
     /**
@@ -112,7 +114,9 @@ public class WebSecurityConfig {
         mvc = new MvcRequestMatcher.Builder(introspector);
         http
             // Whitelist access
-            .authorizeHttpRequests(c -> c.requestMatchers(mvc.pattern("/actuator/**"), mvc.pattern("/login/**"))
+            .authorizeHttpRequests(c -> c
+                .requestMatchers(mvc.pattern("/actuator/**"), mvc.pattern("/login/**"), mvc.pattern("/favicon.ico"),
+                    mvc.pattern("/error/**"))
                 .permitAll())
             // Authenticate all others
             .authorizeHttpRequests(c -> c.anyRequest()
@@ -126,8 +130,8 @@ public class WebSecurityConfig {
             // Stateless
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Disable login and logout forms
-            .formLogin(c -> c.disable())
-            .logout(c -> c.disable());
+            .formLogin(FormLoginConfigurer::disable)
+            .logout(LogoutConfigurer::disable);
 
         // Security configurers
         log.debug("Applying configurers: {}", securityConfigurers);

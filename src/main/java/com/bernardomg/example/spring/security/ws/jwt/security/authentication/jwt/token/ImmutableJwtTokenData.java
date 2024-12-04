@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,57 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;
+package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.UserForm;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
-
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 /**
- * Login controller. Allows a user to log into the application.
+ * Immutable implementation of the JWT token data.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@RestController
-@RequestMapping("/login")
-@AllArgsConstructor
-public class LoginController {
+@Value
+@Builder(setterPrefix = "with")
+public class ImmutableJwtTokenData implements JwtTokenData {
 
     /**
-     * Login service.
+     * Audience.
      */
-    private final LoginService service;
+    private final Collection<String> audience;
 
     /**
-     * Logs in a user.
-     *
-     * @param user
-     *            user details
-     * @return the login status after the login attempt
+     * Expiration date.
      */
-    @PostMapping
-    public TokenLoginStatus login(@RequestBody final UserForm user) {
-        return service.login(user.getUsername(), user.getPassword());
-    }
+    private final LocalDateTime      expiration;
+
+    /**
+     * Id.
+     */
+    private final String             id;
+
+    /**
+     * Issued at date.
+     */
+    private final LocalDateTime      issuedAt;
+
+    /**
+     * Issuer.
+     */
+    private final String             issuer;
+
+    /**
+     * Not before date.
+     */
+    private final LocalDateTime      notBefore;
+
+    /**
+     * Subject.
+     */
+    private final String             subject;
 
 }

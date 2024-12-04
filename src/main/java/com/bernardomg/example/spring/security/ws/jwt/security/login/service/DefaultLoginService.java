@@ -24,6 +24,7 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +32,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.LoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.ImmutableTokenLoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,17 +61,27 @@ public final class DefaultLoginService implements LoginService {
      */
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Constructs a login service.
+     *
+     * @param userDetailsService
+     *            user details service
+     * @param passwordEncoder
+     *            password encoder
+     * @param loginTokenEncoder
+     *            login token encoder
+     */
     public DefaultLoginService(final UserDetailsService userDetailsService, final PasswordEncoder passwordEncoder,
             final LoginTokenEncoder loginTokenEncoder) {
         super();
 
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.loginTokenEncoder = loginTokenEncoder;
+        this.userDetailsService = Objects.requireNonNull(userDetailsService);
+        this.passwordEncoder = Objects.requireNonNull(passwordEncoder);
+        this.loginTokenEncoder = Objects.requireNonNull(loginTokenEncoder);
     }
 
     @Override
-    public final LoginStatus login(final String username, final String password) {
+    public final TokenLoginStatus login(final String username, final String password) {
         final String          token;
         final boolean         logged;
         Optional<UserDetails> details;
@@ -106,7 +117,7 @@ public final class DefaultLoginService implements LoginService {
 
         log.debug("Finished log in attempt for {}. Logged in: {}", username, logged);
 
-        return new ImmutableLoginStatus(username, logged, token);
+        return new ImmutableTokenLoginStatus(username, logged, token);
     }
 
 }
