@@ -23,7 +23,7 @@
       </Logger>
 
       <!-- Spring Framework -->
-      <Logger name="org.springframework.ldap" level="off" additivity="false">
+      <Logger name="org.springframework" level="off" additivity="false">
          <AppenderRef ref="console" />
       </Logger>
 
