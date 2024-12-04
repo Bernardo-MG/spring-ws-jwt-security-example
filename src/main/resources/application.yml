@@ -3,10 +3,16 @@
 ###############################################################################
 
 # Development options
-# debug=true
+# debug: true
 
-# AOP
-spring.aop.proxy-target-class=false
+spring:
+  # AOP
+  aop:
+    proxy-target-class: false
+    
 
 # JWT
-security.jwt.secret=1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+security:
+  jwt:
+    secret:
+      exposure: 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890

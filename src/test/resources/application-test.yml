@@ -2,5 +2,6 @@
 #                             APPLICATION CONFIG                              #
 ###############################################################################
 
-# Liquibase
-spring.liquibase.change-log=classpath:/db/changelog/db.changelog-master-test.yaml
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master-test.yaml
