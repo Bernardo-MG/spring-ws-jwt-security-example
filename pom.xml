@@ -123,6 +123,7 @@
       <!-- ============================================== -->
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
+      <bernardomg.framework.ws.version>0.1.5</bernardomg.framework.ws.version>
       <jjwt.version>0.12.6</jjwt.version>
       <spring.boot.version>3.4.0</spring.boot.version>
       <spring.version>6.2.0</spring.version>
@@ -169,6 +170,15 @@
    </dependencyManagement>
 
    <dependencies>
+      <!-- ============================================== -->
+      <!-- ================ FRAMEWORK =================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Spring WS Starter -->
+         <groupId>com.bernardomg.framework.spring</groupId>
+         <artifactId>spring-ws-starter</artifactId>
+         <version>${bernardomg.framework.ws.version}</version>
+      </dependency>
       <!-- ============================================== -->
       <!-- ================== SPRING ==================== -->
       <!-- ============================================== -->

@@ -26,13 +26,12 @@ package com.bernardomg.example.spring.security.ws.jwt.security.entrypoint;
 
 import java.io.IOException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import com.bernardomg.example.spring.security.ws.jwt.mvc.error.model.Error;
-import com.bernardomg.example.spring.security.ws.jwt.mvc.response.model.ErrorResponse;
-import com.bernardomg.example.spring.security.ws.jwt.mvc.response.model.Response;
+import com.bernardomg.web.response.domain.model.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
@@ -60,7 +59,6 @@ public final class ErrorResponseAuthenticationEntryPoint implements Authenticati
     public final void commence(final HttpServletRequest request, final HttpServletResponse response,
             final AuthenticationException authException) throws IOException, ServletException {
         final ErrorResponse resp;
-        final Error         error;
         final ObjectMapper  mapper;
 
         log.debug("Authentication failure for path {}: {}", request.getServletPath(), authException.getMessage());
@@ -68,8 +66,7 @@ public final class ErrorResponseAuthenticationEntryPoint implements Authenticati
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        error = Error.of("Unauthorized");
-        resp = Response.error(error);
+        resp = new ErrorResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()), "Unauthorized");
 
         mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), resp);
