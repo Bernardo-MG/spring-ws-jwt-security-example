@@ -12,7 +12,7 @@
    <parent>
       <groupId>com.bernardomg.maven</groupId>
       <artifactId>base-pom</artifactId>
-      <version>1.5.6</version>
+      <version>1.5.7</version>
    </parent>
 
    <!-- ********************************************** -->
@@ -117,19 +117,16 @@
 
    <properties>
       <!-- ============================================== -->
-      <!-- ================ JAVA VERSION ================ -->
-      <!-- ============================================== -->
-      <java.version>17</java.version>
-      <!-- ============================================== -->
       <!-- =============== MANIFEST DATA ================ -->
       <!-- ============================================== -->
       <manifest.name>com/bernardomg/example/ws/security/jwt</manifest.name>
       <!-- ============================================== -->
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
-      <jjwt.version>0.12.3</jjwt.version>
-      <spring.boot.version>3.1.5</spring.boot.version>
-      <spring.version>6.0.13</spring.version>
+      <bernardomg.framework.ws.version>0.1.5</bernardomg.framework.ws.version>
+      <jjwt.version>0.12.6</jjwt.version>
+      <spring.boot.version>3.4.0</spring.boot.version>
+      <spring.version>6.2.0</spring.version>
       <!-- ============================================== -->
       <!-- ============== PLUGINS VERSIONS ============== -->
       <!-- ============================================== -->
@@ -139,10 +136,12 @@
       <!-- ============================================== -->
       <!-- Checkstyle customized rules file -->
       <checkstyle.config.location>${project.basedir}/src/config/checkstyle/checkstyle-rules.xml</checkstyle.config.location>
+      <!-- Lowered site plugin due to Velocity problems -->
+      <plugin.site.version>3.12.1</plugin.site.version>
       <!-- ============================================== -->
       <!-- ================= MAVEN SITE ================= -->
       <!-- ============================================== -->
-      <site.skin.version>2.3.2</site.skin.version>
+      <site.skin.version>2.3.3</site.skin.version>
    </properties>
 
    <!-- ********************************************** -->
@@ -171,6 +170,15 @@
    </dependencyManagement>
 
    <dependencies>
+      <!-- ============================================== -->
+      <!-- ================ FRAMEWORK =================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Spring WS Starter -->
+         <groupId>com.bernardomg.framework.spring</groupId>
+         <artifactId>spring-ws-starter</artifactId>
+         <version>${bernardomg.framework.ws.version}</version>
+      </dependency>
       <!-- ============================================== -->
       <!-- ================== SPRING ==================== -->
       <!-- ============================================== -->
@@ -323,6 +331,12 @@
             </exclusion>
          </exclusions>
       </dependency>
+      <dependency>
+         <!-- Spring Boot Configuration Processor -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-configuration-processor</artifactId>
+         <optional>true</optional>
+      </dependency>
       <!-- ============================================== -->
       <!-- =============== JSON Web Token =============== -->
       <!-- ============================================== -->
@@ -414,7 +428,7 @@
       <dependency>
          <!-- Log4j SLF4J Bridge -->
          <groupId>org.apache.logging.log4j</groupId>
-         <artifactId>log4j-slf4j-impl</artifactId>
+         <artifactId>log4j-slf4j2-impl</artifactId>
       </dependency>
       <dependency>
          <!-- Log4j core -->
@@ -425,6 +439,12 @@
          <!-- Log4j Commons Logging Bridge -->
          <groupId>org.apache.logging.log4j</groupId>
          <artifactId>log4j-jcl</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>commons-logging</groupId>
+               <artifactId>commons-logging</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <!-- Log4j Web -->
