@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,37 @@
  * SOFTWARE.
  */
 
-/**
- * Services.
- * <p>
- * While in the MVC architecture all the logic seems to be contained inside the controllers, using an additional layer
- * of services helps to isolate all the important logic in the application.
- */
+package com.bernardomg.example.spring.security.ws.jwt.person.adapter.outbound.rest.controller;
 
-package com.bernardomg.example.spring.security.ws.jwt.domain.entity.service;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bernardomg.example.spring.security.ws.jwt.person.domain.model.Person;
+import com.bernardomg.example.spring.security.ws.jwt.person.usecase.service.PersonService;
+
+import lombok.AllArgsConstructor;
+
+/**
+ * Person REST controller.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+@RestController
+@RequestMapping("/rest/person")
+@AllArgsConstructor
+public class PersonController {
+
+    /**
+     * Person service.
+     */
+    private final PersonService service;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<Person> readAll() {
+        return service.getAll();
+    }
+
+}
