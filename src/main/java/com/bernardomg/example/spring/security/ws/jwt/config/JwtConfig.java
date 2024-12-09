@@ -24,10 +24,21 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
+import java.nio.charset.StandardCharsets;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
+
+import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * JWT components configuration.
@@ -37,6 +48,7 @@ import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProper
  */
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)
+@Slf4j
 public class JwtConfig {
 
     /**
@@ -44,6 +56,20 @@ public class JwtConfig {
      */
     public JwtConfig() {
         super();
+    }
+
+    @Bean("jwtTokenEncoder")
+    @ConditionalOnMissingBean({ TokenEncoder.class })
+    public TokenEncoder getTokenEncoder(final JwtProperties properties) {
+        final SecretKey key;
+
+        // TODO: Shouldn't the key be unique?
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
+
+        log.info("Security tokens will have a validity of {}", properties.getValidity());
+
+        return new JjwtTokenEncoder(key);
     }
 
 }

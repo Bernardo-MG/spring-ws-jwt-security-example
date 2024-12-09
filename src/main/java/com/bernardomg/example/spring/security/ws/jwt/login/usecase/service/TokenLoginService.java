@@ -27,8 +27,6 @@ package com.bernardomg.example.spring.security.ws.jwt.login.usecase.service;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import org.springframework.stereotype.Service;
-
 import com.bernardomg.example.spring.security.ws.jwt.login.domain.model.Credentials;
 import com.bernardomg.example.spring.security.ws.jwt.login.domain.model.TokenLoginStatus;
 import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.LoginTokenEncoder;
@@ -41,7 +39,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Service
 @Slf4j
 public final class TokenLoginService implements LoginService {
 
