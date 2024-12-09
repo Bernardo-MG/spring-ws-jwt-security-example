@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
-
 /**
- * Validates a JWT token.
- *
- * @author Bernardo Mart&iacute;nez Garrido
- *
+ * Login model.
  */
-public interface TokenValidator {
 
-    /**
-     * Check if the token has expired.
-     *
-     * @param token
-     *            token to validate
-     * @return {@code true} if the token has expired, {@code false} otherwise
-     */
-    public boolean hasExpired(final String token);
-
-}
+package com.bernardomg.example.spring.security.ws.jwt.login.domain.model;

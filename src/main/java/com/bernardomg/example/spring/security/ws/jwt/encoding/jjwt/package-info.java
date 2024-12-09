@@ -23,7 +23,7 @@
  */
 
 /**
- * JWT token components.
+ * JJWT implementation of the JWT token encoding/decoding components.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
+package com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt;

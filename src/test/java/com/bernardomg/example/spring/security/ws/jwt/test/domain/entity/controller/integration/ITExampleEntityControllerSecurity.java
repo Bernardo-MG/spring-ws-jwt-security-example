@@ -36,8 +36,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtLoginTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.JwtLoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.CredentialsExpiredUser;
@@ -52,7 +53,9 @@ class ITExampleEntityControllerSecurity {
     @Autowired
     private MockMvc                 mockMvc;
 
-    private final LoginTokenEncoder tokenEncoder = new JwtLoginTokenEncoder(TokenConstants.KEY, Duration.ofHours(1));
+    // TODO: initialize better
+    private final LoginTokenEncoder tokenEncoder = new JwtLoginTokenEncoder(new JjwtTokenEncoder(TokenConstants.KEY),
+        Duration.ofHours(1));
 
     public ITExampleEntityControllerSecurity() {
         super();

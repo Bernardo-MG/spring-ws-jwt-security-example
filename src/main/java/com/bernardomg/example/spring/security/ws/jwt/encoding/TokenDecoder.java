@@ -22,22 +22,22 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
+package com.bernardomg.example.spring.security.ws.jwt.encoding;
 
 /**
- * Creates a JWT token from a {@link JwtTokenData}.
+ * Creates a {@link JwtTokenData} from a JWT token.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  */
-public interface TokenEncoder {
+public interface TokenDecoder {
 
     /**
-     * Returns a JWT token encoding the {@code JwtTokenData}.
+     * Returns a {@code JwtTokenData} decoded from the JWT token.
      *
-     * @param data
-     *            data to encode into the token
-     * @return token decoded from the {@code JwtTokenData}
+     * @param token
+     *            token to decode
+     * @return {@code JwtTokenData} decoded from the token
      */
-    public String encode(final JwtTokenData data);
+    public JwtTokenData decode(final String token);
 
 }

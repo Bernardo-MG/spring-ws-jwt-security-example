@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
+package com.bernardomg.example.spring.security.ws.jwt.encoding;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Immutable implementation of the JWT token data.
@@ -36,43 +36,28 @@ import lombok.Value;
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Value
 @Builder(setterPrefix = "with")
-public class ImmutableJwtTokenData implements JwtTokenData {
+@Slf4j
+public record JwtTokenData(String id, String subject, String issuer, LocalDateTime issuedAt, LocalDateTime notBefore,
+        LocalDateTime expiration, Collection<String> audience) {
 
-    /**
-     * Audience.
-     */
-    private final Collection<String> audience;
+    public final boolean isExpired() {
+        final LocalDateTime current;
+        final boolean       expired;
 
-    /**
-     * Expiration date.
-     */
-    private final LocalDateTime      expiration;
+        // TODO: test this
+        if (expiration != null) {
+            // Compare expiration to current date
+            current = LocalDateTime.now();
+            expired = expiration.isBefore(current);
+            log.debug("Expired '{}' as token expires on {}, and the current date is {}.", expired, expiration, current);
+        } else {
+            // No expiration
+            expired = false;
+            log.debug("The token has no expiration date");
+        }
 
-    /**
-     * Id.
-     */
-    private final String             id;
-
-    /**
-     * Issued at date.
-     */
-    private final LocalDateTime      issuedAt;
-
-    /**
-     * Issuer.
-     */
-    private final String             issuer;
-
-    /**
-     * Not before date.
-     */
-    private final LocalDateTime      notBefore;
-
-    /**
-     * Subject.
-     */
-    private final String             subject;
+        return expired;
+    }
 
 }

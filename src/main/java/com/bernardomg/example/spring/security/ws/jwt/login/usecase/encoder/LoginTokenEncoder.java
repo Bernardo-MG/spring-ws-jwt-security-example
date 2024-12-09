@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,23 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
+package com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder;
 
 /**
- * Creates a {@link JwtTokenData} from a JWT token.
+ * Token encoder for login.
  *
  * @author Bernardo Mart&iacute;nez Garrido
+ *
  */
-public interface TokenDecoder {
+public interface LoginTokenEncoder {
 
     /**
-     * Returns a {@code JwtTokenData} decoded from the JWT token.
+     * Encodes a token for a successful login. It will use the data from the received user.
      *
-     * @param token
-     *            token to decode
-     * @return {@code JwtTokenData} decoded from the token
+     * @param username
+     *            user to encode a token for
+     * @return token encoded for user
      */
-    public JwtTokenData decode(final String token);
+    public String encode(final String username);
 
 }

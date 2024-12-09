@@ -8,12 +8,11 @@ import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.ImmutableJwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -32,13 +31,13 @@ class TestJjwtTokenEncoderGetSubject {
         final String       subject;
         final JwtTokenData data;
 
-        data = ImmutableJwtTokenData.builder()
+        data = JwtTokenData.builder()
             .withSubject(TokenConstants.SUBJECT)
             .build();
 
         token = encoder.encode(data);
         subject = decoder.decode(token)
-            .getSubject();
+            .subject();
 
         Assertions.assertThat(subject)
             .isEqualTo(TokenConstants.SUBJECT);
@@ -51,7 +50,7 @@ class TestJjwtTokenEncoderGetSubject {
         final ThrowingCallable executable;
         final JwtTokenData     data;
 
-        data = ImmutableJwtTokenData.builder()
+        data = JwtTokenData.builder()
             .withSubject(TokenConstants.SUBJECT)
             .withExpiration(LocalDateTime.now()
                 .plusSeconds(-1))

@@ -8,13 +8,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.ImmutableJwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
 
 @DisplayName("JjwtTokenEncoder - has expired")
@@ -27,10 +24,7 @@ class TestJjwtTokenEncoderHasExpired {
     public TestJjwtTokenEncoderHasExpired() {
         super();
 
-        final TokenDecoder decoder;
-
-        decoder = new JjwtTokenDecoder(TokenConstants.KEY);
-        validator = new JjwtTokenValidator(decoder);
+        validator = new JjwtTokenValidator(TokenConstants.KEY);
     }
 
     @Test
@@ -40,7 +34,7 @@ class TestJjwtTokenEncoderHasExpired {
         final Boolean      expired;
         final JwtTokenData data;
 
-        data = ImmutableJwtTokenData.builder()
+        data = JwtTokenData.builder()
             .withIssuer("issuer")
             .withExpiration(LocalDateTime.now()
                 .plusSeconds(-1))
@@ -64,7 +58,7 @@ class TestJjwtTokenEncoderHasExpired {
         final Boolean      expired;
         final JwtTokenData data;
 
-        data = ImmutableJwtTokenData.builder()
+        data = JwtTokenData.builder()
             .withIssuer("issuer")
             .build();
 
@@ -82,7 +76,7 @@ class TestJjwtTokenEncoderHasExpired {
         final Boolean      expired;
         final JwtTokenData data;
 
-        data = ImmutableJwtTokenData.builder()
+        data = JwtTokenData.builder()
             .withIssuer("issuer")
             .withExpiration(LocalDateTime.now()
                 .plusMonths(1))

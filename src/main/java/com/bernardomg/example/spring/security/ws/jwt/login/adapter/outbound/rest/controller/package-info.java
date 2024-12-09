@@ -23,7 +23,7 @@
  */
 
 /**
- * Login controller.
+ * Login model.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.controller;
+package com.bernardomg.example.spring.security.ws.jwt.login.adapter.outbound.rest.controller;

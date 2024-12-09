@@ -6,8 +6,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
+import com.bernardomg.example.spring.security.ws.jwt.login.domain.model.Credentials;
+import com.bernardomg.example.spring.security.ws.jwt.login.domain.model.TokenLoginStatus;
+import com.bernardomg.example.spring.security.ws.jwt.login.usecase.service.LoginService;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.IntegrationTest;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.CredentialsExpiredUser;
@@ -36,11 +37,12 @@ class ITLoginService {
     @DisplayName("Logs in with a valid user, ignoring username case")
     @ValidUser
     void testLogin_case() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("ADMIN", "1234");
+        // TODO: use constants
+        status = service.login(new Credentials("ADMIN", "1234"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isTrue();
     }
 
@@ -48,11 +50,11 @@ class ITLoginService {
     @DisplayName("A user with credentials expired doesn't log in")
     @CredentialsExpiredUser
     void testLogin_credentialsExpired() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "abc");
+        status = service.login(new Credentials("admin", "abc"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isFalse();
     }
 
@@ -60,11 +62,11 @@ class ITLoginService {
     @DisplayName("A disbled user doesn't log in")
     @DisabledUser
     void testLogin_disabled() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "abc");
+        status = service.login(new Credentials("admin", "abc"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isFalse();
     }
 
@@ -72,11 +74,11 @@ class ITLoginService {
     @DisplayName("A disbled user doesn't log in")
     @ExpiredUser
     void testLogin_expired() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "abc");
+        status = service.login(new Credentials("admin", "abc"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isFalse();
     }
 
@@ -84,11 +86,11 @@ class ITLoginService {
     @DisplayName("An existing user with invalid password doesn't log in")
     @ValidUser
     void testLogin_invalidPassword() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "abc");
+        status = service.login(new Credentials("admin", "abc"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isFalse();
     }
 
@@ -96,22 +98,22 @@ class ITLoginService {
     @DisplayName("A disbled user doesn't log in")
     @LockedUser
     void testLogin_locked() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "abc");
+        status = service.login(new Credentials("admin", "abc"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isFalse();
     }
 
     @Test
     @DisplayName("A not existing user doesn't log in")
     void testLogin_noData() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "abc");
+        status = service.login(new Credentials("admin", "abc"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isFalse();
     }
 
@@ -119,11 +121,11 @@ class ITLoginService {
     @DisplayName("A user without permissions can't log in")
     @UserWithoutPermissions
     void testLogin_noPermissions() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "1234");
+        status = service.login(new Credentials("admin", "1234"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isFalse();
     }
 
@@ -131,11 +133,11 @@ class ITLoginService {
     @DisplayName("An existing user with valid password logs in")
     @ValidUser
     void testLogin_valid() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "1234");
+        status = service.login(new Credentials("admin", "1234"));
 
-        Assertions.assertThat(result.getLogged())
+        Assertions.assertThat(status.logged())
             .isTrue();
     }
 
@@ -143,13 +145,11 @@ class ITLoginService {
     @DisplayName("A valid login returns all the data")
     @ValidUser
     void testLogin_valid_data() {
-        final TokenLoginStatus result;
+        final TokenLoginStatus status;
 
-        result = service.login("admin", "1234");
+        status = service.login(new Credentials("admin", "1234"));
 
-        Assertions.assertThat(result.getUsername())
-            .isEqualTo("admin");
-        Assertions.assertThat(result.getToken())
+        Assertions.assertThat(status.token())
             .isNotEmpty();
     }
 
@@ -161,13 +161,13 @@ class ITLoginService {
         final JwtParser        parser;
         final Claims           claims;
 
-        status = service.login("admin", "1234");
+        status = service.login(new Credentials("admin", "1234"));
 
         parser = Jwts.parser()
             .verifyWith(TokenConstants.KEY)
             .build();
 
-        claims = parser.parseSignedClaims(status.getToken())
+        claims = parser.parseSignedClaims(status.token())
             .getPayload();
 
         Assertions.assertThat(claims.getSubject())

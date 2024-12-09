@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
+package com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt;
 
 import java.time.ZoneId;
 import java.util.Date;
@@ -30,12 +30,15 @@ import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
+import com.bernardomg.example.spring.security.ws.jwt.encoding.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JWT data token encoder.
+ * JWT token encoder based on the JJWT library.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
@@ -44,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class JjwtTokenEncoder implements TokenEncoder {
 
     /**
-     * Secret key for generating tokens. Created from the secret received when constructing the provider.
+     * Secret key for generating tokens.
      */
     private final SecretKey key;
 
@@ -52,12 +55,12 @@ public final class JjwtTokenEncoder implements TokenEncoder {
      * Constructs an encoder with the received arguments.
      *
      * @param secretKey
-     *            key used when generating tokens
+     *            secret key used for the token
      */
     public JjwtTokenEncoder(final SecretKey secretKey) {
         super();
 
-        key = Objects.requireNonNull(secretKey);
+        key = Objects.requireNonNull(secretKey, "The secret key must not be null");
     }
 
     @Override
@@ -69,33 +72,33 @@ public final class JjwtTokenEncoder implements TokenEncoder {
         final JwtBuilder jwtBuilder;
 
         jwtBuilder = Jwts.builder()
-            .id(data.getId())
-            .issuer(data.getIssuer())
-            .subject(data.getSubject());
+            .id(data.id())
+            .issuer(data.issuer())
+            .subject(data.subject());
 
         jwtBuilder.audience()
-            .add(data.getAudience());
+            .add(data.audience());
 
         // TODO: Use optional
         // Issued at
-        if (data.getIssuedAt() != null) {
-            issuedAt = java.util.Date.from(data.getIssuedAt()
+        if (data.issuedAt() != null) {
+            issuedAt = java.util.Date.from(data.issuedAt()
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
             jwtBuilder.issuedAt(issuedAt);
         }
 
         // Expiration
-        if (data.getExpiration() != null) {
-            expiration = java.util.Date.from(data.getExpiration()
+        if (data.expiration() != null) {
+            expiration = java.util.Date.from(data.expiration()
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
             jwtBuilder.expiration(expiration);
         }
 
         // Not before
-        if (data.getNotBefore() != null) {
-            notBefore = java.util.Date.from(data.getNotBefore()
+        if (data.notBefore() != null) {
+            notBefore = java.util.Date.from(data.notBefore()
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
             jwtBuilder.notBefore(notBefore);

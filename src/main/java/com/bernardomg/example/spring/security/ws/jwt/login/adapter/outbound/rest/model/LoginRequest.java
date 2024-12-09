@@ -22,27 +22,14 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.login.model.TokenLoginStatus;
+package com.bernardomg.example.spring.security.ws.jwt.login.adapter.outbound.rest.model;
 
 /**
- * Login service. Takes the user credentials and returns a token.
+ * Request for login.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface LoginService {
-
-    /**
-     * Receives credentials and returns the login status. If it was valid then it contains a token.
-     *
-     * @param username
-     *            username to authenticate
-     * @param password
-     *            password to authenticate
-     * @return login status
-     */
-    public TokenLoginStatus login(final String username, final String password);
+public record LoginRequest(String username, String password) {
 
 }

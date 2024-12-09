@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022 the original author or authors.
+ * Copyright (c) 2022-2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 
 /**
- * Login services.
+ * JWT token encoding/decoding components.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
+package com.bernardomg.example.spring.security.ws.jwt.encoding;

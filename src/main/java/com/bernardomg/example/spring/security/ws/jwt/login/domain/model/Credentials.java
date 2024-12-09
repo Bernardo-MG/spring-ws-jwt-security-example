@@ -22,23 +22,14 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.login.service;
+package com.bernardomg.example.spring.security.ws.jwt.login.domain.model;
 
 /**
- * Encodes a JWT token for the login.
+ * User credentials.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface LoginTokenEncoder {
-
-    /**
-     * Encodes a token with the received subject.
-     *
-     * @param subject
-     *            subject for the token
-     * @return a token for the subject
-     */
-    public String encode(final String subject);
+public record Credentials(String username, String password) {
 
 }

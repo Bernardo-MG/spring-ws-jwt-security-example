@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2023 the original author or authors.
+ * Copyright (c) 2022 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,66 +22,14 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
+package com.bernardomg.example.spring.security.ws.jwt.login.domain.model;
 
 /**
- * Represents the commons JWT token claims.
+ * Status after a login attempt.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface JwtTokenData {
-
-    /**
-     * Returns the audience.
-     *
-     * @return the audience
-     */
-    public Collection<String> getAudience();
-
-    /**
-     * Returns the expiration date.
-     *
-     * @return the expiration date
-     */
-    public LocalDateTime getExpiration();
-
-    /**
-     * Returns the id.
-     *
-     * @return the id
-     */
-    public String getId();
-
-    /**
-     * Returns the issued at date.
-     *
-     * @return the issued at date
-     */
-    public LocalDateTime getIssuedAt();
-
-    /**
-     * Returns the issuer.
-     *
-     * @return the issuer
-     */
-    public String getIssuer();
-
-    /**
-     * Returns the not before date.
-     *
-     * @return the not before date
-     */
-    public LocalDateTime getNotBefore();
-
-    /**
-     * Returns the subject.
-     *
-     * @return the subject
-     */
-    public String getSubject();
+public record TokenLoginStatus(Boolean logged, String token) {
 
 }

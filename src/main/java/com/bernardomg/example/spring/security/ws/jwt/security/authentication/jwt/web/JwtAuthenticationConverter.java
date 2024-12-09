@@ -35,10 +35,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenValidator;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +78,7 @@ public final class JwtAuthenticationConverter implements AuthenticationConverter
         super();
 
         tokenDecoder = new JjwtTokenDecoder(key);
-        tokenValidator = new JjwtTokenValidator(tokenDecoder);
+        tokenValidator = new JjwtTokenValidator(key);
     }
 
     @Override
@@ -101,7 +101,7 @@ public final class JwtAuthenticationConverter implements AuthenticationConverter
 
             // Takes subject from the token
             subject = tokenDecoder.decode(token.get())
-                .getSubject();
+                .subject();
             authentication = UsernamePasswordAuthenticationToken.unauthenticated(subject,
                 new WebAuthenticationDetailsSource().buildDetails(request));
         } else {

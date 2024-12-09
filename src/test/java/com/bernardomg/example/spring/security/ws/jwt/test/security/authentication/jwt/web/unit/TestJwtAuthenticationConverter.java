@@ -18,10 +18,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.ImmutableJwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JjwtTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.token.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.JwtTokenData;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.web.JwtAuthenticationConverter;
 import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
 
@@ -46,7 +45,7 @@ class TestJwtAuthenticationConverter {
     private final String generateExpiredToken() {
         final JwtTokenData data;
 
-        data = ImmutableJwtTokenData.builder()
+        data = JwtTokenData.builder()
             .withSubject(TokenConstants.SUBJECT)
             .withExpiration(LocalDateTime.now()
                 .minusDays(1))
@@ -58,7 +57,7 @@ class TestJwtAuthenticationConverter {
     private final String generateToken() {
         final JwtTokenData data;
 
-        data = ImmutableJwtTokenData.builder()
+        data = JwtTokenData.builder()
             .withSubject(TokenConstants.SUBJECT)
             .build();
 
