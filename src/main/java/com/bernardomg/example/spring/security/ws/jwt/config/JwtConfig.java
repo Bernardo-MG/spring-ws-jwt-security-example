@@ -33,8 +33,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
 
 import io.jsonwebtoken.security.Keys;
@@ -58,6 +62,31 @@ public class JwtConfig {
         super();
     }
 
+    /**
+     * Returns the token decoder.
+     *
+     * @param properties
+     *            JWT configuration properties
+     * @return the token encoder
+     */
+    @Bean("jwtTokenDecoder")
+    @ConditionalOnMissingBean({ TokenDecoder.class })
+    public TokenDecoder getTokenDecoder(final JwtProperties properties) {
+        final SecretKey key;
+
+        // TODO: Shouldn't the key be unique?
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
+        return new JjwtTokenDecoder(key);
+    }
+
+    /**
+     * Returns the token encoder.
+     *
+     * @param properties
+     *            JWT configuration properties
+     * @return the token encoder
+     */
     @Bean("jwtTokenEncoder")
     @ConditionalOnMissingBean({ TokenEncoder.class })
     public TokenEncoder getTokenEncoder(final JwtProperties properties) {
@@ -70,6 +99,25 @@ public class JwtConfig {
         log.info("Security tokens will have a validity of {}", properties.getValidity());
 
         return new JjwtTokenEncoder(key);
+    }
+
+    /**
+     * Returns the token validator.
+     *
+     * @param properties
+     *            JWT configuration properties
+     * @return the token validator
+     */
+    @Bean("jwtTokenValidator")
+    @ConditionalOnMissingBean({ TokenValidator.class })
+    public TokenValidator getTokenValidator(final JwtProperties properties) {
+        final SecretKey key;
+
+        // TODO: Shouldn't the key be unique?
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
+
+        return new JjwtTokenValidator(key);
     }
 
 }

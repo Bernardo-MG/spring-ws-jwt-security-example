@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "afd9242d-29f0-4ca0-b416-ad7a18f593fb",
+		"_postman_id": "22ac1523-d9d8-4fef-99e8-c9941221e69e",
 		"name": "JWT auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29322077",
-		"_collection_link": "https://martian-astronaut-39097.postman.co/workspace/Security-examples~3c194cbc-99d2-481a-a2d3-07aae427b74c/collection/29322077-afd9242d-29f0-4ca0-b416-ad7a18f593fb?action=share&source=collection_link&creator=29322077"
+		"_collection_link": "https://martian-astronaut-39097.postman.co/workspace/Security-examples~3c194cbc-99d2-481a-a2d3-07aae427b74c/collection/29322077-22ac1523-d9d8-4fef-99e8-c9941221e69e?action=share&source=collection_link&creator=29322077"
 	},
 	"item": [
 		{
@@ -76,7 +76,8 @@
 									"    pm.expect(responseJson.errors[0].message).to.eql('Unauthorized');\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -84,10 +85,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/rest/entity",
+							"raw": "/person",
 							"path": [
-								"rest",
-								"entity"
+								"person"
 							]
 						}
 					},
@@ -136,7 +136,8 @@
 									"    pm.expect(responseJson.errors[0].message).to.eql('Unauthorized');\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -144,10 +145,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/rest/entity",
+							"raw": "/person",
 							"path": [
-								"rest",
-								"entity"
+								"person"
 							]
 						}
 					},
@@ -210,7 +210,8 @@
 									"    pm.expect(responseJson).to.have.property('content');\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -218,10 +219,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/rest/entity",
+							"raw": "/person",
 							"path": [
-								"rest",
-								"entity"
+								"person"
 							]
 						}
 					},

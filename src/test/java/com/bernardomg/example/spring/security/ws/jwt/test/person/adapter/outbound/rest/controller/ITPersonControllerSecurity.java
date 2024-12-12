@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.test.domain.entity.controller.integration;
+package com.bernardomg.example.spring.security.ws.jwt.test.person.adapter.outbound.rest.controller;
 
 import java.time.Duration;
 
@@ -47,8 +47,8 @@ import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.L
 import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.ValidUser;
 
 @MvcIntegrationTest
-@DisplayName("Example entity controller - security")
-class ITExampleEntityControllerSecurity {
+@DisplayName("Person controller - security")
+class ITPersonControllerSecurity {
 
     @Autowired
     private MockMvc                 mockMvc;
@@ -57,12 +57,12 @@ class ITExampleEntityControllerSecurity {
     private final LoginTokenEncoder tokenEncoder = new JwtLoginTokenEncoder(new JjwtTokenEncoder(TokenConstants.KEY),
         Duration.ofHours(1));
 
-    public ITExampleEntityControllerSecurity() {
+    public ITPersonControllerSecurity() {
         super();
     }
 
     private final RequestBuilder getRequest() {
-        return MockMvcRequestBuilders.get("/rest/entity");
+        return MockMvcRequestBuilders.get("/rest/person");
     }
 
     private final RequestBuilder getRequestAuthorized() {
@@ -70,7 +70,7 @@ class ITExampleEntityControllerSecurity {
 
         token = tokenEncoder.encode("admin");
 
-        return MockMvcRequestBuilders.get("/rest/entity")
+        return MockMvcRequestBuilders.get("/rest/person")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
     }
 

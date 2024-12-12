@@ -41,7 +41,7 @@ import lombok.AllArgsConstructor;
  *
  */
 @RestController
-@RequestMapping("/rest/person")
+@RequestMapping("/person")
 @AllArgsConstructor
 public class PersonController {
 

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 
 /**
- * JWT configuration components.
+ * JWT web components for Spring.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.configuration;
+package com.bernardomg.example.spring.security.ws.jwt.springframework.web;
