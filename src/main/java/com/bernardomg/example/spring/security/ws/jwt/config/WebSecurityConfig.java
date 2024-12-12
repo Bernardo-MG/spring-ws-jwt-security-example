@@ -45,7 +45,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.spring.security.ws.jwt.security.web.entrypoint.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.spring.security.ws.jwt.springframework.web.JwtTokenFilter;
 
 import lombok.extern.slf4j.Slf4j;
@@ -70,13 +70,11 @@ public class WebSecurityConfig {
 
     /**
      * Web security filter chain. Sets up all the authentication requirements for requests.
-     *
+     * 
      * @param http
      *            HTTP security component
-     * @param handlerMappingIntrospector
+     * @param introspector
      *            utility class to find routes
-     * @param corsProperties
-     *            CORS properties
      * @param securityConfigurers
      *            security configurers
      * @param decoder
@@ -85,8 +83,6 @@ public class WebSecurityConfig {
      *            token validator
      * @param userDetailsService
      *            user details service
-     * @param whitelist
-     *            routes whitelist
      * @return web security filter chain with all authentication requirements
      * @throws Exception
      *             if the setup fails

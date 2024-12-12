@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository;
+package com.bernardomg.example.spring.security.ws.jwt.security.user.adapter.inbound.jpa.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model.PersistentUser;
+import com.bernardomg.example.spring.security.ws.jwt.security.user.adapter.inbound.jpa.model.UserEntity;
 
 /**
  * Repository for users.
@@ -36,16 +36,7 @@ import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.m
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface UserRepository extends JpaRepository<PersistentUser, Long> {
-
-    /**
-     * Returns the user details for the received email.
-     *
-     * @param email
-     *            email to search for
-     * @return the user details for the received email
-     */
-    public Optional<PersistentUser> findOneByEmail(final String email);
+public interface UserSpringRepository extends JpaRepository<UserEntity, Long> {
 
     /**
      * Returns the user details for the received username.
@@ -54,6 +45,6 @@ public interface UserRepository extends JpaRepository<PersistentUser, Long> {
      *            username to search for
      * @return the user details for the received username
      */
-    public Optional<PersistentUser> findOneByUsername(final String username);
+    public Optional<UserEntity> findOneByUsername(final String username);
 
 }

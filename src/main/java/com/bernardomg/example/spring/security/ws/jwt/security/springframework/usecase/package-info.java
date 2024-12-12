@@ -23,7 +23,7 @@
  */
 
 /**
- * Property components.
+ * User details components.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.property;
+package com.bernardomg.example.spring.security.ws.jwt.security.springframework.usecase;

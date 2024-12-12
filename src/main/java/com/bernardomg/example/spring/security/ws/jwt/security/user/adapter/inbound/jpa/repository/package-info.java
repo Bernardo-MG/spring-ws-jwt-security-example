@@ -23,7 +23,7 @@
  */
 
 /**
- * User details components.
+ * JPA user repositories.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.userdetails;
+package com.bernardomg.example.spring.security.ws.jwt.security.user.adapter.inbound.jpa.repository;

@@ -26,4 +26,4 @@
  * User repositories.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository;
+package com.bernardomg.example.spring.security.ws.jwt.security.user.domain.repository;

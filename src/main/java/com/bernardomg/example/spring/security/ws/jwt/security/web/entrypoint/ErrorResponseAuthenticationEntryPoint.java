@@ -22,14 +22,14 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.entrypoint;
+package com.bernardomg.example.spring.security.ws.jwt.security.web.entrypoint;
 
 import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.bernardomg.web.response.domain.model.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,30 +40,28 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Access denied handler. Returns an {@link ErrorResponse} for an access denied error.
+ * Authentication entry point for authentication failures. Returns an {@link ErrorResponse} for an unauthorised error.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Slf4j
-@Deprecated
-public final class ErrorResponseAccessDeniedHandler implements AccessDeniedHandler {
+public final class ErrorResponseAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     /**
      * Default constructor.
      */
-    public ErrorResponseAccessDeniedHandler() {
+    public ErrorResponseAuthenticationEntryPoint() {
         super();
     }
 
     @Override
-    public final void handle(final HttpServletRequest request, final HttpServletResponse response,
-            final AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public final void commence(final HttpServletRequest request, final HttpServletResponse response,
+            final AuthenticationException authException) throws IOException, ServletException {
         final ErrorResponse resp;
         final ObjectMapper  mapper;
 
-        log.debug("Access denied failure for path {}: {}", request.getServletPath(),
-            accessDeniedException.getMessage());
+        log.debug("Authentication failure for path {}: {}", request.getServletPath(), authException.getMessage());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

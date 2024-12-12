@@ -39,7 +39,6 @@ import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
 
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;

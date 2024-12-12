@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +22,22 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.property;
+package com.bernardomg.example.spring.security.ws.jwt.security.user.domain.model;
 
-import java.time.Duration;
+import java.util.Collection;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Builder;
 
 /**
- * JWT configuration properties.
+ * Representation of a user.
+ * <p>
+ * FIXME: this should be immutable
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-@Data
-@ConfigurationProperties(prefix = "security.jwt")
-public final class JwtProperties {
-
-    /**
-     * JWT token id.
-     */
-    private String   id;
-
-    /**
-     * Secret seed for generating JWT tokens.
-     */
-    @NotNull
-    private String   secret;
-
-    /**
-     * Validity length, in seconds, for JWT tokens.
-     */
-    @NotNull
-    private Duration validity = Duration.ofHours(1);
+@Builder(setterPrefix = "with")
+public record User(String email, boolean enabled, boolean expired, boolean locked, String name, boolean passwordExpired,
+        Collection<Privilege> privileges, String username) {
 
 }

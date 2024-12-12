@@ -22,8 +22,40 @@
  * SOFTWARE.
  */
 
-/**
- * JWT entry points.
- */
+package com.bernardomg.example.spring.security.ws.jwt.config;
 
-package com.bernardomg.example.spring.security.ws.jwt.security.entrypoint;
+import java.time.Duration;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+/**
+ * JWT configuration properties.
+ *
+ * @author Bernardo Mart&iacute;nez Garrido
+ *
+ */
+@Data
+@ConfigurationProperties(prefix = "security.jwt")
+public final class JwtProperties {
+
+    /**
+     * JWT token id.
+     */
+    private String   id;
+
+    /**
+     * Secret seed for generating JWT tokens.
+     */
+    @NotNull
+    private String   secret;
+
+    /**
+     * Validity length, in seconds, for JWT tokens.
+     */
+    @NotNull
+    private Duration validity = Duration.ofHours(1);
+
+}

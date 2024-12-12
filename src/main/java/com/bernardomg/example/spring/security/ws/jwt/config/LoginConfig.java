@@ -38,7 +38,6 @@ import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.JwtLo
 import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.login.usecase.service.LoginService;
 import com.bernardomg.example.spring.security.ws.jwt.login.usecase.service.TokenLoginService;
-import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
 
 /**
  * JWT components configuration.

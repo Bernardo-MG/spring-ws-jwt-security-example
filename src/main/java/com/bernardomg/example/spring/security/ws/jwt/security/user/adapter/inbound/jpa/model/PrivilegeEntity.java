@@ -22,33 +22,49 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository;
+package com.bernardomg.example.spring.security.ws.jwt.security.user.adapter.inbound.jpa.model;
 
-import java.util.Collection;
+import java.io.Serializable;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.model.PersistentPrivilege;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import lombok.Data;
 
 /**
- * Repository for privileges.
+ * Privilege entity.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
-public interface PrivilegeRepository extends JpaRepository<PersistentPrivilege, Long> {
+@Data
+@Entity(name = "Privilege")
+@Table(name = "privileges")
+@TableGenerator(name = "seq_privileges_id", table = "sequences", pkColumnName = "sequence", valueColumnName = "count",
+        allocationSize = 1)
+public class PrivilegeEntity implements Serializable {
 
     /**
-     * Returns all the privileges for a user. This requires a join from the user up to the privileges.
-     *
-     * @param id
-     *            user id
-     * @return all the privileges for the user
+     * Serialization id.
      */
-    @Query(value = "SELECT p.* FROM privileges p JOIN role_privileges rp ON p.id = rp.privilege_id JOIN roles r ON r.id = rp.role_id JOIN user_roles ur ON r.id = ur.role_id JOIN users u ON u.id = ur.user_id WHERE u.id = :id",
-            nativeQuery = true)
-    public Collection<PersistentPrivilege> findForUser(@Param("id") final Long id);
+    private static final long serialVersionUID = 8513041662486312372L;
+
+    /**
+     * Entity id.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_privileges_id")
+    @Column(name = "id", nullable = false, unique = true)
+    private Long              id;
+
+    /**
+     * Privilege name.
+     */
+    @Column(name = "name", nullable = false, unique = true, length = 60)
+    private String            name;
 
 }
