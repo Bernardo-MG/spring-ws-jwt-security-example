@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.test.person.adapter.outbound.rest.controller;
+package com.bernardomg.example.spring.security.ws.jwt.test.person.adapter.outbound.rest.controller.integration;
 
 import java.time.Duration;
 
@@ -49,6 +49,8 @@ import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.V
 @MvcIntegrationTest
 @DisplayName("Person controller - security")
 class ITPersonControllerSecurity {
+    
+    private static final String ROUTE = "/person";
 
     @Autowired
     private MockMvc                 mockMvc;
@@ -62,7 +64,7 @@ class ITPersonControllerSecurity {
     }
 
     private final RequestBuilder getRequest() {
-        return MockMvcRequestBuilders.get("/rest/person");
+        return MockMvcRequestBuilders.get(ROUTE);
     }
 
     private final RequestBuilder getRequestAuthorized() {
@@ -70,7 +72,7 @@ class ITPersonControllerSecurity {
 
         token = tokenEncoder.encode("admin");
 
-        return MockMvcRequestBuilders.get("/rest/person")
+        return MockMvcRequestBuilders.get(ROUTE)
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
     }
 
