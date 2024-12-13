@@ -3,7 +3,7 @@ package com.bernardomg.example.spring.security.ws.jwt.test.security.user.domain.
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +32,11 @@ public class ITUserRepository {
 
         result = repository.findOne("admin");
 
-        Assertions.assertTrue(result.isPresent());
-        Assertions.assertEquals("admin", result.get()
-            .username());
+        Assertions.assertThat(result)
+            .isPresent();
+        Assertions.assertThat("admin")
+            .isEqualTo(result.get()
+                .username());
     }
 
     @Test
@@ -44,7 +46,8 @@ public class ITUserRepository {
 
         result = repository.findOne("abc");
 
-        Assertions.assertFalse(result.isPresent());
+        Assertions.assertThat(result)
+            .isEmpty();
     }
 
 }
