@@ -11,10 +11,16 @@ import com.bernardomg.example.spring.security.ws.jwt.person.domain.repository.Pe
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Default person service, which just takes the data from the person repository.
+ */
 @Slf4j
 @Service
 public final class DefaultPersonService implements PersonService {
 
+    /**
+     * Person repository to read the data.
+     */
     private final PersonRepository personRepository;
 
     public DefaultPersonService(final PersonRepository personRepo) {
