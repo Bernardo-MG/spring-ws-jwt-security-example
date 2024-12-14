@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bernardomg.example.spring.security.ws.jwt.user.adapter.inbound.jpa.model.PrivilegeEntity;
 import com.bernardomg.example.spring.security.ws.jwt.user.adapter.inbound.jpa.model.RoleEntity;
@@ -43,6 +44,7 @@ import com.bernardomg.example.spring.security.ws.jwt.user.domain.repository.User
  * @author Bernardo Mart&iacute;nez Garrido
  */
 @Repository
+@Transactional
 public final class JpaUserRepository implements UserRepository {
 
     private final UserSpringRepository userSpringRepository;
