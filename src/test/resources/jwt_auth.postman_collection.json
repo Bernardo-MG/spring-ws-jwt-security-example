@@ -9,253 +9,169 @@
 	"item": [
 		{
 			"name": "Login",
-			"item": [
+			"event": [
 				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Valid request\",()=>{\r",
-									"    pm.expect(pm.response.code).to.eql(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"The response contains the login data\",()=>{\r",
-									"    const responseJson = pm.response.json();\r",
-									"    pm.expect(responseJson).to.have.property('content');\r",
-									"    pm.expect(responseJson.content.logged).to.be.true;\r",
-									"    pm.expect(responseJson.content).haveOwnProperty('token');\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Valid request\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response contains the login data\",()=>{\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('content');\r",
+							"    pm.expect(responseJson.content.logged).to.be.true;\r",
+							"    pm.expect(responseJson.content).haveOwnProperty('token');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+					}
+				},
+				"url": {
+					"raw": "/login",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get data with basic authorization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Unauthorized request\", () => {\r",
+							"  pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response contains the error properties\", () => {\r",
+							"    pm.expect(pm.response.json().message).to.eql('Unauthorized');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "string"
 						},
-						"url": {
-							"raw": "/login",
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "Login requests. They are required, as this is the way to acquire the JWT token."
-		},
-		{
-			"name": "Unauthorized",
-			"item": [
-				{
-					"name": "Get data",
-					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Unauthorized request\", () => {\r",
-									"  pm.response.to.have.status(401);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"The response contains the error properties\", () => {\r",
-									"    pm.expect(pm.response.json().message).to.eql('Unauthorized');\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
+							"key": "username",
+							"value": "admin",
+							"type": "string"
 						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "/person",
-							"path": [
-								"person"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "Unauthorized requests. These are using no authentication.",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					]
 				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "/person",
+					"path": [
+						"person"
+					]
 				}
-			]
-		},
-		{
-			"name": "Wrong authorization scheme",
-			"item": [
-				{
-					"name": "Get data",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Unauthorized request\", () => {\r",
-									"  pm.response.to.have.status(401);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"The response contains the error properties\", () => {\r",
-									"    pm.expect(pm.response.json().message).to.eql('Unauthorized');\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "/person",
-							"path": [
-								"person"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "Requests using the wrong authentication scheme. To make sure the server doesn't support them.",
-			"auth": {
-				"type": "basic",
-				"basic": [
-					{
-						"key": "password",
-						"value": "1234",
-						"type": "string"
-					},
-					{
-						"key": "username",
-						"value": "admin",
-						"type": "string"
-					}
-				]
 			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
+			"response": []
 		},
 		{
-			"name": "Authorized",
-			"item": [
-				{
-					"name": "Get data",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Authorized request\", () => {\r",
-									"  pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"The response contains the data\", () => {\r",
-									"    const responseJson = pm.response.json();\r",
-									"    pm.expect(responseJson).to.have.property('content');\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "/person",
-							"path": [
-								"person"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "Authorized requests. These check the server handles the authorization scheme.\n\nThe token should be acquired by first calling the login endpoint, and copying the generated token to the authorization tab.",
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNDE3NzEwOSwiZXhwIjoxNzM0MTgwNzA5LCJuYmYiOjE3MzQxNzcxMDl9._3sGIIWLkuegsPTKFA3C1solxc2xBp6te_NdUXGc4nFi2Q0EBu2vbmL32jXhOL380XgMxsVIiRhp-xIoPktLxw",
-						"type": "string"
-					}
-				]
-			},
+			"name": "Get unauthorized data",
 			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"pm.test(\"Unauthorized request\", () => {\r",
+							"  pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response contains the error properties\", () => {\r",
+							"    pm.expect(pm.response.json().message).to.eql('Unauthorized');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
-			]
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "/person",
+					"path": [
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get data with authorization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Authorized request\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response contains the data\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('content');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "/person",
+					"path": [
+						"person"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

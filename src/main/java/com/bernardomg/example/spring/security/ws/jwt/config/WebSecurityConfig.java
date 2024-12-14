@@ -48,8 +48,6 @@ import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
 import com.bernardomg.example.spring.security.ws.jwt.springframework.web.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.spring.security.ws.jwt.springframework.web.JwtTokenFilter;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Web security configuration.
  *
@@ -58,7 +56,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Configuration
 @EnableWebSecurity
-@Slf4j
 public class WebSecurityConfig {
 
     /**
@@ -119,12 +116,6 @@ public class WebSecurityConfig {
             // Disable login and logout forms
             .formLogin(FormLoginConfigurer::disable)
             .logout(LogoutConfigurer::disable);
-
-        // Security configurers
-        log.debug("Applying configurers: {}", securityConfigurers);
-        for (final SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity> securityConfigurer : securityConfigurers) {
-            http.apply(securityConfigurer);
-        }
 
         return http.build();
     }
