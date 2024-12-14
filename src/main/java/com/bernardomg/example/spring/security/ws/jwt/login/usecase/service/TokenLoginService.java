@@ -34,7 +34,7 @@ import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.Login
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Default implementation of the login service.
+ * Login service which generates a token.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *

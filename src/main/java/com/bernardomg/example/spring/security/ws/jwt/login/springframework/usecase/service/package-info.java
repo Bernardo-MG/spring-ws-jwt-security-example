@@ -22,24 +22,8 @@
  * SOFTWARE.
  */
 
-package com.bernardomg.example.spring.security.ws.jwt.person.domain.repository;
-
-import java.util.Collection;
-
-import com.bernardomg.example.spring.security.ws.jwt.person.domain.model.Person;
-
 /**
- * Person repository.
- *
- * @author Bernardo Mart&iacute;nez Garrido
+ * Spring components for login.
  */
-public interface PersonRepository {
 
-    /**
-     * Returns all the people.
-     *
-     * @return all the people
-     */
-    public Collection<Person> findAll();
-
-}
+package com.bernardomg.example.spring.security.ws.jwt.login.springframework.usecase.service;
