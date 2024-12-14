@@ -27,6 +27,10 @@
          <AppenderRef ref="console" />
          <AppenderRef ref="file" />
       </Logger>
+      <Logger name="com.bernardomg.example.spring.security.ws.jwt.springframework.web.JwtTokenFilter" level="error" additivity="false">
+         <AppenderRef ref="console" />
+         <AppenderRef ref="file" />
+      </Logger>
       <Logger name="org.springframework" level="warn" additivity="false">
          <AppenderRef ref="console" />
          <AppenderRef ref="file" />

@@ -4,10 +4,10 @@ Example for setting up JWT HTTP Security on a web service with Spring Boot.
 
 ## Usage
 
-Just run it as any Spring boot application:
+Start the Docker image:
 
 ```
-mvn spring-boot:run
+docker-compose -f docker/docker-compose.yml --project-name spring-ws-jwt-security-example up
 ```
 
 And the web service be available at [http://localhost:8080/](http://localhost:8080/).

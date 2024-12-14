@@ -388,14 +388,6 @@
          </exclusions>
       </dependency>
       <!-- ============================================== -->
-      <!-- ==================== H2 ====================== -->
-      <!-- ============================================== -->
-      <dependency>
-         <!-- H2 database -->
-         <groupId>com.h2database</groupId>
-         <artifactId>h2</artifactId>
-      </dependency>
-      <!-- ============================================== -->
       <!-- ================ LIQUIBASE =================== -->
       <!-- ============================================== -->
       <dependency>
@@ -451,6 +443,14 @@
          <!-- Log4j Web -->
          <groupId>org.apache.logging.log4j</groupId>
          <artifactId>log4j-web</artifactId>
+      </dependency>
+      <!-- ============================================== -->
+      <!-- ================ POSTGRES ==================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Postgres connector -->
+         <groupId>org.postgresql</groupId>
+         <artifactId>postgresql</artifactId>
       </dependency>
       <!-- ============================================== -->
       <!-- ================= JACKSON ==================== -->
@@ -538,6 +538,12 @@
          <!-- Spring Boot Test Autoconfigure -->
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-test-autoconfigure</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- H2 database -->
+         <groupId>com.h2database</groupId>
+         <artifactId>h2</artifactId>
          <scope>test</scope>
       </dependency>
    </dependencies>
