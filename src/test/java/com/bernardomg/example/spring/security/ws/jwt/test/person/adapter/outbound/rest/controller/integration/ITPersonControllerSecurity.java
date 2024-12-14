@@ -40,17 +40,17 @@ import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEnco
 import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.JwtLoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.LoginTokenEncoder;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.CredentialsExpiredUser;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.DisabledUser;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.LockedUser;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.ValidUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.encoding.jjwt.config.TokenConstants;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.CredentialsExpiredUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.DisabledUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.LockedUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.ValidUser;
 
 @MvcIntegrationTest
 @DisplayName("Person controller - security")
 class ITPersonControllerSecurity {
-    
-    private static final String ROUTE = "/person";
+
+    private static final String     ROUTE        = "/person";
 
     @Autowired
     private MockMvc                 mockMvc;

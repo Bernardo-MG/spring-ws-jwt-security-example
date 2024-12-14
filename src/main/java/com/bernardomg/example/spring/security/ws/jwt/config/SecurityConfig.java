@@ -31,8 +31,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.springframework.usecase.UserDomainDetailsService;
-import com.bernardomg.example.spring.security.ws.jwt.security.user.domain.repository.UserRepository;
+import com.bernardomg.example.spring.security.ws.jwt.springframework.userdetails.UserDomainDetailsService;
+import com.bernardomg.example.spring.security.ws.jwt.user.domain.repository.UserRepository;
 
 /**
  * Security configuration.

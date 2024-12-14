@@ -45,7 +45,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
 import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.web.entrypoint.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.spring.security.ws.jwt.springframework.web.ErrorResponseAuthenticationEntryPoint;
 import com.bernardomg.example.spring.security.ws.jwt.springframework.web.JwtTokenFilter;
 
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +70,7 @@ public class WebSecurityConfig {
 
     /**
      * Web security filter chain. Sets up all the authentication requirements for requests.
-     * 
+     *
      * @param http
      *            HTTP security component
      * @param introspector

@@ -10,13 +10,13 @@ import com.bernardomg.example.spring.security.ws.jwt.login.domain.model.Credenti
 import com.bernardomg.example.spring.security.ws.jwt.login.domain.model.TokenLoginStatus;
 import com.bernardomg.example.spring.security.ws.jwt.login.usecase.service.LoginService;
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.IntegrationTest;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.authentication.jwt.token.config.TokenConstants;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.CredentialsExpiredUser;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.DisabledUser;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.ExpiredUser;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.LockedUser;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.UserWithoutPermissions;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.ValidUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.encoding.jjwt.config.TokenConstants;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.CredentialsExpiredUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.DisabledUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.ExpiredUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.LockedUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.UserWithoutPermissions;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.ValidUser;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;

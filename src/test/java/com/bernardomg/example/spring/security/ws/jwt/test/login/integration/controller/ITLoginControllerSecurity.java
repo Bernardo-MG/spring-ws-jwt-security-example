@@ -35,7 +35,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
-import com.bernardomg.example.spring.security.ws.jwt.test.security.user.config.ValidUser;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.ValidUser;
 
 @MvcIntegrationTest
 @DisplayName("Login controller - security")
