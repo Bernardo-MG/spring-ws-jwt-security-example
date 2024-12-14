@@ -58,5 +58,10 @@
             Updated dependencies.
          </action>
       </release>
+      <release version="1.3.0" date="2024-12-14" description="Updated structure">
+         <action dev="bmg" type="update">
+            Updated structure.
+         </action>
+      </release>
    </body>
 </document>

@@ -1,0 +1,28 @@
+###############################################################################
+#                             APPLICATION CONFIG                              #
+###############################################################################
+
+# Development options
+# debug: true
+
+spring:
+  # AOP
+  aop:
+    proxy-target-class: false
+    
+
+# JWT
+security:
+  jwt:
+    secret: 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,auditevents
+  endpoint:
+    health:
+      show-details: always
+      sensitive: false

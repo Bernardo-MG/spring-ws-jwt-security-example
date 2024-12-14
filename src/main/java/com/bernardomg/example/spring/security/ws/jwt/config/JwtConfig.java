@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2025 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,17 +28,17 @@ import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtSubjectTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenDataDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenValidator;
-import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.jjwt.JjwtTokenValidator;
 
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -68,13 +68,15 @@ public class JwtConfig {
      *            JWT configuration properties
      * @return the token encoder
      */
-    @Bean("tokenDecoder")
-    public TokenDecoder<JwtTokenData> getTokenDecoder(final JwtProperties properties) {
+    @Bean("jwtTokenDecoder")
+    @ConditionalOnMissingBean({ TokenDecoder.class })
+    public TokenDecoder getTokenDecoder(final JwtProperties properties) {
         final SecretKey key;
 
+        // TODO: Shouldn't the key be unique?
         key = Keys.hmacShaKeyFor(properties.getSecret()
             .getBytes(StandardCharsets.UTF_8));
-        return new JwtTokenDataDecoder(key);
+        return new JjwtTokenDecoder(key);
     }
 
     /**
@@ -84,43 +86,37 @@ public class JwtConfig {
      *            JWT configuration properties
      * @return the token encoder
      */
-    @Bean("tokenEncoder")
-    public TokenEncoder<String> getTokenEncoder(final JwtProperties properties) {
-        final JwtSubjectTokenEncoder encoder;
-        final Integer                validity;
-        final SecretKey              key;
+    @Bean("jwtTokenEncoder")
+    @ConditionalOnMissingBean({ TokenEncoder.class })
+    public TokenEncoder getTokenEncoder(final JwtProperties properties) {
+        final SecretKey key;
 
+        // TODO: Shouldn't the key be unique?
         key = Keys.hmacShaKeyFor(properties.getSecret()
             .getBytes(StandardCharsets.UTF_8));
 
-        if (properties.getValidity() != null) {
-            validity = properties.getValidity();
-            log.info("Tokens will have {} seconds of validity", validity);
-        } else {
-            validity = 3600;
-            log.info("No validity defined for tokens. Using default of {} seconds of validity", validity);
-        }
+        log.info("Security tokens will have a validity of {}", properties.getValidity());
 
-        encoder = new JwtSubjectTokenEncoder(key, validity);
-
-        if (properties.getId() != null) {
-            log.info("Tokens will use id {}", properties.getId());
-            encoder.setId(properties.getId());
-        }
-
-        return encoder;
+        return new JjwtTokenEncoder(key);
     }
 
     /**
      * Returns the token validator.
      *
-     * @param decoder
-     *            token decoder
+     * @param properties
+     *            JWT configuration properties
      * @return the token validator
      */
-    @Bean("tokenValidator")
-    public JwtTokenValidator getTokenValidator(final TokenDecoder<JwtTokenData> decoder) {
-        return new JwtTokenValidator(decoder);
+    @Bean("jwtTokenValidator")
+    @ConditionalOnMissingBean({ TokenValidator.class })
+    public TokenValidator getTokenValidator(final JwtProperties properties) {
+        final SecretKey key;
+
+        // TODO: Shouldn't the key be unique?
+        key = Keys.hmacShaKeyFor(properties.getSecret()
+            .getBytes(StandardCharsets.UTF_8));
+
+        return new JjwtTokenValidator(key);
     }
 
 }

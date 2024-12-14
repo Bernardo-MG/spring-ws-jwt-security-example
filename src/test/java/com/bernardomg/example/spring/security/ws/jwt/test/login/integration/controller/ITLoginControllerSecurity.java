@@ -28,7 +28,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
@@ -36,10 +35,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.bernardomg.example.spring.security.ws.jwt.test.config.annotation.MvcIntegrationTest;
+import com.bernardomg.example.spring.security.ws.jwt.test.user.config.ValidUser;
 
 @MvcIntegrationTest
 @DisplayName("Login controller - security")
-@Sql({ "/db/queries/user/single.sql", "/db/queries/security/default_role.sql" })
+@ValidUser
 public final class ITLoginControllerSecurity {
 
     @Autowired

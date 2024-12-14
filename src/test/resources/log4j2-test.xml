@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE xml>
-<Configuration status="WARN">
+<Configuration status="WARN" shutdownHook="disable">
 
    <Properties>
       <Property name="filename">testing.log</Property>
@@ -8,27 +8,26 @@
 
    <Appenders>
       <Console name="console" target="SYSTEM_OUT">
-         <PatternLayout pattern="%-5p | %d{ISO8601} | %c{1.} %M %L | %m%n" />
+         <PatternLayout pattern="%d{ISO8601} %highlight{%-5p}{FATAL=red blink, ERROR=red bold, WARN=yellow bold, INFO=green bold, DEBUG=cyan bold, TRACE=blue bold} [%style{%t}{bright,blue}] %style{%c{1.}.%M(%L)}{bright,yellow}: %m%n%throwable" />
       </Console>
 
       <File name="file" fileName="${filename}">
-         <PatternLayout pattern="%-5p | %d{ISO8601} | %c{1.} %M %L | %m%n" />
+         <PatternLayout pattern="%d{ISO8601} %-5p [%t] %c{1.}.%M(%L): %m%n%throwable" />
       </File>
    </Appenders>
 
    <Loggers>
       <!-- Application log -->
-      <Logger name="com.bernardomg.example" level="error" additivity="false">
+      <Logger name="com.bernardomg.example" level="off" additivity="false">
          <AppenderRef ref="console" />
       </Logger>
 
       <!-- Spring Framework -->
-      <Logger name="org.springframework" level="error" additivity="false">
+      <Logger name="org.springframework" level="off" additivity="false">
          <AppenderRef ref="console" />
       </Logger>
 
-      <!-- Root -->
-      <Root level="error">
+      <Root level="off">
          <AppenderRef ref="console" />
       </Root>
    </Loggers>

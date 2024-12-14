@@ -18,6 +18,7 @@
 # Log files #
 /*.log
 /*.log.*
+/logs/**
 
 # Output folders #
 /test-output/
@@ -51,9 +52,6 @@ local.properties
 # Visual Studio #
 .vscode/
 .factorypath
-
-# Docker
-.env
 
 # Windows files #
 Thumbs.db

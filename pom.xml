@@ -12,7 +12,7 @@
    <parent>
       <groupId>com.bernardomg.maven</groupId>
       <artifactId>base-pom</artifactId>
-      <version>1.5.3</version>
+      <version>1.5.7</version>
    </parent>
 
    <!-- ********************************************** -->
@@ -21,7 +21,7 @@
 
    <groupId>com.bernardomg.example</groupId>
    <artifactId>spring-ws-jwt-security-example</artifactId>
-   <version>1.2.5</version>
+   <version>1.3.0</version>
    <packaging>war</packaging>
 
    <name>Spring JWT Security Example</name>
@@ -117,19 +117,17 @@
 
    <properties>
       <!-- ============================================== -->
-      <!-- ================ JAVA VERSION ================ -->
-      <!-- ============================================== -->
-      <java.version>17</java.version>
-      <!-- ============================================== -->
       <!-- =============== MANIFEST DATA ================ -->
       <!-- ============================================== -->
       <manifest.name>com/bernardomg/example/ws/security/jwt</manifest.name>
       <!-- ============================================== -->
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
-      <jjwt.version>0.11.5</jjwt.version>
-      <spring.boot.version>3.1.2</spring.boot.version>
-      <spring.version>6.0.11</spring.version>
+      <assertj.version>3.26.3</assertj.version>
+      <bernardomg.framework.ws.version>0.1.5</bernardomg.framework.ws.version>
+      <jjwt.version>0.12.6</jjwt.version>
+      <spring.boot.version>3.4.0</spring.boot.version>
+      <spring.version>6.2.0</spring.version>
       <!-- ============================================== -->
       <!-- ============== PLUGINS VERSIONS ============== -->
       <!-- ============================================== -->
@@ -139,10 +137,12 @@
       <!-- ============================================== -->
       <!-- Checkstyle customized rules file -->
       <checkstyle.config.location>${project.basedir}/src/config/checkstyle/checkstyle-rules.xml</checkstyle.config.location>
+      <!-- Lowered site plugin due to Velocity problems -->
+      <plugin.site.version>3.12.1</plugin.site.version>
       <!-- ============================================== -->
       <!-- ================= MAVEN SITE ================= -->
       <!-- ============================================== -->
-      <site.skin.version>2.3.2</site.skin.version>
+      <site.skin.version>2.3.3</site.skin.version>
    </properties>
 
    <!-- ********************************************** -->
@@ -171,6 +171,15 @@
    </dependencyManagement>
 
    <dependencies>
+      <!-- ============================================== -->
+      <!-- ================ FRAMEWORK =================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Spring WS Starter -->
+         <groupId>com.bernardomg.framework.spring</groupId>
+         <artifactId>spring-ws-starter</artifactId>
+         <version>${bernardomg.framework.ws.version}</version>
+      </dependency>
       <!-- ============================================== -->
       <!-- ================== SPRING ==================== -->
       <!-- ============================================== -->
@@ -231,7 +240,7 @@
          <artifactId>spring-security-config</artifactId>
       </dependency>
       <dependency>
-         <!-- Spring Security Config -->
+         <!-- Spring Security Web -->
          <groupId>org.springframework.security</groupId>
          <artifactId>spring-security-web</artifactId>
       </dependency>
@@ -257,21 +266,6 @@
          <!-- Spring Boot Autoconfigure -->
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-autoconfigure</artifactId>
-      </dependency>
-      <dependency>
-         <!-- Spring Boot Starter: Validation -->
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-validation</artifactId>
-         <exclusions>
-            <exclusion>
-               <groupId>ch.qos.logback</groupId>
-               <artifactId>logback-classic</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>org.apache.logging.log4j</groupId>
-               <artifactId>log4j-to-slf4j</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <!-- ============================================== -->
       <!-- =========== SPRING BOOT STARTER ============== -->
@@ -323,6 +317,27 @@
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-starter-security</artifactId>
       </dependency>
+      <dependency>
+         <!-- Spring Boot Starter: Validation -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-validation</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>ch.qos.logback</groupId>
+               <artifactId>logback-classic</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.apache.logging.log4j</groupId>
+               <artifactId>log4j-to-slf4j</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <!-- Spring Boot Configuration Processor -->
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-configuration-processor</artifactId>
+         <optional>true</optional>
+      </dependency>
       <!-- ============================================== -->
       <!-- =============== JSON Web Token =============== -->
       <!-- ============================================== -->
@@ -373,14 +388,6 @@
          </exclusions>
       </dependency>
       <!-- ============================================== -->
-      <!-- ==================== H2 ====================== -->
-      <!-- ============================================== -->
-      <dependency>
-         <!-- H2 database -->
-         <groupId>com.h2database</groupId>
-         <artifactId>h2</artifactId>
-      </dependency>
-      <!-- ============================================== -->
       <!-- ================ LIQUIBASE =================== -->
       <!-- ============================================== -->
       <dependency>
@@ -414,7 +421,7 @@
       <dependency>
          <!-- Log4j SLF4J Bridge -->
          <groupId>org.apache.logging.log4j</groupId>
-         <artifactId>log4j-slf4j-impl</artifactId>
+         <artifactId>log4j-slf4j2-impl</artifactId>
       </dependency>
       <dependency>
          <!-- Log4j core -->
@@ -425,11 +432,25 @@
          <!-- Log4j Commons Logging Bridge -->
          <groupId>org.apache.logging.log4j</groupId>
          <artifactId>log4j-jcl</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>commons-logging</groupId>
+               <artifactId>commons-logging</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <!-- Log4j Web -->
          <groupId>org.apache.logging.log4j</groupId>
          <artifactId>log4j-web</artifactId>
+      </dependency>
+      <!-- ============================================== -->
+      <!-- ================ POSTGRES ==================== -->
+      <!-- ============================================== -->
+      <dependency>
+         <!-- Postgres connector -->
+         <groupId>org.postgresql</groupId>
+         <artifactId>postgresql</artifactId>
       </dependency>
       <!-- ============================================== -->
       <!-- ================= JACKSON ==================== -->
@@ -465,34 +486,28 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <!-- JUnit Jupiter API -->
+         <!-- JUnit Jupiter Engine -->
          <groupId>org.junit.jupiter</groupId>
-         <artifactId>junit-jupiter-api</artifactId>
+         <artifactId>junit-jupiter-engine</artifactId>
          <scope>test</scope>
-      </dependency>
-      <dependency>
-         <!-- JUnit Jupiter -->
-         <groupId>org.junit.jupiter</groupId>
-         <artifactId>junit-jupiter</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <!-- JUnit Jupiter Platform -->
-         <groupId>org.junit.platform</groupId>
-         <artifactId>junit-platform-runner</artifactId>
-         <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <!-- JUnit 3 -->
-               <groupId>junit</groupId>
-               <artifactId>junit</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <!-- Mockito -->
          <groupId>org.mockito</groupId>
          <artifactId>mockito-core</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- Mockito JUnit Jupiter -->
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-junit-jupiter</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- AssertJ -->
+         <groupId>org.assertj</groupId>
+         <artifactId>assertj-core</artifactId>
+         <version>${assertj.version}</version>
          <scope>test</scope>
       </dependency>
       <dependency>
@@ -523,6 +538,12 @@
          <!-- Spring Boot Test Autoconfigure -->
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-test-autoconfigure</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- H2 database -->
+         <groupId>com.h2database</groupId>
+         <artifactId>h2</artifactId>
          <scope>test</scope>
       </dependency>
    </dependencies>

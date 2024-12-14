@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2025 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,22 +24,29 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import java.util.Arrays;
+import java.util.Collection;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.configuration.WhitelistRequestCustomizer;
-import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.configuration.JwtSecurityConfigurer;
-import com.bernardomg.example.spring.security.ws.jwt.security.jwt.token.JwtTokenData;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenDecoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.token.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.springframework.web.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.spring.security.ws.jwt.springframework.web.JwtTokenFilter;
 
 /**
  * Web security configuration.
@@ -63,6 +70,10 @@ public class WebSecurityConfig {
      *
      * @param http
      *            HTTP security component
+     * @param introspector
+     *            utility class to find routes
+     * @param securityConfigurers
+     *            security configurers
      * @param decoder
      *            token decoder
      * @param tokenValidator
@@ -75,25 +86,36 @@ public class WebSecurityConfig {
      */
     @Bean("webSecurityFilterChain")
     public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
-            final TokenDecoder<JwtTokenData> decoder, final TokenValidator tokenValidator,
+            final HandlerMappingIntrospector introspector,
+            final Collection<SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity>> securityConfigurers,
+            final TokenDecoder decoder, final TokenValidator tokenValidator,
             final UserDetailsService userDetailsService) throws Exception {
+        final MvcRequestMatcher.Builder mvc;
+        final JwtTokenFilter            jwtFilter;
 
+        jwtFilter = new JwtTokenFilter(userDetailsService, tokenValidator, decoder);
+        mvc = new MvcRequestMatcher.Builder(introspector);
         http
             // Whitelist access
-            .authorizeHttpRequests(new WhitelistRequestCustomizer(Arrays.asList("/actuator/**", "/login/**")))
+            .authorizeHttpRequests(c -> c
+                .requestMatchers(mvc.pattern("/actuator/**"), mvc.pattern("/login/**"), mvc.pattern("/favicon.ico"),
+                    mvc.pattern("/error/**"))
+                .permitAll())
+            // Authenticate all others
+            .authorizeHttpRequests(c -> c.anyRequest()
+                .authenticated())
+            // TODO: why is it using the basic auth filter?
+            .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
             // CSRF and CORS
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
+            .csrf(CsrfConfigurer::disable)
+            .cors(Customizer.withDefaults())
             // Authentication error handling
             .exceptionHandling(handler -> handler.authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint()))
             // Stateless
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Disable login and logout forms
-            .formLogin(c -> c.disable())
-            .logout(c -> c.disable());
-
-        // JWT configuration
-        http.apply(new JwtSecurityConfigurer(userDetailsService, tokenValidator, decoder));
+            .formLogin(FormLoginConfigurer::disable)
+            .logout(LogoutConfigurer::disable);
 
         return http.build();
     }
