@@ -123,6 +123,7 @@
       <!-- ============================================== -->
       <!-- =========== DEPENDENCIES VERSIONS ============ -->
       <!-- ============================================== -->
+      <assertj.version>3.26.3</assertj.version>
       <bernardomg.framework.ws.version>0.1.5</bernardomg.framework.ws.version>
       <jjwt.version>0.12.6</jjwt.version>
       <spring.boot.version>3.4.0</spring.boot.version>
@@ -494,6 +495,19 @@
          <!-- Mockito -->
          <groupId>org.mockito</groupId>
          <artifactId>mockito-core</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- Mockito JUnit Jupiter -->
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-junit-jupiter</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <!-- AssertJ -->
+         <groupId>org.assertj</groupId>
+         <artifactId>assertj-core</artifactId>
+         <version>${assertj.version}</version>
          <scope>test</scope>
       </dependency>
       <dependency>

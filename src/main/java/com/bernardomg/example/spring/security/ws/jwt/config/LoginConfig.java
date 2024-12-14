@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2025 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,22 +24,20 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import java.nio.charset.StandardCharsets;
-
-import javax.crypto.SecretKey;
+import java.util.function.Predicate;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.DefaultLoginService;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.JwtLoginTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginService;
-import com.bernardomg.example.spring.security.ws.jwt.security.login.service.LoginTokenEncoder;
-import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
-
-import io.jsonwebtoken.security.Keys;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.login.domain.model.Credentials;
+import com.bernardomg.example.spring.security.ws.jwt.login.springframework.usecase.service.SpringValidLoginPredicate;
+import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.JwtLoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.login.usecase.encoder.LoginTokenEncoder;
+import com.bernardomg.example.spring.security.ws.jwt.login.usecase.service.LoginService;
+import com.bernardomg.example.spring.security.ws.jwt.login.usecase.service.TokenLoginService;
 
 /**
  * JWT components configuration.
@@ -59,16 +57,15 @@ public class LoginConfig {
 
     @Bean("loginService")
     public LoginService getLoginService(final UserDetailsService userDetailsService,
-            final PasswordEncoder passwordEncoder, final JwtProperties jwtProperties) {
-        final LoginTokenEncoder loginTokenEncoder;
-        final SecretKey         key;
+            final PasswordEncoder passwordEncoder, final TokenEncoder tokenEncoder, final JwtProperties jwtProperties) {
+        final Predicate<Credentials> valid;
+        final LoginTokenEncoder      loginTokenEncoder;
 
-        key = Keys.hmacShaKeyFor(jwtProperties.getSecret()
-            .getBytes(StandardCharsets.UTF_8));
+        valid = new SpringValidLoginPredicate(userDetailsService, passwordEncoder);
 
-        loginTokenEncoder = new JwtLoginTokenEncoder(key, jwtProperties.getValidity());
+        loginTokenEncoder = new JwtLoginTokenEncoder(tokenEncoder, jwtProperties.getValidity());
 
-        return new DefaultLoginService(userDetailsService, passwordEncoder, loginTokenEncoder);
+        return new TokenLoginService(valid, loginTokenEncoder);
     }
 
 }

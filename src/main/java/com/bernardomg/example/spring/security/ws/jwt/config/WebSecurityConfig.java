@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2025 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,14 +24,10 @@
 
 package com.bernardomg.example.spring.security.ws.jwt.config;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-
-import javax.crypto.SecretKey;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,18 +36,17 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.jwt.configuration.JwtHttpSecurityConfigurer;
-import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAccessDeniedHandler;
-import com.bernardomg.example.spring.security.ws.jwt.security.entrypoint.ErrorResponseAuthenticationEntryPoint;
-import com.bernardomg.example.spring.security.ws.jwt.security.property.JwtProperties;
-
-import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenDecoder;
+import com.bernardomg.example.spring.security.ws.jwt.encoding.TokenValidator;
+import com.bernardomg.example.spring.security.ws.jwt.springframework.web.ErrorResponseAuthenticationEntryPoint;
+import com.bernardomg.example.spring.security.ws.jwt.springframework.web.JwtTokenFilter;
 
 /**
  * Web security configuration.
@@ -61,7 +56,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Configuration
 @EnableWebSecurity
-@Slf4j
 public class WebSecurityConfig {
 
     /**
@@ -72,34 +66,20 @@ public class WebSecurityConfig {
     }
 
     /**
-     * JWT requests security.
-     *
-     * @param authManager
-     *            authentication manager
-     * @param properties
-     *            JWT properties
-     * @return JWT requests security
-     */
-    @Bean
-    public JwtHttpSecurityConfigurer getJwtSecurityConfigurer(final AuthenticationManager authManager,
-            final JwtProperties properties) {
-        final SecretKey key;
-
-        key = Keys.hmacShaKeyFor(properties.getSecret()
-            .getBytes(StandardCharsets.UTF_8));
-
-        return new JwtHttpSecurityConfigurer(authManager, key);
-    }
-
-    /**
      * Web security filter chain. Sets up all the authentication requirements for requests.
      *
      * @param http
      *            HTTP security component
      * @param introspector
-     *            mapping introspector
+     *            utility class to find routes
      * @param securityConfigurers
      *            security configurers
+     * @param decoder
+     *            token decoder
+     * @param tokenValidator
+     *            token validator
+     * @param userDetailsService
+     *            user details service
      * @return web security filter chain with all authentication requirements
      * @throws Exception
      *             if the setup fails
@@ -107,10 +87,13 @@ public class WebSecurityConfig {
     @Bean("webSecurityFilterChain")
     public SecurityFilterChain getWebSecurityFilterChain(final HttpSecurity http,
             final HandlerMappingIntrospector introspector,
-            final Collection<SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity>> securityConfigurers)
-            throws Exception {
+            final Collection<SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity>> securityConfigurers,
+            final TokenDecoder decoder, final TokenValidator tokenValidator,
+            final UserDetailsService userDetailsService) throws Exception {
         final MvcRequestMatcher.Builder mvc;
+        final JwtTokenFilter            jwtFilter;
 
+        jwtFilter = new JwtTokenFilter(userDetailsService, tokenValidator, decoder);
         mvc = new MvcRequestMatcher.Builder(introspector);
         http
             // Whitelist access
@@ -121,23 +104,18 @@ public class WebSecurityConfig {
             // Authenticate all others
             .authorizeHttpRequests(c -> c.anyRequest()
                 .authenticated())
+            // TODO: why is it using the basic auth filter?
+            .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
             // CSRF and CORS
             .csrf(CsrfConfigurer::disable)
             .cors(Customizer.withDefaults())
             // Authentication error handling
-            .exceptionHandling(handler -> handler.accessDeniedHandler(new ErrorResponseAccessDeniedHandler())
-                .authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint()))
+            .exceptionHandling(handler -> handler.authenticationEntryPoint(new ErrorResponseAuthenticationEntryPoint()))
             // Stateless
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Disable login and logout forms
             .formLogin(FormLoginConfigurer::disable)
             .logout(LogoutConfigurer::disable);
-
-        // Security configurers
-        log.debug("Applying configurers: {}", securityConfigurers);
-        for (final SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity> securityConfigurer : securityConfigurers) {
-            http.apply(securityConfigurer);
-        }
 
         return http.build();
     }

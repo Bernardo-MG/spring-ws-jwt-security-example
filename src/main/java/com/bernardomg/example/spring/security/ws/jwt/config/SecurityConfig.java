@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2025 the original author or authors.
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,13 @@ package com.bernardomg.example.spring.security.ws.jwt.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bernardomg.example.spring.security.ws.jwt.security.authentication.UserDetailsAuthenticationManager;
-import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.PrivilegeRepository;
-import com.bernardomg.example.spring.security.ws.jwt.security.user.persistence.repository.UserRepository;
-import com.bernardomg.example.spring.security.ws.jwt.security.userdetails.PersistentUserDetailsService;
+import com.bernardomg.example.spring.security.ws.jwt.springframework.userdetails.UserDomainDetailsService;
+import com.bernardomg.example.spring.security.ws.jwt.user.domain.repository.UserRepository;
 
 /**
  * Security configuration.
@@ -54,11 +51,6 @@ public class SecurityConfig {
         super();
     }
 
-    @Bean("authenticationManager")
-    public AuthenticationManager getAuthenticationManager(final UserDetailsService userDetailsService) {
-        return new UserDetailsAuthenticationManager(userDetailsService);
-    }
-
     /**
      * Password encoder. Used to match the received password to the one securely stored in the DB.
      *
@@ -74,14 +66,11 @@ public class SecurityConfig {
      *
      * @param userRepository
      *            repository for finding users
-     * @param privilegeRepository
-     *            repository for finding user privileges
      * @return the user details service
      */
     @Bean("userDetailsService")
-    public UserDetailsService getUserDetailsService(final UserRepository userRepository,
-            final PrivilegeRepository privilegeRepository) {
-        return new PersistentUserDetailsService(userRepository, privilegeRepository);
+    public UserDetailsService getUserDetailsService(final UserRepository userRepository) {
+        return new UserDomainDetailsService(userRepository);
     }
 
 }
