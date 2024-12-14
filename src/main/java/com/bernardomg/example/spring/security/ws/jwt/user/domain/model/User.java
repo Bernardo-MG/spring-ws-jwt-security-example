@@ -29,15 +29,13 @@ import java.util.Collection;
 import lombok.Builder;
 
 /**
- * Representation of a user.
- * <p>
- * FIXME: this should be immutable
+ * User.
  *
  * @author Bernardo Mart&iacute;nez Garrido
  *
  */
 @Builder(setterPrefix = "with")
-public record User(String email, boolean enabled, boolean expired, boolean locked, String name, boolean passwordExpired,
-        Collection<Privilege> privileges, String username) {
+public record User(String email, String username, String name, boolean enabled, boolean expired, boolean locked,
+        boolean passwordExpired, Collection<Privilege> privileges) {
 
 }
