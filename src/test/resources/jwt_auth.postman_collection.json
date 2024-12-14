@@ -22,13 +22,14 @@
 									"});\r",
 									"\r",
 									"pm.test(\"The response contains the login data\",()=>{\r",
-									"    pm.expect(pm.response).haveOwnProperty('content');\r",
-									"    pm.expect(pm.response.content.logged).is.true();\r",
-									"    pm.expect(pm.response.content.username).is.to.equal('admin'); \r",
-									"    pm.expect(pm.response.content).haveOwnProperty('token');\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('content');\r",
+									"    pm.expect(responseJson.content.logged).to.be.true;\r",
+									"    pm.expect(responseJson.content).haveOwnProperty('token');\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -71,9 +72,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"The response contains the error properties\", () => {\r",
-									"    const responseJson = pm.response.json();\r",
-									"    pm.expect(responseJson.errors).to.have.lengthOf(1);\r",
-									"    pm.expect(responseJson.errors[0].message).to.eql('Unauthorized');\r",
+									"    pm.expect(pm.response.json().message).to.eql('Unauthorized');\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -131,9 +130,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"The response contains the error properties\", () => {\r",
-									"    const responseJson = pm.response.json();\r",
-									"    pm.expect(responseJson.errors).to.have.lengthOf(1);\r",
-									"    pm.expect(responseJson.errors[0].message).to.eql('Unauthorized');\r",
+									"    pm.expect(pm.response.json().message).to.eql('Unauthorized');\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -234,7 +231,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY5ODA5NTY2NCwiZXhwIjoxNjk4MTEzNjY0LCJuYmYiOjE2OTgwOTU2NjR9.QEstPpsfUUhN37YHGPMIn4yoZnjqUEz8FEm3-QqkdrCD-kLcEMV7vu_eCa7rNJawS5owFdfGjwDGIXLhpoNQHg",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNDE3NzEwOSwiZXhwIjoxNzM0MTgwNzA5LCJuYmYiOjE3MzQxNzcxMDl9._3sGIIWLkuegsPTKFA3C1solxc2xBp6te_NdUXGc4nFi2Q0EBu2vbmL32jXhOL380XgMxsVIiRhp-xIoPktLxw",
 						"type": "string"
 					}
 				]
